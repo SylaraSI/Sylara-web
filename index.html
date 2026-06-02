@@ -1194,6 +1194,17 @@
 
 <body>
 
+  <!-- Netlify form detection -->
+  <form name="intake" netlify hidden>
+    <input type="text" name="name">
+    <input type="email" name="email">
+    <input type="text" name="company">
+    <select name="service">
+      <option>Workflow Automation</option>
+    </select>
+    <textarea name="message"></textarea>
+  </form>
+
   <nav class="nav-bar">
     <a class="nav-brand" href="#" onclick="switchTab('home'); return false;">SYLARA TECHNOLOGIES</a>
     <ul class="nav-tabs">
