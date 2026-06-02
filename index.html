@@ -1993,37 +1993,40 @@
         <span class="modal-title">Initialize Contact</span>
         <button class="modal-close" onclick="closeModal()">✕</button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" id="modal-form-body">
         <div class="modal-subtitle">// Open a channel — we'll respond within 24 hours</div>
-        <div class="form-field">
-          <label class="form-label">Name *</label>
-          <input class="form-input" type="text" placeholder="Your name" required>
-        </div>
-        <div class="form-field">
-          <label class="form-label">Company</label>
-          <input class="form-input" type="text" placeholder="Business or organization">
-        </div>
-        <div class="form-field">
-          <label class="form-label">Email *</label>
-          <input class="form-input" type="email" placeholder="your@email.com" required>
-        </div>
-        <div class="form-field">
-          <label class="form-label">What can we help with? *</label>
-          <select class="form-select" required>
-            <option value="" disabled selected>Select a service area</option>
-            <option>Workflow Automation</option>
-            <option>Process Mapping &amp; Audit</option>
-            <option>Automation Prototype</option>
-            <option>Full Assessment &amp; Build</option>
-            <option>Ongoing Automation Partner</option>
-            <option>General Inquiry</option>
-          </select>
-        </div>
-        <div class="form-field">
-          <label class="form-label">Let's Collaborate!</label>
-          <textarea class="form-textarea" placeholder="Tell us what you're working with! We'd love to hear from you."></textarea>
-        </div>
-        <button class="form-submit" onclick="submitForm()">Transmit →</button>
+        <form name="intake" id="contact-form">
+          <input type="hidden" name="form-name" value="intake">
+          <div class="form-field">
+            <label class="form-label">Name *</label>
+            <input class="form-input" type="text" name="name" placeholder="Your name" required>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Company</label>
+            <input class="form-input" type="text" name="company" placeholder="Business or organization">
+          </div>
+          <div class="form-field">
+            <label class="form-label">Email *</label>
+            <input class="form-input" type="email" name="email" placeholder="your@email.com" required>
+          </div>
+          <div class="form-field">
+            <label class="form-label">What can we help with? *</label>
+            <select class="form-select" name="service" required>
+              <option value="" disabled selected>Select a service area</option>
+              <option>Workflow Automation</option>
+              <option>Process Mapping &amp; Audit</option>
+              <option>Automation Prototype</option>
+              <option>Full Assessment &amp; Build</option>
+              <option>Ongoing Automation Partner</option>
+              <option>General Inquiry</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Let's Collaborate!</label>
+            <textarea class="form-textarea" name="message" placeholder="Tell us what you're working with! We'd love to hear from you."></textarea>
+          </div>
+          <button type="button" class="form-submit" onclick="submitForm()">Transmit →</button>
+        </form>
       </div>
       <div class="modal-footer">
         Direct line: <a href="mailto:hello@sylaratech.com">hello@sylaratech.com</a>
@@ -2055,8 +2058,36 @@
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
     function submitForm() {
-      alert('Message received. We will be in touch within 24 hours.');
-      closeModal();
+      const form = document.getElementById('contact-form');
+      const name = form.querySelector('[name="name"]').value.trim();
+      const email = form.querySelector('[name="email"]').value.trim();
+      const service = form.querySelector('[name="service"]').value;
+
+      if (!name || !email || !service) {
+        alert('Please fill in all required fields.');
+        return;
+      }
+
+      const data = new FormData(form);
+
+      fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(data).toString()
+      })
+      .then(() => {
+        document.getElementById('modal-form-body').innerHTML = `
+          <div style="text-align:center;padding:40px 20px;">
+            <div style="font-family:var(--font-mono);font-size:28px;color:var(--green-primary);margin-bottom:16px;">✦</div>
+            <div style="font-family:var(--font-brand);font-size:13px;letter-spacing:3px;color:var(--green-primary);margin-bottom:12px;">TRANSMISSION RECEIVED</div>
+            <div style="font-family:var(--font-ui);font-size:14px;color:var(--text-secondary);line-height:1.6;">We'll be in touch within 24 hours.</div>
+          </div>
+        `;
+        setTimeout(() => closeModal(), 3000);
+      })
+      .catch(() => {
+        alert('Something went wrong. Please email us directly at hello@sylaratech.com');
+      });
     }
 
     const startTime = Date.now();
