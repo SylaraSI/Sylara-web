@@ -2078,12 +2078,329 @@
 
   <!-- RESEARCH TAB -->
   <div class="tab-content tab-research" id="content-research">
-    <div class="coming-soon" style="color:var(--purple-primary);">
+
+    <style>
+
+      #research-verifying {
+        position: fixed;
+        inset: 0;
+        background: var(--bg-primary);
+        z-index: 500;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-mono);
+        font-size: 14px;
+        letter-spacing: 2px;
+        color: var(--green-primary);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
+      }
+
+      #research-verifying.rv-active {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      .rv-cursor {
+        animation: rv-blink 0.7s step-end infinite;
+      }
+
+      @keyframes rv-blink {
+        0%, 100% { opacity: 1; }
+        50%       { opacity: 0; }
+      }
+
+      #research-scanline {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--green-primary);
+        box-shadow: 0 0 10px var(--green-primary), 0 0 20px var(--green-glow);
+        z-index: 490;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      #research-scanline.rv-scanning {
+        opacity: 1;
+        animation: rv-scan-sweep 0.6s linear forwards;
+      }
+
+      @keyframes rv-scan-sweep {
+        from { top: 0; }
+        to   { top: 100vh; }
+      }
+
+      #research-panel-left,
+      #research-panel-right {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        width: 50%;
+        background: var(--bg-primary);
+        z-index: 480;
+        pointer-events: none;
+        display: none;
+      }
+
+      #research-panel-left  { left: 0; }
+      #research-panel-right { right: 0; }
+
+      #research-revealed { display: none; opacity: 0; }
+      #research-revealed.rv-show { display: block; }
+      #research-revealed.rv-fade { opacity: 1; transition: opacity 0.8s ease; }
+
+      #research-revealed .avatar-panel::before {
+        background: radial-gradient(circle, var(--purple-glow) 0%, transparent 70%);
+      }
+
+      #research-revealed .avatar-ring-outer::before {
+        background: var(--purple-primary);
+        box-shadow: 0 0 10px var(--purple-primary);
+      }
+
+      .rv-wrapper {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 32px 24px 64px;
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+      }
+
+      .rv-headline {
+        font-family: var(--font-display);
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--cyan-primary);
+        text-align: center;
+        text-shadow: 0 0 20px var(--cyan-glow-strong), 0 0 40px var(--cyan-glow);
+        line-height: 1.3;
+      }
+
+      .rv-subheadline {
+        font-family: var(--font-ui);
+        font-size: 15px;
+        font-weight: 400;
+        color: var(--text-secondary);
+        text-align: center;
+        opacity: 0.65;
+        margin-top: -8px;
+      }
+
+      .rv-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        width: 100%;
+      }
+
+      .rv-card {
+        background: rgba(0,0,0,0.3);
+        border: 1px solid var(--border-subtle);
+        border-radius: 8px;
+        padding: 24px;
+        min-height: 180px;
+      }
+
+      .rv-card-title {
+        font-family: var(--font-mono);
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+
+      .rv-card-body {
+        font-family: var(--font-ui);
+        font-size: 13px;
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
+
+      .rv-footer {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--text-secondary);
+        opacity: 0.35;
+        text-align: center;
+        font-style: italic;
+        letter-spacing: 0.5px;
+      }
+
+      #research-reset {
+        position: fixed;
+        bottom: 16px;
+        right: 20px;
+        font-family: var(--font-mono);
+        font-size: 10px;
+        color: var(--text-secondary);
+        opacity: 0.12;
+        cursor: pointer;
+        letter-spacing: 1px;
+        z-index: 10;
+        display: none;
+        user-select: none;
+      }
+
+      #research-reset:hover { opacity: 0.38; }
+
+      @media (max-width: 768px) {
+        .rv-wrapper  { padding: 20px 16px 48px; }
+        .rv-grid     { grid-template-columns: 1fr; }
+        .rv-headline { font-size: 16px; letter-spacing: 2px; }
+      }
+    </style>
+
+    <!-- Classified state -->
+    <div id="research-classified" class="coming-soon" style="color:var(--purple-primary);">
       <div class="coming-soon-icon" style="color:var(--purple-primary);opacity:0.6;">◈</div>
       <div class="coming-soon-title" style="color:var(--purple-primary);opacity:0.5;">Research — Classified</div>
       <div class="coming-soon-bar" style="background:rgba(168,85,247,0.15);"></div>
       <div style="font-size:10px;opacity:0.3;margin-top:8px;letter-spacing:1px;">independently developing systems intelligence platform</div>
     </div>
+
+    <!-- Stage 1 overlay -->
+    <div id="research-verifying">VERIFYING CREDENTIALS...<span class="rv-cursor">_</span></div>
+
+    <!-- Stage 2 scan line -->
+    <div id="research-scanline"></div>
+
+    <!-- Stage 3 split panels -->
+    <div id="research-panel-left"></div>
+    <div id="research-panel-right"></div>
+
+    <!-- Stage 4 revealed content -->
+    <div id="research-revealed">
+      <div class="rv-wrapper">
+
+        <div class="avatar-panel" style="flex:none;width:100%;max-width:480px;padding:28px 32px 18px;">
+          <div class="avatar-ring" style="width:160px;height:160px;margin-bottom:0;">
+            <div class="avatar-ring-outer"></div>
+            <div class="avatar-ring-mid"></div>
+            <div class="avatar-ring-inner">
+              <img class="avatar-image" src="sylara-avatar.png" alt="Sylara">
+            </div>
+          </div>
+        </div>
+
+        <div class="rv-headline">Pre-Computed Contextual Loading</div>
+
+        <div class="rv-subheadline">A novel approach to AI reasoning — currently in active R&amp;D</div>
+
+        <div class="rv-grid">
+          <div class="rv-card" style="border-left:3px solid var(--green-primary);">
+            <div class="rv-card-title" style="color:var(--green-primary);">Efficiency</div>
+            <div class="rv-card-body">By moving contextual evaluation before inference, the system is designed to reduce token consumption on equivalent reasoning tasks — without sacrificing output quality.</div>
+          </div>
+          <div class="rv-card" style="border-left:3px solid var(--cyan-primary);">
+            <div class="rv-card-title" style="color:var(--cyan-primary);">Traceability</div>
+            <div class="rv-card-body">Every conclusion carries a full chain of custody. Every reasoning step is auditable. Trustworthiness is structural — not a feature added after the fact.</div>
+          </div>
+          <div class="rv-card" style="border-left:3px solid var(--purple-primary);">
+            <div class="rv-card-title" style="color:var(--purple-primary);">Determinism</div>
+            <div class="rv-card-body">The pre-reasoning pipeline is deterministic. The same inputs produce the same evaluation path. Behavior is verifiable without accessing model weights.</div>
+          </div>
+          <div class="rv-card" style="border-left:3px solid var(--gold);">
+            <div class="rv-card-title" style="color:var(--gold);">Scalability</div>
+            <div class="rv-card-body">Currently running on consumer hardware. Designed to scale to purpose-built AI inference workstations. The architecture does not change — only the ceiling does.</div>
+          </div>
+        </div>
+
+        <div class="rv-footer">Platform in active development. Research findings will be published in the public domain.</div>
+
+      </div>
+    </div>
+
+    <div id="research-reset" onclick="rvReset()">[clear]</div>
+
+    <script>
+      (function () {
+        var rvClicks = 0;
+        var rvActive = false;
+
+        document.querySelector('#research-classified .coming-soon-icon').addEventListener('click', function () {
+          if (rvActive) return;
+          if (++rvClicks < 3) return;
+          rvActive = true;
+          rvTrigger();
+        });
+
+        function rvTrigger() {
+          var classified = document.getElementById('research-classified');
+          var verifying  = document.getElementById('research-verifying');
+          var scanline   = document.getElementById('research-scanline');
+          var panelL     = document.getElementById('research-panel-left');
+          var panelR     = document.getElementById('research-panel-right');
+          var revealed   = document.getElementById('research-revealed');
+          var resetBtn   = document.getElementById('research-reset');
+
+          // Stage 1 — VERIFYING CREDENTIALS (0ms)
+          classified.style.display = 'none';
+          verifying.classList.add('rv-active');
+
+          // Stage 2 — scan line (800ms)
+          setTimeout(function () {
+            verifying.classList.remove('rv-active');
+            panelL.style.display = 'block';
+            panelR.style.display = 'block';
+            scanline.classList.add('rv-scanning');
+          }, 800);
+
+          // Stage 3 — split panels (1400ms)
+          setTimeout(function () {
+            scanline.classList.remove('rv-scanning');
+            revealed.classList.add('rv-show');
+            panelL.getBoundingClientRect(); // force reflow before transition
+            panelL.style.transition = 'transform 0.6s ease-in-out';
+            panelR.style.transition = 'transform 0.6s ease-in-out';
+            panelL.style.transform  = 'translateX(-100%)';
+            panelR.style.transform  = 'translateX(100%)';
+          }, 1400);
+
+          // Stage 4 — fade in revealed content (2000ms)
+          setTimeout(function () {
+            revealed.classList.add('rv-fade');
+            resetBtn.style.display = 'block';
+          }, 2000);
+        }
+
+        window.rvReset = function () {
+          rvClicks = 0;
+          rvActive = false;
+
+          var classified = document.getElementById('research-classified');
+          var verifying  = document.getElementById('research-verifying');
+          var scanline   = document.getElementById('research-scanline');
+          var panelL     = document.getElementById('research-panel-left');
+          var panelR     = document.getElementById('research-panel-right');
+          var revealed   = document.getElementById('research-revealed');
+          var resetBtn   = document.getElementById('research-reset');
+
+          classified.style.display = '';
+          verifying.classList.remove('rv-active');
+          scanline.classList.remove('rv-scanning');
+          panelL.style.transition = 'none';
+          panelR.style.transition = 'none';
+          panelL.style.transform  = '';
+          panelR.style.transform  = '';
+          panelL.style.display    = 'none';
+          panelR.style.display    = 'none';
+          revealed.classList.remove('rv-show', 'rv-fade');
+          resetBtn.style.display  = 'none';
+        };
+      }());
+    </script>
   </div>
 
   <!-- CONTACT MODAL -->
