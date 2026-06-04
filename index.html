@@ -1980,10 +1980,99 @@
 
   <!-- ABOUT TAB -->
   <div class="tab-content" id="content-about">
-    <div class="coming-soon">
-      <div class="coming-soon-icon">◎</div>
-      <div class="coming-soon-title">About — Build In Progress</div>
-      <div class="coming-soon-bar"></div>
+
+    <style>
+      .about-wrapper {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 32px 24px 48px;
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .about-panel-body {
+        font-family: var(--font-ui);
+        font-size: 15px;
+        font-weight: 400;
+        color: var(--text-secondary);
+        line-height: 1.75;
+        padding: 16px 18px;
+      }
+
+      .about-panels {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      @media (max-width: 768px) {
+        .about-wrapper { padding: 20px 16px 36px; }
+      }
+    </style>
+
+    <div class="about-wrapper">
+
+      <!-- Avatar -->
+      <div class="avatar-panel" style="flex:none;width:100%;max-width:480px;padding:28px 32px 22px;">
+        <div class="avatar-ring" style="width:160px;height:160px;margin-bottom:12px;">
+          <div class="avatar-ring-outer"></div>
+          <div class="avatar-ring-mid"></div>
+          <div class="avatar-ring-inner">
+            <img class="avatar-image" src="sylara-avatar.png" alt="Sylara">
+          </div>
+        </div>
+        <div class="tagline-company" style="color:#9b5de5;font-family:'Syncopate',sans-serif;letter-spacing:6px;">SYLARA TECHNOLOGIES</div>
+        <div class="tagline-sub" style="margin-bottom:0;">Veteran-Owned · Killeen, TX</div>
+      </div>
+
+      <!-- Panels -->
+      <div class="about-panels">
+
+        <!-- Panel 1 — Who We Are -->
+        <div class="panel" style="border-left:3px solid var(--green-primary);">
+          <div class="panel-header">
+            <div class="panel-title">
+              <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green-primary);box-shadow:0 0 6px var(--green-primary);flex-shrink:0;"></span>
+              WHO WE ARE
+            </div>
+          </div>
+          <div class="about-panel-body">
+            Sylara Technologies is a veteran-owned AI and automation consultancy based in Killeen, Texas. Built by someone who spent years working inside enterprise infrastructure — watching how large, complex systems actually behave under pressure — and who got frustrated watching businesses adopt AI tools they couldn't understand, audit, or trust.
+          </div>
+        </div>
+
+        <!-- Panel 2 — The Gap We Fill -->
+        <div class="panel" style="border-left:3px solid var(--cyan-primary);">
+          <div class="panel-header">
+            <div class="panel-title">
+              <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--cyan-primary);box-shadow:0 0 6px var(--cyan-primary);flex-shrink:0;"></span>
+              THE GAP WE FILL
+            </div>
+          </div>
+          <div class="about-panel-body">
+            Most businesses know they should be using AI. Very few know where to start, what's actually automatable, or how to tell if what they're building is working. The tools that exist today give you outputs without explanations — you get an answer but no way to know why. We started Sylara Technologies to fill both of those gaps. In the near term we help businesses identify where they're losing time and build automation that actually works. In the longer term we're building a <span style="font-family:var(--font-display);color:var(--cyan-primary);text-shadow:0 0 16px var(--cyan-glow-strong);letter-spacing:1px;">Systems Intelligence Platform</span>.
+          </div>
+        </div>
+
+        <!-- Panel 3 — How We Work -->
+        <div class="panel" style="border-left:3px solid var(--purple-primary);">
+          <div class="panel-header">
+            <div class="panel-title">
+              <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--purple-primary);box-shadow:0 0 6px var(--purple-primary);flex-shrink:0;"></span>
+              HOW WE WORK
+            </div>
+          </div>
+          <div class="about-panel-body">
+            We don't oversell, we don't disappear after delivery, and we don't hand you something you can't understand. We work alongside you to understand how your operation actually runs — then we build, refine, and evolve with it. Small team, deep systems thinking, real results.
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
 
