@@ -2027,7 +2027,7 @@
           </div>
         </div>
         <div class="tagline-company" style="color:#9b5de5;font-family:'Syncopate',sans-serif;letter-spacing:6px;">SYLARA TECHNOLOGIES</div>
-        <div class="tagline-sub" style="margin-bottom:0;">Veteran-Owned · Killeen, TX</div>
+        <div class="tagline-sub" style="margin-bottom:0;">Veteran-Owned · TX</div>
       </div>
 
       <!-- Panels -->
@@ -2042,7 +2042,7 @@
             </div>
           </div>
           <div class="about-panel-body">
-            Sylara Technologies is a veteran-owned AI and automation consultancy based in Killeen, Texas. Built by someone who spent years working inside enterprise infrastructure — watching how large, complex systems actually behave under pressure — and who got frustrated watching businesses adopt AI tools they couldn't understand, audit, or trust.
+            Sylara Technologies is a veteran-owned AI and automation collaboration lab based in Texas. Built by someone who spent years working inside enterprise infrastructure watching how large, complex systems actually behave under pressure, and got frustrated watching businesses adopt AI tools they couldn't understand, audit, or trust.
           </div>
         </div>
 
@@ -2055,7 +2055,7 @@
             </div>
           </div>
           <div class="about-panel-body">
-            Most businesses know they should be using AI. Very few know where to start, what's actually automatable, or how to tell if what they're building is working. The tools that exist today give you outputs without explanations — you get an answer but no way to know why. We started Sylara Technologies to fill both of those gaps. In the near term we help businesses identify where they're losing time and build automation that actually works. In the longer term we're building a <span style="font-family:var(--font-display);color:var(--cyan-primary);text-shadow:0 0 16px var(--cyan-glow-strong);letter-spacing:1px;">Systems Intelligence Platform</span>.
+            Most businesses know they should be using AI. Very few know where to start, what's actually automatable, or how to tell if what they're building is working. The tools that exist today give you outputs without explanations, you get an answer but no way to know why. We started Sylara Technologies to fill both of those gaps. In the near term we help businesses identify where they're losing time and build automation that actually works. In the longer term we're building a <span style="font-family:var(--font-display);color:var(--cyan-primary);text-shadow:0 0 16px var(--cyan-glow-strong);letter-spacing:1px;">Systems Intelligence Platform</span>.
           </div>
         </div>
 
@@ -2068,7 +2068,7 @@
             </div>
           </div>
           <div class="about-panel-body">
-            We don't oversell, we don't disappear after delivery, and we don't hand you something you can't understand. We work alongside you to understand how your operation actually runs — then we build, refine, and evolve with it. Small team, deep systems thinking, real results.
+            We don't oversell, we don't disappear after delivery, and we don't hand you something you can't understand. We work alongside you to understand how your operation actually runs. Then we build, refine, and evolve with it. Small team, deep systems thinking, real results.
           </div>
         </div>
 
@@ -2238,22 +2238,49 @@
         letter-spacing: 0.5px;
       }
 
+      #research-access-input {
+        background: rgba(0,0,0,0.4);
+        border: 1px solid var(--border-subtle);
+        border-radius: 4px;
+        padding: 8px 14px;
+        color: var(--text-primary);
+        font-family: var(--font-mono);
+        font-size: 12px;
+        letter-spacing: 2px;
+        text-align: center;
+        width: 200px;
+        outline: none;
+        margin-top: 4px;
+        cursor: text;
+      }
+
+      #research-access-input::placeholder {
+        color: var(--cyan-dim);
+        opacity: 0.7;
+      }
+
+      #research-access-input:focus {
+        border-color: rgba(34,211,238,0.3);
+      }
+
       #research-reset {
         position: fixed;
-        bottom: 16px;
-        right: 20px;
+        top: 52px;
+        right: 24px;
+        height: 36px;
+        line-height: 36px;
         font-family: var(--font-mono);
-        font-size: 10px;
+        font-size: 13px;
         color: var(--text-secondary);
-        opacity: 0.12;
+        opacity: 0.55;
         cursor: pointer;
         letter-spacing: 1px;
-        z-index: 10;
+        z-index: 99;
         display: none;
         user-select: none;
       }
 
-      #research-reset:hover { opacity: 0.38; }
+      #research-reset:hover { opacity: 1; }
 
       @media (max-width: 768px) {
         .rv-wrapper  { padding: 20px 16px 48px; }
@@ -2268,6 +2295,9 @@
       <div class="coming-soon-title" style="color:var(--purple-primary);opacity:0.5;">Research — Classified</div>
       <div class="coming-soon-bar" style="background:rgba(168,85,247,0.15);"></div>
       <div style="font-size:10px;opacity:0.3;margin-top:8px;letter-spacing:1px;">independently developing systems intelligence platform</div>
+      <div style="font-size:10px;color:rgba(148,163,184,0.3);letter-spacing:1px;margin-top:12px;font-family:var(--font-mono);text-align:center;max-width:360px;line-height:1.7;">Research access credentials are available on request — submit an inquiry through the <span onclick="openModal()" style="color:rgba(34,211,238,0.55);cursor:pointer;">contact form</span> to receive your code.</div>
+      <input id="research-access-input" type="text" maxlength="10" autocomplete="off" spellcheck="false" placeholder="ENTER ACCESS CODE">
+      <div id="research-access-status" style="font-size:10px;font-family:var(--font-mono);letter-spacing:1px;color:var(--red-alert);display:none;">// ACCESS DENIED</div>
     </div>
 
     <!-- Stage 1 overlay -->
@@ -2296,16 +2326,16 @@
 
         <div class="rv-headline">Pre-Computed Contextual Loading</div>
 
-        <div class="rv-subheadline">A novel approach to AI reasoning — currently in active R&amp;D</div>
+        <div class="rv-subheadline">A novel approach to AI reasoning. Currently in active R&amp;D</div>
 
         <div class="rv-grid">
           <div class="rv-card" style="border-left:3px solid var(--green-primary);">
             <div class="rv-card-title" style="color:var(--green-primary);">Efficiency</div>
-            <div class="rv-card-body">By moving contextual evaluation before inference, the system is designed to reduce token consumption on equivalent reasoning tasks — without sacrificing output quality.</div>
+            <div class="rv-card-body">By moving contextual evaluation before inference, the system is designed to reduce token consumption on equivalent reasoning tasks, without sacrificing output quality.</div>
           </div>
           <div class="rv-card" style="border-left:3px solid var(--cyan-primary);">
             <div class="rv-card-title" style="color:var(--cyan-primary);">Traceability</div>
-            <div class="rv-card-body">Every conclusion carries a full chain of custody. Every reasoning step is auditable. Trustworthiness is structural — not a feature added after the fact.</div>
+            <div class="rv-card-body">Every conclusion carries a full chain of custody. Every reasoning step is auditable. Trustworthiness is structural, not a feature added after the fact.</div>
           </div>
           <div class="rv-card" style="border-left:3px solid var(--purple-primary);">
             <div class="rv-card-title" style="color:var(--purple-primary);">Determinism</div>
@@ -2313,16 +2343,16 @@
           </div>
           <div class="rv-card" style="border-left:3px solid var(--gold);">
             <div class="rv-card-title" style="color:var(--gold);">Scalability</div>
-            <div class="rv-card-body">Currently running on consumer hardware. Designed to scale to purpose-built AI inference workstations. The architecture does not change — only the ceiling does.</div>
+            <div class="rv-card-body">Currently running on consumer hardware. Designed to scale to purpose-built AI inference workstations. The architecture does not change, only the ceiling does.</div>
           </div>
         </div>
 
-        <div class="rv-footer">Platform in active development. Research findings will be published in the public domain.</div>
+        <div class="rv-footer">Platform in active development. Research findings may be published in the public domain.</div>
 
       </div>
     </div>
 
-    <div id="research-reset" onclick="rvReset()">[clear]</div>
+    <div id="research-reset" onclick="rvReset()">[ SIGN OUT ]</div>
 
     <script>
       (function () {
@@ -2335,6 +2365,35 @@
           rvActive = true;
           rvTrigger();
         });
+
+        var rvAccessInput  = document.getElementById('research-access-input');
+        var rvAccessStatus = document.getElementById('research-access-status');
+
+        function rvCheckCode() {
+          if (rvActive) return;
+          var val = rvAccessInput.value.trim().toUpperCase();
+          if (val === 'SYL-9K4R2') {
+            rvAccessInput.value = '';
+            if (rvAccessStatus) rvAccessStatus.style.display = 'none';
+            rvActive = true;
+            rvTrigger();
+          } else {
+            if (rvAccessStatus) rvAccessStatus.style.display = 'block';
+            setTimeout(function () {
+              rvAccessInput.value = '';
+              if (rvAccessStatus) rvAccessStatus.style.display = 'none';
+            }, 1200);
+          }
+        }
+
+        if (rvAccessInput) {
+          rvAccessInput.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') rvCheckCode();
+          });
+          rvAccessInput.addEventListener('input', function () {
+            if (rvAccessInput.value.length >= 10) rvCheckCode();
+          });
+        }
 
         function rvTrigger() {
           var classified = document.getElementById('research-classified');
@@ -2498,6 +2557,8 @@
             <div style="font-family:var(--font-mono);font-size:28px;color:var(--green-primary);margin-bottom:16px;">✦</div>
             <div style="font-family:var(--font-brand);font-size:13px;letter-spacing:3px;color:var(--green-primary);margin-bottom:12px;">TRANSMISSION RECEIVED</div>
             <div style="font-family:var(--font-ui);font-size:14px;color:var(--text-secondary);line-height:1.6;">We'll be in touch within 24 hours.</div>
+            <div style="font-family:var(--font-mono);font-size:13px;color:var(--green-primary);margin-top:20px;letter-spacing:1px;">Your access code: SYL-9K4R2</div>
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-secondary);margin-top:6px;opacity:0.5;letter-spacing:0.5px;">Enter this code on the Research page to unlock classified content.</div>
           </div>
         `;
         setTimeout(() => closeModal(), 3000);
