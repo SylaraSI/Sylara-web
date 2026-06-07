@@ -1248,10 +1248,128 @@
         padding: 12px 10px;
       }
     }
+
+    /* DEPTH & POLISH — background texture, header glow, card hover, parallax, scanline */
+
+    /* 1. Animated background grid texture (depth, not noise) */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(34, 211, 238, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 211, 238, 0.05) 1px, transparent 1px);
+      background-size: 56px 56px;
+      pointer-events: none;
+      z-index: 0;
+      animation: bgGridDrift 90s linear infinite;
+    }
+
+    @keyframes bgGridDrift {
+      from { background-position: 0 0; }
+      to   { background-position: 224px 224px; }
+    }
+
+    /* 2. Soft glow behind major headers / key accent text */
+    .tagline-primary,
+    .services-headline {
+      text-shadow: 0 0 22px var(--cyan-glow-strong), 0 0 46px var(--cyan-glow);
+    }
+
+    .services-cta-headline,
+    .tagline-company {
+      text-shadow: 0 0 20px var(--purple-glow-strong), 0 0 42px var(--purple-glow);
+    }
+
+    .modal-title {
+      text-shadow: 0 0 18px var(--green-glow-strong), 0 0 36px var(--green-glow);
+    }
+
+    /* 3. Card / panel hover depth — lift + accent-matched glow */
+    .panel {
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .panel:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35), 0 0 0 1px var(--border-cyan), 0 0 24px var(--cyan-glow);
+    }
+
+    .condition-card:hover {
+      transform: translateX(3px) translateY(-4px);
+      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.3), 0 0 18px rgba(239, 68, 68, 0.18);
+    }
+
+    .guidance-card:hover {
+      transform: translateX(-3px) translateY(-4px);
+      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.3), 0 0 18px var(--green-glow);
+    }
+
+    .cap-card:hover { transform: translateY(-4px); }
+    .cap-card.cyan:hover   { box-shadow: 0 12px 26px rgba(0, 0, 0, 0.3), 0 0 20px var(--cyan-glow); }
+    .cap-card.green:hover  { box-shadow: 0 12px 26px rgba(0, 0, 0, 0.3), 0 0 20px var(--green-glow); }
+    .cap-card.purple:hover { box-shadow: 0 12px 26px rgba(0, 0, 0, 0.3), 0 0 20px var(--purple-glow); }
+    .cap-card.gold:hover   { box-shadow: 0 12px 26px rgba(0, 0, 0, 0.3), 0 0 20px rgba(251, 191, 36, 0.18); }
+
+    .service-card:hover { transform: translateY(-4px); }
+    .service-card.tier-1:hover { box-shadow: 0 12px 26px rgba(0, 0, 0, 0.3), 0 0 20px var(--cyan-glow); }
+    .service-card.tier-2:hover { box-shadow: 0 12px 26px rgba(0, 0, 0, 0.3), 0 0 20px var(--green-glow); }
+    .service-card.tier-3:hover { box-shadow: 0 12px 26px rgba(0, 0, 0, 0.3), 0 0 20px var(--purple-glow); }
+
+    /* 4. Parallax depth layers (driven by JS scroll listener) */
+    .parallax-layer {
+      position: fixed;
+      inset: -10% -10%;
+      pointer-events: none;
+      z-index: 0;
+      will-change: transform;
+    }
+    .parallax-layer-1 {
+      background: radial-gradient(circle at 22% 28%, var(--cyan-glow) 0%, transparent 42%);
+      opacity: 0.5;
+    }
+    .parallax-layer-2 {
+      background: radial-gradient(circle at 78% 72%, var(--purple-glow) 0%, transparent 42%);
+      opacity: 0.4;
+    }
+
+    /* 5. Telemetry strip — CRT scanline / flicker */
+    .telemetry-strip { position: relative; }
+    .telemetry-strip::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.025) 0px,
+        rgba(255, 255, 255, 0.025) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+      pointer-events: none;
+      animation: telemetryScan 6s linear infinite, telemetryFlicker 5s ease-in-out infinite;
+    }
+
+    @keyframes telemetryScan {
+      from { background-position: 0 0; }
+      to   { background-position: 0 12px; }
+    }
+
+    @keyframes telemetryFlicker {
+      0%, 100% { opacity: 0.85; }
+      92%      { opacity: 0.85; }
+      93%      { opacity: 0.55; }
+      94%      { opacity: 0.9; }
+      96%      { opacity: 0.6; }
+      97%      { opacity: 0.85; }
+    }
   </style>
 </head>
 
 <body>
+
+  <!-- Decorative parallax depth layers (background only, non-interactive) -->
+  <div class="parallax-layer parallax-layer-1" aria-hidden="true"></div>
+  <div class="parallax-layer parallax-layer-2" aria-hidden="true"></div>
 
   <!-- Netlify form detection -->
   <form name="intake" netlify hidden>
@@ -1579,7 +1697,7 @@
         border-radius: 10px;
         overflow: hidden;
         margin-bottom: 20px;
-        transition: border-color 0.25s ease;
+        transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
       }
 
       .service-card:hover {
@@ -1752,7 +1870,7 @@
       .cap-headline { font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-primary); margin-bottom: 8px; }
       .cap-sub { font-family: var(--font-ui); font-size: 14px; color: var(--text-secondary); line-height: 1.6; max-width: 600px; }
       .cap-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 32px; }
-      .cap-card { background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle); border-left: 3px solid transparent; border-radius: 8px; padding: 16px 18px; transition: background 0.2s ease; }
+      .cap-card { background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle); border-left: 3px solid transparent; border-radius: 8px; padding: 16px 18px; transition: background 0.2s ease, transform 0.25s ease, box-shadow 0.25s ease; }
       .cap-card:hover { background: rgba(0,0,0,0.45); }
       .cap-card.cyan { border-left-color: var(--cyan-primary); }
       .cap-card.green { border-left-color: var(--green-primary); }
@@ -2609,6 +2727,22 @@
         closeMobileMenu();
       }
     });
+
+    /* Lightweight parallax — two background depth layers drift slower than scroll */
+    (function () {
+      var layers = [
+        { el: document.querySelector('.parallax-layer-1'), speed: 0.05 },
+        { el: document.querySelector('.parallax-layer-2'), speed: 0.09 }
+      ];
+      function onParallaxScroll() {
+        var y = window.scrollY || window.pageYOffset || 0;
+        layers.forEach(function (l) {
+          if (l.el) l.el.style.transform = 'translate3d(0,' + (y * l.speed).toFixed(1) + 'px,0)';
+        });
+      }
+      window.addEventListener('scroll', onParallaxScroll, { passive: true });
+      onParallaxScroll();
+    }());
 
     function openModal()  { document.getElementById('contact-modal').classList.add('open'); }
     function closeModal() { document.getElementById('contact-modal').classList.remove('open'); }
