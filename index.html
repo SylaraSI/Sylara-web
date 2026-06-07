@@ -2257,6 +2257,8 @@
   <!-- RESEARCH TAB -->
   <div class="tab-content tab-research" id="content-research">
 
+    <canvas id="research-starfield" aria-hidden="true"></canvas>
+
     <style>
 
       #research-verifying {
@@ -2465,6 +2467,48 @@
         .rv-grid     { grid-template-columns: 1fr; }
         .rv-headline { font-size: 16px; letter-spacing: 2px; }
       }
+
+      /* RESEARCH — its own dimension. Suppress the global depth/polish layers while this page is active */
+      body:has(#content-research.active)::before,
+      body:has(#content-research.active)::after,
+      body:has(#content-research.active) .parallax-layer {
+        display: none;
+      }
+
+      /* Star field canvas — fixed full-screen backdrop, behind all content */
+      #research-starfield {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        display: block;
+        pointer-events: none;
+      }
+
+      /* Typewriter cursor for the classified prompt */
+      .rv-typing::after {
+        content: '_';
+        display: inline-block;
+        margin-left: 2px;
+        color: var(--cyan-primary);
+        animation: rv-blink 0.7s step-end infinite;
+      }
+
+      /* 3D tilt — smooth return to flat on mouseleave */
+      #research-revealed .rv-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        will-change: transform;
+      }
+
+      /* Section reveal on scroll — fade + translate up, staggered via inline transition-delay */
+      .rv-reveal {
+        opacity: 0;
+        transform: translateY(28px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+      }
+      .rv-reveal.rv-in-view {
+        opacity: 1;
+        transform: translateY(0);
+      }
     </style>
 
     <!-- Classified state -->
@@ -2473,7 +2517,7 @@
       <div class="coming-soon-title" style="color:var(--purple-primary);opacity:0.5;">Research — Classified</div>
       <div class="coming-soon-bar" style="background:rgba(168,85,247,0.15);"></div>
       <div style="font-size:10px;opacity:0.3;margin-top:8px;letter-spacing:1px;">independently developing systems intelligence platform</div>
-      <div style="font-size:10px;color:rgba(148,163,184,0.3);letter-spacing:1px;margin-top:12px;font-family:var(--font-mono);text-align:center;max-width:360px;line-height:1.7;">Research access credentials are available on request — submit an inquiry through the <span onclick="openModal()" style="color:rgba(34,211,238,0.55);cursor:pointer;">contact form</span> to receive your code.</div>
+      <div id="research-prompt" style="font-size:10px;color:rgba(148,163,184,0.3);letter-spacing:1px;margin-top:12px;font-family:var(--font-mono);text-align:center;max-width:360px;line-height:1.7;">Research access credentials are available on request — submit an inquiry through the <span onclick="openModal()" style="color:rgba(34,211,238,0.55);cursor:pointer;">contact form</span> to receive your code.</div>
       <input id="research-access-input" type="text" maxlength="10" autocomplete="off" spellcheck="false" placeholder="ENTER ACCESS CODE">
       <div id="research-access-status" style="font-size:10px;font-family:var(--font-mono);letter-spacing:1px;color:var(--red-alert);display:none;">// ACCESS DENIED</div>
     </div>
@@ -2492,7 +2536,7 @@
     <div id="research-revealed">
       <div class="rv-wrapper">
 
-        <div class="avatar-panel" style="flex:none;width:100%;max-width:480px;padding:28px 32px 18px;">
+        <div class="avatar-panel rv-reveal" style="flex:none;width:100%;max-width:480px;padding:28px 32px 18px;">
           <div class="avatar-ring" style="width:160px;height:160px;margin-bottom:0;">
             <div class="avatar-ring-outer"></div>
             <div class="avatar-ring-mid"></div>
@@ -2502,30 +2546,30 @@
           </div>
         </div>
 
-        <div class="rv-headline">Pre-Computed Contextual Loading</div>
+        <div class="rv-headline rv-reveal">Pre-Computed Contextual Loading</div>
 
-        <div class="rv-subheadline">A novel approach to AI reasoning. Currently in active R&amp;D</div>
+        <div class="rv-subheadline rv-reveal">A novel approach to AI reasoning. Currently in active R&amp;D</div>
 
         <div class="rv-grid">
-          <div class="rv-card" style="border-left:3px solid var(--green-primary);">
+          <div class="rv-card rv-reveal" style="border-left:3px solid var(--green-primary);">
             <div class="rv-card-title" style="color:var(--green-primary);">Efficiency</div>
             <div class="rv-card-body">By moving contextual evaluation before inference, the system is designed to reduce token consumption on equivalent reasoning tasks, without sacrificing output quality.</div>
           </div>
-          <div class="rv-card" style="border-left:3px solid var(--cyan-primary);">
+          <div class="rv-card rv-reveal" style="border-left:3px solid var(--cyan-primary);">
             <div class="rv-card-title" style="color:var(--cyan-primary);">Traceability</div>
             <div class="rv-card-body">Every conclusion carries a full chain of custody. Every reasoning step is auditable. Trustworthiness is structural, not a feature added after the fact.</div>
           </div>
-          <div class="rv-card" style="border-left:3px solid var(--purple-primary);">
+          <div class="rv-card rv-reveal" style="border-left:3px solid var(--purple-primary);">
             <div class="rv-card-title" style="color:var(--purple-primary);">Determinism</div>
             <div class="rv-card-body">The pre-reasoning pipeline is deterministic. The same inputs produce the same evaluation path. Behavior is verifiable without accessing model weights.</div>
           </div>
-          <div class="rv-card" style="border-left:3px solid var(--gold);">
+          <div class="rv-card rv-reveal" style="border-left:3px solid var(--gold);">
             <div class="rv-card-title" style="color:var(--gold);">Scalability</div>
             <div class="rv-card-body">Currently running on consumer hardware. Designed to scale to purpose-built AI inference workstations. The architecture does not change, only the ceiling does.</div>
           </div>
         </div>
 
-        <div class="rv-footer">Platform in active development. Research findings may be published in the public domain.</div>
+        <div class="rv-footer rv-reveal">Platform in active development. Research findings may be published in the public domain.</div>
 
       </div>
     </div>
@@ -2636,6 +2680,172 @@
           revealed.classList.remove('rv-show', 'rv-fade');
           resetBtn.style.display  = 'none';
         };
+      }());
+    </script>
+
+    <!-- Research's own dimension — star field, typewriter, 3D tilt, scroll reveal.
+         Fully isolated from the gate/reveal logic above; reads tab state only, never writes it. -->
+    <script>
+      (function () {
+
+        /* 1. STAR FIELD — fixed canvas backdrop, paused while tab is inactive */
+        var canvas = document.getElementById('research-starfield');
+        if (canvas && canvas.getContext) {
+          var ctx = canvas.getContext('2d');
+          var stars = [];
+          var mouseX = 0, mouseY = 0;
+          var running = false;
+          var rafId = null;
+          var sfContent = document.getElementById('content-research');
+
+          function isMobile() { return window.matchMedia('(max-width: 768px)').matches; }
+
+          function buildStars() {
+            var count = isMobile() ? 70 : 160;
+            stars = [];
+            for (var i = 0; i < count; i++) {
+              var r = 1 + Math.random() * 2; // 1-3px
+              stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: r,
+                depth: r / 3,
+                baseAlpha: 0.35 + Math.random() * 0.5,
+                twinkleSpeed: 0.0008 + Math.random() * 0.0018,
+                twinklePhase: Math.random() * Math.PI * 2,
+                driftSpeed: 0.004 + Math.random() * 0.012
+              });
+            }
+          }
+
+          function resize() {
+            canvas.width  = window.innerWidth;
+            canvas.height = window.innerHeight;
+            buildStars();
+          }
+
+          function draw(timestamp) {
+            if (!running) return;
+            var w = canvas.width, h = canvas.height;
+            ctx.clearRect(0, 0, w, h);
+            for (var i = 0; i < stars.length; i++) {
+              var s = stars[i];
+              var twinkle = 0.6 + 0.4 * Math.sin(timestamp * s.twinkleSpeed + s.twinklePhase);
+              var alpha = s.baseAlpha * twinkle;
+              var driftY = (s.y + timestamp * s.driftSpeed) % h;
+              var px = s.x + mouseX * s.depth;
+              var py = driftY + mouseY * s.depth;
+              ctx.beginPath();
+              ctx.fillStyle = 'rgba(226, 232, 240, ' + alpha.toFixed(3) + ')';
+              ctx.arc(px, py, s.r, 0, Math.PI * 2);
+              ctx.fill();
+            }
+            rafId = requestAnimationFrame(draw);
+          }
+
+          function startField() {
+            if (running) return;
+            running = true;
+            resize();
+            rafId = requestAnimationFrame(draw);
+          }
+
+          function stopField() {
+            running = false;
+            if (rafId) cancelAnimationFrame(rafId);
+            rafId = null;
+          }
+
+          window.addEventListener('resize', function () {
+            if (running) resize();
+          });
+
+          document.addEventListener('mousemove', function (e) {
+            mouseX = (e.clientX / window.innerWidth  - 0.5) * 14;
+            mouseY = (e.clientY / window.innerHeight - 0.5) * 14;
+          });
+
+          if (sfContent) {
+            var fieldObserver = new MutationObserver(function () {
+              if (sfContent.classList.contains('active')) startField(); else stopField();
+            });
+            fieldObserver.observe(sfContent, { attributes: true, attributeFilter: ['class'] });
+            if (sfContent.classList.contains('active')) startField();
+          }
+        }
+        /* If canvas is unsupported, the element renders as an empty transparent box and
+           the page simply keeps its existing solid background — graceful degradation. */
+
+        /* 2. TYPEWRITER — plays once on the classified prompt text above the access input */
+        var promptEl = document.getElementById('research-prompt');
+        var twContent = document.getElementById('content-research');
+        if (promptEl && twContent) {
+          var promptOriginalHTML = promptEl.innerHTML;
+          var promptFullText = promptEl.textContent;
+          var typingStarted = false;
+
+          function typeOutPrompt() {
+            if (typingStarted) return;
+            typingStarted = true;
+            var rect = promptEl.getBoundingClientRect();
+            promptEl.style.minHeight = rect.height + 'px';
+            promptEl.textContent = '';
+            promptEl.classList.add('rv-typing');
+            var i = 0;
+            (function tick() {
+              if (i <= promptFullText.length) {
+                promptEl.textContent = promptFullText.slice(0, i);
+                i++;
+                setTimeout(tick, 16);
+              } else {
+                promptEl.classList.remove('rv-typing');
+                promptEl.innerHTML = promptOriginalHTML; // restore the live contact-form link
+              }
+            }());
+          }
+
+          var typeObserver = new MutationObserver(function () {
+            if (twContent.classList.contains('active')) typeOutPrompt();
+          });
+          typeObserver.observe(twContent, { attributes: true, attributeFilter: ['class'] });
+          if (twContent.classList.contains('active')) typeOutPrompt();
+        }
+
+        /* 3. 3D TILT — research cards rotate toward the cursor, settle flat on mouseleave */
+        var tiltMax = 9; // degrees
+        document.querySelectorAll('#research-revealed .rv-card').forEach(function (card) {
+          card.addEventListener('mousemove', function (e) {
+            var rect = card.getBoundingClientRect();
+            var px = (e.clientX - rect.left) / rect.width;
+            var py = (e.clientY - rect.top)  / rect.height;
+            var rotateY = (px - 0.5) * tiltMax * 2;
+            var rotateX = (0.5 - py) * tiltMax * 2;
+            card.style.transform = 'perspective(700px) rotateX(' + rotateX.toFixed(2) + 'deg) rotateY(' + rotateY.toFixed(2) + 'deg)';
+          });
+          card.addEventListener('mouseleave', function () {
+            card.style.transform = '';
+          });
+        });
+
+        /* 4. SECTION REVEAL — cascading fade/translate-up via IntersectionObserver */
+        var revealTargets = document.querySelectorAll('#research-revealed .rv-reveal');
+        revealTargets.forEach(function (el, i) {
+          el.style.transitionDelay = (i * 90) + 'ms';
+        });
+        if ('IntersectionObserver' in window) {
+          var revealObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('rv-in-view');
+                revealObserver.unobserve(entry.target);
+              }
+            });
+          }, { threshold: 0.15 });
+          revealTargets.forEach(function (el) { revealObserver.observe(el); });
+        } else {
+          revealTargets.forEach(function (el) { el.classList.add('rv-in-view'); });
+        }
+
       }());
     </script>
   </div>
