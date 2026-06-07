@@ -1189,6 +1189,65 @@
         grid-template-columns: 1fr !important;
       }
     }
+
+    /* MOBILE NAV — HAMBURGER MENU */
+    .nav-hamburger { display: none; }
+
+    @keyframes navMenuDrop {
+      from { opacity: 0; transform: translateY(-10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .nav-hamburger {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        background: transparent;
+        border: 1px solid var(--border-subtle);
+        border-radius: 4px;
+        color: var(--text-secondary);
+        font-size: 16px;
+        line-height: 1;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .nav-hamburger:hover,
+      .nav-hamburger.active {
+        color: var(--green-primary);
+        border-color: var(--border-green);
+        background: var(--green-glow);
+      }
+
+      .nav-tabs {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        align-items: stretch;
+        background: rgba(7, 7, 14, 0.98);
+        border-bottom: 1px solid var(--border-subtle);
+        box-shadow: 0 16px 28px rgba(0, 0, 0, 0.45);
+        padding: 8px 16px 14px;
+        gap: 4px;
+        z-index: 99;
+      }
+
+      .nav-tabs.nav-tabs-open {
+        display: flex;
+        animation: navMenuDrop 0.2s ease;
+      }
+
+      .nav-tabs .nav-tab {
+        text-align: center;
+        padding: 12px 10px;
+      }
+    }
   </style>
 </head>
 
@@ -1207,7 +1266,8 @@
 
   <nav class="nav-bar">
     <a class="nav-brand" href="#" onclick="switchTab('home'); return false;">SYLARA TECHNOLOGIES</a>
-    <ul class="nav-tabs">
+    <button class="nav-hamburger" id="nav-hamburger" onclick="toggleMobileMenu(event)" aria-label="Toggle navigation menu">☰</button>
+    <ul class="nav-tabs" id="nav-tabs">
       <li class="nav-tab active-green" id="tab-home"     onclick="switchTab('home')">Home</li>
       <li class="nav-tab"              id="tab-services" onclick="switchTab('services')">Services</li>
       <li class="nav-tab"              id="tab-about"    onclick="switchTab('about')">About</li>
@@ -2523,6 +2583,32 @@
         navTab.classList.add(tabName === 'research' ? 'active-purple' : 'active-green');
       }
     }
+
+    function toggleMobileMenu(e) {
+      e.stopPropagation();
+      var menu = document.getElementById('nav-tabs');
+      var btn  = document.getElementById('nav-hamburger');
+      var isOpen = menu.classList.toggle('nav-tabs-open');
+      btn.classList.toggle('active', isOpen);
+    }
+
+    function closeMobileMenu() {
+      document.getElementById('nav-tabs').classList.remove('nav-tabs-open');
+      document.getElementById('nav-hamburger').classList.remove('active');
+    }
+
+    document.getElementById('nav-tabs').addEventListener('click', function (e) {
+      if (e.target.closest('.nav-tab')) closeMobileMenu();
+    });
+
+    document.addEventListener('click', function (e) {
+      var menu = document.getElementById('nav-tabs');
+      if (menu.classList.contains('nav-tabs-open') &&
+          !menu.contains(e.target) &&
+          e.target.id !== 'nav-hamburger') {
+        closeMobileMenu();
+      }
+    });
 
     function openModal()  { document.getElementById('contact-modal').classList.add('open'); }
     function closeModal() { document.getElementById('contact-modal').classList.remove('open'); }
