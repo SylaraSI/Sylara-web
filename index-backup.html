@@ -1,3023 +1,1699 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sylara Technologies — Systems Intelligence</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet">
-
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --bg-primary:        #07070e;
-      --bg-secondary:      #0b0d1a;
-      --bg-card:           #0d1120;
-      --bg-card-hover:     #111829;
-      --border-subtle:     rgba(255,255,255,0.06);
-      --border-green:      rgba(0, 230, 118, 0.25);
-      --border-purple:     rgba(168, 85, 247, 0.25);
-      --border-cyan:       rgba(34, 211, 238, 0.3);
-
-      --green-primary:     #00e676;
-      --green-dim:         #00b85a;
-      --green-glow:        rgba(0, 230, 118, 0.15);
-      --green-glow-strong: rgba(0, 230, 118, 0.35);
-
-      --cyan-primary:      #22d3ee;
-      --cyan-dim:          #0891b2;
-      --cyan-glow:         rgba(34, 211, 238, 0.15);
-      --cyan-glow-strong:  rgba(34, 211, 238, 0.3);
-
-      --purple-primary:    #a855f7;
-      --purple-dim:        #7c3aed;
-      --purple-glow:       rgba(168, 85, 247, 0.15);
-      --purple-glow-strong:rgba(168, 85, 247, 0.35);
-
-      --gold:              #fbbf24;
-      --red-alert:         #ef4444;
-      --orange-warn:       #f97316;
-      --blue-info:         #38bdf8;
-
-      --text-primary:      #e2e8f0;
-      --text-secondary:    #94a3b8;
-      --text-accent:       #94a3b8;
-      --text-mono:         #00e676;
-
-      --font-brand:        'Syncopate', sans-serif;
-      --font-ui:           'Rajdhani', sans-serif;
-      --font-mono:         'Share Tech Mono', monospace;
-      --font-display:      'Orbitron', sans-serif;
-    }
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
 
+    :root {
+      --gold:    #C9963A;
+      --gold2:   #E8B96A;
+      --accent:  #4B9FFF;
+      --white:   #F0EDE8;
+      --muted:   rgba(240,237,232,0.55);
+      --dim:     rgba(240,237,232,0.30);
+      --overlay-dark: rgba(8,8,10,0.55);
+      --overlay-mid:  rgba(8,8,10,0.42);
+      --overlay-light: rgba(8,8,10,0.25);
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-snap-type: y mandatory;
+    }
     body {
-      background-color: var(--bg-primary);
-      color: var(--text-primary);
-      font-family: var(--font-ui);
-      font-size: 15px;
-      line-height: 1.5;
-      min-height: 100vh;
+      background: #08080A;
+      color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
       overflow-x: hidden;
-      cursor: default;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      text-rendering: optimizeLegibility;
     }
 
-    body::before {
-      content: '';
+    /* ── STICKY NAV DOTS ── */
+    .nav-dots {
       position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.4;
-    }
-
-    /* NAV */
-    .nav-bar {
-      position: sticky;
-      top: 0;
+      right: 24px;
+      top: 50%;
+      transform: translateY(-50%);
       z-index: 100;
-      background: rgba(7, 7, 14, 0.97);
-      border-bottom: 1px solid var(--border-subtle);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 24px;
-      height: 52px;
-    }
-
-    .nav-brand {
-      font-family: var(--font-brand);
-      font-size: 17px;
-      font-weight: 700;
-      letter-spacing: 4px;
-      color: #9b5de5;
-      text-decoration: none;
-      text-transform: uppercase;
-    }
-
-    .nav-tabs {
-      display: flex;
-      align-items: center;
-      gap: 2px;
-      list-style: none;
-    }
-
-    .nav-tab {
-      font-family: var(--font-ui);
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      padding: 6px 16px;
-      border-radius: 4px;
-      cursor: pointer;
-      color: var(--text-secondary);
-      border: 1px solid transparent;
-      transition: all 0.2s ease;
-      user-select: none;
-    }
-
-    .nav-tab:hover {
-      color: var(--text-primary);
-      background: rgba(255,255,255,0.04);
-    }
-
-    .nav-tab.active-green {
-      color: var(--green-primary);
-      border-color: var(--border-green);
-      background: var(--green-glow);
-    }
-
-    .nav-tab.active-purple {
-      color: var(--purple-primary);
-      border-color: var(--border-purple);
-      background: var(--purple-glow);
-    }
-
-    .nav-status {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-family: var(--font-mono);
-      font-size: 13px;
-      color: var(--text-secondary);
-    }
-
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--green-primary);
-      box-shadow: 0 0 8px var(--green-primary);
-      animation: pulse-dot 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0.4; }
-    }
-
-    /* TELEMETRY STRIP */
-    .telemetry-strip {
-      background: var(--bg-secondary);
-      border-bottom: 1px solid var(--border-subtle);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 24px;
-      height: 36px;
-      font-family: var(--font-mono);
-      font-size: 13px;
-      color: var(--text-secondary);
-    }
-
-    .telem-group { display: flex; align-items: center; gap: 24px; }
-    .telem-item  { display: flex; align-items: center; gap: 8px; }
-
-    .telem-label {
-      font-size: 11px;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-      opacity: 0.6;
-    }
-
-    .telem-value        { color: var(--text-accent); font-size: 15px; }
-    .telem-value.green  { color: var(--green-primary); }
-    .telem-value.gold   { color: var(--gold); }
-
-    .telem-divider {
-      width: 1px;
-      height: 18px;
-      background: var(--border-subtle);
-    }
-
-    /* TAB CONTENT */
-    .tab-content { display: none; animation: fadeInTab 0.35s ease; }
-    .tab-content.active { display: block; }
-
-    @keyframes fadeInTab {
-      from { opacity: 0; transform: translateY(8px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* DASHBOARD GRID */
-    .dashboard-body {
-      display: grid;
-      grid-template-columns: 320px 1fr 320px;
-      gap: 16px;
-      padding: 12px 24px;
-      min-height: calc(100vh - 88px - 160px);
-      position: relative;
-      z-index: 1;
-    }
-
-    /* PANEL */
-    .panel {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    .panel-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 14px;
-      border-bottom: 1px solid var(--border-subtle);
-    }
-
-    .panel-title {
-      font-family: var(--font-ui);
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .panel-title-icon { font-size: 13px; opacity: 0.7; }
-
-    .panel-badge {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      padding: 2px 8px;
-      border-radius: 3px;
-    }
-
-    .panel-badge.green {
-      color: var(--green-primary);
-      background: var(--green-glow);
-      border: 1px solid var(--border-green);
-    }
-
-    /* CONDITION CARDS */
-    .condition-list {
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .condition-card {
-      background: rgba(0,0,0,0.3);
-      border: 1px solid var(--border-subtle);
-      border-left: 3px solid var(--red-alert);
-      border-radius: 6px;
-      padding: 10px 12px;
-      cursor: pointer;
-      transition: all 0.25s ease;
-      animation: slideInLeft 0.5s ease both;
-    }
-
-    .condition-card:nth-child(1) { animation-delay: 0.1s; }
-    .condition-card:nth-child(2) { animation-delay: 0.2s; }
-    .condition-card:nth-child(3) { animation-delay: 0.3s; }
-
-    @keyframes slideInLeft {
-      from { opacity: 0; transform: translateX(-16px); }
-      to   { opacity: 1; transform: translateX(0); }
-    }
-
-    .condition-card:hover {
-      background: rgba(239, 68, 68, 0.06);
-      border-color: rgba(239, 68, 68, 0.3);
-      border-left-color: var(--red-alert);
-      transform: translateX(3px);
-    }
-
-    .condition-tag {
-      font-family: var(--font-ui);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--red-alert);
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .condition-tag::before {
-      content: '';
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--red-alert);
-      box-shadow: 0 0 6px var(--red-alert);
-      animation: pulse-dot 1.5s ease-in-out infinite;
-    }
-
-    .condition-title {
-      font-family: var(--font-ui);
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-primary);
-      line-height: 1.3;
-      margin-bottom: 5px;
-    }
-
-    .condition-desc {
-      font-size: 13px;
-      color: var(--text-accent);
-      line-height: 1.4;
-    }
-
-    .condition-metric {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 8px;
-      padding-top: 8px;
-      border-top: 1px solid var(--border-subtle);
-    }
-
-    .metric-label {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .metric-bar {
-      flex: 1;
-      height: 3px;
-      background: rgba(255,255,255,0.08);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
-    .metric-fill {
-      height: 100%;
-      border-radius: 2px;
-      background: var(--red-alert);
-    }
-
-    .metric-val {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: var(--red-alert);
-    }
-
-    /* CENTER COLUMN */
-    .center-col {
       display: flex;
       flex-direction: column;
       gap: 14px;
     }
-
-    .avatar-panel {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 8px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px 24px 18px;
+    .nav-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(240,237,232,0.4);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.25s;
       position: relative;
-      overflow: hidden;
-      flex: 1;
     }
-
-    .avatar-panel::before {
-      content: '';
+    .nav-dot::after {
+      content: attr(data-label);
       position: absolute;
+      right: 18px;
       top: 50%;
-      left: 50%;
-      transform: translate(-50%, -60%);
-      width: 320px;
-      height: 320px;
-      background: radial-gradient(circle, var(--green-glow) 0%, transparent 70%);
+      transform: translateY(-50%);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.2s;
       pointer-events: none;
     }
-
-    .avatar-ring {
-      position: relative;
-      width: 150px;
-      height: 150px;
-      margin-bottom: 16px;
+    .nav-dot:hover::after { opacity: 1; }
+    .nav-dot.active {
+      background: var(--gold);
+      border-color: var(--gold);
+      transform: scale(1.3);
+    }
+    .nav-dot:hover {
+      border-color: var(--gold2);
+      background: rgba(201,150,58,0.3);
     }
 
-    .avatar-ring-outer {
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      border: 1px solid rgba(0, 230, 118, 0.3);
-      animation: rotate-slow 20s linear infinite;
-    }
-
-    .avatar-ring-outer::before {
-      content: '';
-      position: absolute;
-      top: -2px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--green-primary);
-      box-shadow: 0 0 10px var(--green-primary);
-    }
-
-    .avatar-ring-mid {
-      position: absolute;
-      inset: 12px;
-      border-radius: 50%;
-      border: 1px solid rgba(0, 230, 118, 0.5);
-      box-shadow: 0 0 20px var(--green-glow), inset 0 0 20px var(--green-glow);
-    }
-
-    .avatar-ring-inner {
-      position: absolute;
-      inset: 24px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(0,230,118,0.08) 0%, rgba(0,0,0,0.6) 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .avatar-image {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 50%;
-      opacity: 0.9;
-    }
-
-    @keyframes rotate-slow {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
-    }
-
-    /* TAGLINE BLOCK — the key section */
-    .tagline-company {
-      font-family: var(--font-brand);
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-primary);
-      text-align: center;
-      letter-spacing: 6px;
-      text-transform: uppercase;
-      margin-bottom: 14px;
-      opacity: 0.85;
-    }
-
-    .tagline-collab {
-      font-family: var(--font-display);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-      text-align: center;
-      margin-bottom: 6px;
-      position: relative;
-    }
-
-    /* Subtle decorative lines flanking the collab line */
-    .tagline-collab-wrap {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 4px;
-      width: 100%;
-      justify-content: center;
-    }
-
-    .tagline-collab-line {
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(to right, transparent, var(--cyan-dim));
-      max-width: 40px;
-      opacity: 0.5;
-    }
-
-    .tagline-collab-line.right {
-      background: linear-gradient(to left, transparent, var(--cyan-dim));
-    }
-
-    /* Systems Intelligence — replaced font */
-    .tagline-primary {
-      font-family: var(--font-display);
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: var(--text-primary);
-      text-align: center;
-      margin-bottom: 8px;
-      opacity: 1;
-    }
-
-    /* Divider between the two taglines */
-    .tagline-divider {
-      width: 60px;
-      height: 1px;
-      background: linear-gradient(to right, transparent, var(--green-primary), transparent);
-      margin: 0 auto 8px;
-      opacity: 0.4;
-    }
-
-    .tagline-sub {
-      font-family: var(--font-ui);
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--green-primary);
-      text-align: center;
-      letter-spacing: 3px;
-      margin-bottom: 14px;
-      opacity: 0.55;
-      text-transform: uppercase;
-    }
-
-    /* Contact trigger */
-    .hook-question {
-      font-family: var(--font-ui);
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--cyan-primary);
-      text-align: center;
-      letter-spacing: 1px;
-      margin-bottom: 12px;
-      margin-top: 4px;
-      line-height: 1.4;
-      text-shadow: 0 0 20px var(--cyan-glow-strong);
-    }
-
-    .capabilities-list {
-      list-style: none;
-      width: 100%;
-      margin-bottom: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .capabilities-list li {
-      font-family: var(--font-ui);
-      font-size: 12px;
-      color: var(--text-secondary);
-      text-align: center;
-      letter-spacing: 0.5px;
-      opacity: 0.75;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-    }
-
-    .capabilities-list li::before {
-      content: '▸';
-      color: var(--green-primary);
-      font-size: 10px;
-      opacity: 0.7;
-    }
-
-    /* Contact trigger */
-    .contact-trigger {
-      width: 100%;
-      background: transparent;
-      border: 1px solid var(--border-subtle);
-      border-radius: 6px;
-      padding: 10px 16px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      color: var(--text-secondary);
-      font-family: var(--font-ui);
-      font-size: 14px;
-    }
-
-    .contact-trigger:hover {
-      border-color: var(--border-green);
-      background: var(--green-glow);
-      color: var(--green-primary);
-    }
-
-    .contact-trigger-icon    { font-size: 16px; opacity: 0.6; }
-    .contact-trigger-text    { flex: 1; text-align: left; }
-    .contact-trigger-shortcut { font-family: var(--font-mono); font-size: 13px; opacity: 0.4; }
-
-    /* Truth panel */
-    .truth-panel {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    .truth-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 14px;
-      border-bottom: 1px solid var(--border-subtle);
-    }
-
-    .truth-icon  { font-size: 14px; }
-
-    .truth-label {
-      font-family: var(--font-ui);
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-    }
-
-    .truth-body { padding: 16px; }
-
-    .truth-statement {
-      font-family: var(--font-ui);
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text-primary);
-      margin-bottom: 14px;
-      line-height: 1.5;
-    }
-
-    .truth-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .truth-col-label {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 6px;
-      padding-bottom: 4px;
-      border-bottom: 1px solid var(--border-subtle);
-    }
-
-    .truth-col-label.green { color: var(--green-primary); }
-    .truth-col-label.gold  { color: var(--gold); }
-
-    .truth-point {
-      display: flex;
-      align-items: flex-start;
-      gap: 6px;
-      font-size: 13px;
-      color: var(--text-accent);
-      margin-bottom: 4px;
-      line-height: 1.3;
-    }
-
-    .truth-point::before {
-      content: '▸';
-      font-size: 12px;
-      color: var(--green-primary);
-      margin-top: 1px;
-      flex-shrink: 0;
-    }
-
-    .truth-point.absent::before { color: var(--text-secondary); opacity: 0.4; }
-
-    /* RIGHT COLUMN */
-    .guidance-list {
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .guidance-card {
-      background: rgba(0,0,0,0.3);
-      border: 1px solid var(--border-subtle);
-      border-left: 3px solid var(--green-primary);
-      border-radius: 6px;
-      padding: 12px 14px;
-      cursor: pointer;
-      transition: all 0.25s ease;
-      animation: slideInRight 0.5s ease both;
-    }
-
-    .guidance-card:nth-child(1) { animation-delay: 0.15s; }
-    .guidance-card:nth-child(2) { animation-delay: 0.25s; }
-    .guidance-card:nth-child(3) { animation-delay: 0.35s; }
-
-    @keyframes slideInRight {
-      from { opacity: 0; transform: translateX(16px); }
-      to   { opacity: 1; transform: translateX(0); }
-    }
-
-    .guidance-card:hover {
-      background: var(--green-glow);
-      border-color: var(--border-green);
-      transform: translateX(-3px);
-    }
-
-    .guidance-tag {
-      font-family: var(--font-ui);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--green-primary);
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .guidance-tag::before {
-      content: '';
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--green-primary);
-      box-shadow: 0 0 6px var(--green-primary);
-    }
-
-    .guidance-title {
-      font-family: var(--font-ui);
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-primary);
-      line-height: 1.3;
-      margin-bottom: 5px;
-    }
-
-    .guidance-desc {
-      font-size: 13px;
-      color: var(--text-accent);
-      line-height: 1.4;
-    }
-
-    .guidance-action {
-      margin-top: 8px;
-      padding-top: 8px;
-      border-top: 1px solid var(--border-subtle);
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--green-dim);
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    /* OBS LIST */
-    .obs-list {
-      padding: 10px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .obs-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      font-size: 12px;
-      color: var(--text-accent);
-      line-height: 1.4;
-    }
-
-    .obs-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      margin-top: 3px;
-      flex-shrink: 0;
-    }
-
-    .obs-dot.green  { background: var(--green-primary); box-shadow: 0 0 4px var(--green-primary); }
-    .obs-dot.gold   { background: var(--gold); }
-    .obs-dot.purple { background: var(--purple-primary); }
-
-    .obs-time {
-      margin-left: auto;
-      font-family: var(--font-mono);
-      font-size: 9px;
-      color: var(--text-secondary);
-      flex-shrink: 0;
-    }
-
-    /* COMING SOON */
-    .coming-soon {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 60vh;
-      gap: 16px;
-      color: var(--text-secondary);
-      font-family: var(--font-mono);
-      letter-spacing: 2px;
-    }
-
-    .coming-soon-icon  { font-size: 32px; opacity: 0.4; }
-    .coming-soon-title { font-size: 11px; text-transform: uppercase; opacity: 0.5; }
-
-    .coming-soon-bar {
-      width: 120px;
-      height: 2px;
-      background: var(--border-subtle);
-      border-radius: 1px;
-      overflow: hidden;
-    }
-
-    .coming-soon-bar::after {
-      content: '';
-      display: block;
-      width: 40%;
-      height: 100%;
-      background: var(--green-primary);
-      animation: scan 2s ease-in-out infinite;
-    }
-
-    @keyframes scan {
-      0%   { transform: translateX(-100%); }
-      100% { transform: translateX(350%); }
-    }
-
-    .tab-research .coming-soon-bar::after { background: var(--purple-primary); }
-
-    /* MODAL */
-    .modal-overlay {
-      display: none;
+    /* ── BACK TO TOP ── */
+    .back-to-top {
       position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.85);
-      z-index: 200;
-      align-items: center;
-      justify-content: center;
-      animation: fadeInModal 0.2s ease;
-    }
-
-    .modal-overlay.open { display: flex; }
-
-    @keyframes fadeInModal {
-      from { opacity: 0; }
-      to   { opacity: 1; }
-    }
-
-    .modal-box {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-green);
-      border-radius: 10px;
-      width: 100%;
-      max-width: 480px;
-      overflow: hidden;
-      animation: slideUpModal 0.25s ease;
-      box-shadow: 0 0 60px var(--green-glow);
-    }
-
-    @keyframes slideUpModal {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .modal-header {
+      bottom: 32px;
+      right: 32px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(201,150,58,0.15);
+      border: 1px solid rgba(201,150,58,0.4);
+      color: var(--gold2);
+      font-size: 18px;
+      cursor: pointer;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 16px 20px;
-      border-bottom: 1px solid var(--border-subtle);
+      justify-content: center;
+      z-index: 100;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s;
+      pointer-events: none;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: all;
+    }
+    .back-to-top:hover {
+      background: rgba(201,150,58,0.3);
+      border-color: var(--gold);
     }
 
-    .modal-title {
-      font-family: var(--font-brand);
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--green-primary);
+    /* ── STICKY NOTE NAV ── */
+    .sticky-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 90;
+      display: flex;
+      align-items: flex-start;
+      padding: 0 40px;
+      pointer-events: none;
     }
-
-    .modal-close {
-      background: none;
-      border: none;
-      color: var(--text-secondary);
-      cursor: pointer;
-      font-size: 18px;
-      line-height: 1;
-      padding: 2px 6px;
-      border-radius: 4px;
-      transition: all 0.15s;
+    .sticky-note-nav {
+      display: flex;
+      gap: 0;
+      margin-top: -4px;
+      pointer-events: all;
     }
-
-    .modal-close:hover {
-      color: var(--text-primary);
-      background: rgba(255,255,255,0.08);
-    }
-
-    .modal-body    { padding: 20px; }
-
-    .modal-subtitle {
-      font-size: 12px;
-      color: var(--text-secondary);
-      margin-bottom: 20px;
-      font-family: var(--font-mono);
-      letter-spacing: 1px;
-    }
-
-    .form-field    { margin-bottom: 14px; }
-
-    .form-label {
-      display: block;
-      font-family: var(--font-ui);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-      margin-bottom: 6px;
-    }
-
-    .form-input,
-    .form-select,
-    .form-textarea {
-      width: 100%;
-      background: rgba(0,0,0,0.4);
-      border: 1px solid var(--border-subtle);
-      border-radius: 6px;
-      padding: 10px 12px;
-      color: var(--text-primary);
-      font-family: var(--font-ui);
-      font-size: 14px;
-      transition: border-color 0.2s;
-      outline: none;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .form-input:focus,
-    .form-select:focus,
-    .form-textarea:focus {
-      border-color: var(--border-green);
-      box-shadow: 0 0 0 2px var(--green-glow);
-    }
-
-    .form-select   { cursor: pointer; appearance: none; }
-    .form-textarea { resize: vertical; min-height: 90px; }
-
-    .form-submit {
-      width: 100%;
-      background: var(--green-primary);
-      color: var(--bg-primary);
-      border: none;
-      border-radius: 6px;
-      padding: 12px;
-      font-family: var(--font-brand);
+    .sticky-note {
+      background: #F5E642;
+      color: #1a1a1a;
+      font-family: 'DM Mono', monospace;
       font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      text-transform: uppercase;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      padding: 28px 20px 10px;
       cursor: pointer;
       transition: all 0.2s;
-      margin-top: 6px;
-    }
-
-    .form-submit:hover {
-      background: #00ff88;
-      box-shadow: 0 0 20px var(--green-glow-strong);
-    }
-
-    .modal-footer {
-      padding: 12px 20px;
-      border-top: 1px solid var(--border-subtle);
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: var(--text-secondary);
+      position: relative;
+      box-shadow: 2px 3px 8px rgba(0,0,0,0.35);
+      min-width: 72px;
       text-align: center;
+      transform: rotate(-1deg);
+      user-select: none;
     }
-
-    .modal-footer a { color: var(--green-primary); text-decoration: none; }
-
-    /* SCROLLBAR */
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: var(--bg-primary); }
-    ::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 2px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
-
-    /* ============================================================
-       MOBILE RESPONSIVE
-       ============================================================ */
-    @media (max-width: 768px) {
-
-      /* Nav */
-      .nav-bar {
-        padding: 0 16px;
-        height: 48px;
-      }
-
-      .nav-brand {
-        font-size: 11px;
-        letter-spacing: 2px;
-      }
-
-      .nav-tabs {
-        gap: 1px;
-      }
-
-      .nav-tab {
-        font-size: 11px;
-        letter-spacing: 1px;
-        padding: 5px 10px;
-      }
-
-      .nav-status { display: none; }
-
-      /* Telemetry strip */
-      .telemetry-strip {
-        padding: 0 16px;
-        font-size: 11px;
-      }
-
-      .telem-item:last-child { display: none; }
-      .telem-divider { display: none; }
-
-      /* Dashboard — single column */
-      .dashboard-body {
-        grid-template-columns: 1fr;
-        padding: 12px 16px;
-        gap: 12px;
-        min-height: unset;
-      }
-
-      /* Mobile section reorder */
-      .center-col { order: 1; }
-      .dashboard-body > div:first-child { order: 2; }
-      .dashboard-body > div:last-child { order: 3; }
-
-      /* Avatar panel */
-      .avatar-panel {
-        padding: 24px 16px 20px;
-      }
-
-      .avatar-ring {
-        width: 120px;
-        height: 120px;
-        margin-bottom: 14px;
-      }
-
-      .tagline-collab {
-        font-size: 11px;
-        letter-spacing: 1px;
-      }
-
-      .tagline-primary {
-        font-size: 12px;
-        letter-spacing: 2px;
-      }
-
-      .tagline-sub {
-        font-size: 11px;
-        letter-spacing: 2px;
-      }
-
-      .tagline-company {
-        font-size: 11px;
-        letter-spacing: 4px;
-      }
-
-      /* Truth grid — single column on mobile */
-      .truth-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
-      }
-
-      /* Stats row — 2 columns on mobile */
-      #content-home > div:last-child {
-        grid-template-columns: 1fr 1fr !important;
-        padding: 0 16px 16px !important;
-        gap: 10px !important;
-      }
-
-      /* Services page */
-      .services-wrapper {
-        padding: 20px 16px 36px;
-      }
-
-      .services-headline {
-        font-size: 16px;
-        letter-spacing: 2px;
-      }
-
-      .services-subline {
-        font-size: 14px;
-      }
-
-      .service-card-inner {
-        grid-template-columns: 1fr !important;
-      }
-
-      .service-accent {
-        border-right: none;
-        border-bottom: 1px solid var(--border-subtle);
-        padding: 20px 20px 16px;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-      }
-
-      .service-accent::before {
-        width: 100%;
-        height: 3px;
-        top: 0;
-        left: 0;
-      }
-
-      .service-name {
-        font-size: 12px;
-        margin-bottom: 0;
-      }
-
-      .service-content {
-        padding: 20px;
-        gap: 16px;
-      }
-
-      .service-includes {
-        grid-template-columns: 1fr;
-        gap: 6px;
-      }
-
-      .service-footer {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-      }
-
-      .service-ideal {
-        text-align: left;
-      }
-
-      .services-cta-block {
-        padding: 24px 20px;
-      }
-
-      .services-cta-headline {
-        font-size: 16px;
-      }
-
-      /* Modal */
-      .modal-box {
-        margin: 16px;
-        max-height: 90vh;
-        overflow-y: auto;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .nav-tab {
-        font-size: 10px;
-        padding: 4px 8px;
-        letter-spacing: 0.5px;
-      }
-
-      /* Stats — single column on very small screens */
-      #content-home > div:last-child {
-        grid-template-columns: 1fr !important;
-      }
-    }
-
-    /* MOBILE NAV — HAMBURGER MENU */
-    .nav-hamburger { display: none; }
-
-    @keyframes navMenuDrop {
-      from { opacity: 0; transform: translateY(-10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    @media (max-width: 768px) {
-      .nav-hamburger {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 34px;
-        height: 34px;
-        background: transparent;
-        border: 1px solid var(--border-subtle);
-        border-radius: 4px;
-        color: var(--text-secondary);
-        font-size: 16px;
-        line-height: 1;
-        cursor: pointer;
-        transition: all 0.2s ease;
-      }
-
-      .nav-hamburger:hover,
-      .nav-hamburger.active {
-        color: var(--green-primary);
-        border-color: var(--border-green);
-        background: var(--green-glow);
-      }
-
-      .nav-tabs {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        flex-direction: column;
-        align-items: stretch;
-        background: rgba(7, 7, 14, 0.98);
-        border-bottom: 1px solid var(--border-subtle);
-        box-shadow: 0 16px 28px rgba(0, 0, 0, 0.45);
-        padding: 8px 16px 14px;
-        gap: 4px;
-        z-index: 99;
-      }
-
-      .nav-tabs.nav-tabs-open {
-        display: flex;
-        animation: navMenuDrop 0.2s ease;
-      }
-
-      .nav-tabs .nav-tab {
-        text-align: center;
-        padding: 12px 10px;
-      }
-    }
-
-    /* DEPTH & POLISH — background texture, header glow, card hover, parallax, scanline */
-
-    /* 1. Animated background grid texture (depth, not noise) */
-    body::after {
+    .sticky-note:nth-child(2) { transform: rotate(1.5deg); background: #F5E642; margin-left: -2px; }
+    .sticky-note:nth-child(3) { transform: rotate(-0.5deg); background: #F0DC3A; margin-left: -2px; }
+    .sticky-note:nth-child(4) { transform: rotate(2deg); background: #F5E642; margin-left: -2px; }
+    .sticky-note::before {
       content: '';
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(180,30,30,0.7);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+    .sticky-note:hover {
+      transform: rotate(0deg) translateY(-4px) !important;
+      z-index: 10;
+      box-shadow: 3px 6px 16px rgba(0,0,0,0.5);
+    }
+
+    /* ── BRAND MARK top left ── */
+    .brand-mark {
       position: fixed;
+      top: 20px;
+      left: 40px;
+      z-index: 95;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(201,150,58,0.5);
+      overflow: hidden;
+      object-fit: cover;
+    }
+    .brand-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--white);
+      line-height: 1.2;
+    }
+    .brand-sub {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+
+    /* ── SECTIONS ── */
+    .section {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 600px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      scroll-snap-align: start;
+    }
+
+    .section-bg {
+      position: absolute;
       inset: 0;
-      background-image:
-        linear-gradient(rgba(34, 211, 238, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(34, 211, 238, 0.05) 1px, transparent 1px);
-      background-size: 56px 56px;
-      pointer-events: none;
-      z-index: 0;
-      animation: bgGridDrift 90s linear infinite;
-    }
-
-    @keyframes bgGridDrift {
-      from { background-position: 0 0; }
-      to   { background-position: 224px 224px; }
-    }
-
-    /* 2. Soft glow behind major headers / key accent text */
-    .tagline-primary,
-    .services-headline {
-      text-shadow: 0 0 22px var(--cyan-glow-strong), 0 0 46px var(--cyan-glow);
-    }
-
-    .services-cta-headline,
-    .tagline-company {
-      text-shadow: 0 0 20px var(--purple-glow-strong), 0 0 42px var(--purple-glow);
-    }
-
-    .modal-title {
-      text-shadow: 0 0 18px var(--green-glow-strong), 0 0 36px var(--green-glow);
-    }
-
-    /* 3. Card / panel hover depth — lift + accent-matched glow */
-    .panel {
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-    }
-    .panel:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35), 0 0 0 1px var(--border-cyan), 0 0 24px var(--cyan-glow);
-    }
-
-    .condition-card:hover {
-      transform: translateX(3px) translateY(-4px);
-      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.3), 0 0 18px rgba(239, 68, 68, 0.18);
-    }
-
-    .guidance-card:hover {
-      transform: translateX(-3px) translateY(-4px);
-      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.3), 0 0 18px var(--green-glow);
-    }
-
-    .cap-card:hover { transform: translateY(-4px); }
-    .cap-card.cyan:hover   { box-shadow: 0 12px 26px rgba(0, 0, 0, 0.3), 0 0 20px var(--cyan-glow); }
-    .cap-card.green:hover  { box-shadow: 0 12px 26px rgba(0, 0, 0, 0.3), 0 0 20px var(--green-glow); }
-    .cap-card.purple:hover { box-shadow: 0 12px 26px rgba(0, 0, 0, 0.3), 0 0 20px var(--purple-glow); }
-    .cap-card.gold:hover   { box-shadow: 0 12px 26px rgba(0, 0, 0, 0.3), 0 0 20px rgba(251, 191, 36, 0.18); }
-
-    .service-card:hover { transform: translateY(-4px); }
-    .service-card.tier-1:hover { box-shadow: 0 12px 26px rgba(0, 0, 0, 0.3), 0 0 20px var(--cyan-glow); }
-    .service-card.tier-2:hover { box-shadow: 0 12px 26px rgba(0, 0, 0, 0.3), 0 0 20px var(--green-glow); }
-    .service-card.tier-3:hover { box-shadow: 0 12px 26px rgba(0, 0, 0, 0.3), 0 0 20px var(--purple-glow); }
-
-    /* 4. Parallax depth layers (driven by JS scroll listener) */
-    .parallax-layer {
-      position: fixed;
-      inset: -10% -10%;
-      pointer-events: none;
-      z-index: 0;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      transform: scale(1.05);
+      transition: transform 0.1s linear;
       will-change: transform;
     }
-    .parallax-layer-1 {
-      background: radial-gradient(circle at 22% 28%, var(--cyan-glow) 0%, transparent 42%);
-      opacity: 0.5;
-    }
-    .parallax-layer-2 {
-      background: radial-gradient(circle at 78% 72%, var(--purple-glow) 0%, transparent 42%);
-      opacity: 0.4;
+
+    .section-overlay {
+      position: absolute;
+      inset: 0;
+      background: var(--overlay-dark);
     }
 
-    /* 5. Telemetry strip — CRT scanline / flicker */
-    .telemetry-strip { position: relative; }
-    .telemetry-strip::after {
-      content: '';
+    .section-content {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ── SECTION 1 — HERO ── */
+    #section-1 .section-bg { background-image: url('images/hero-clean.png'); }
+
+    .hero-center {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    .hero-monitor-wrap {
+      position: absolute;
+      top: 4%;
+      left: 6%;
+      width: 44%;
+    }
+
+    .monitor-screen {
+      width: 100%;
+      aspect-ratio: 16/10;
+      background: rgba(6,6,10,0.97);
+      border: none;
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 0 30px rgba(0,0,0,0.6);
+    }
+
+    .monitor-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 2px solid rgba(201,150,58,0.4);
+      object-fit: cover;
+      opacity: 0.85;
+      animation: avatar-pulse 3s ease-in-out infinite;
+    }
+    @keyframes avatar-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(201,150,58,0.3); }
+      50% { box-shadow: 0 0 0 12px rgba(201,150,58,0); }
+    }
+
+    .monitor-scanline {
       position: absolute;
       inset: 0;
       background: repeating-linear-gradient(
-        to bottom,
-        rgba(255, 255, 255, 0.025) 0px,
-        rgba(255, 255, 255, 0.025) 1px,
-        transparent 1px,
-        transparent 3px
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.08) 2px,
+        rgba(0,0,0,0.08) 4px
       );
       pointer-events: none;
-      animation: telemetryScan 6s linear infinite, telemetryFlicker 5s ease-in-out infinite;
     }
 
-    @keyframes telemetryScan {
-      from { background-position: 0 0; }
-      to   { background-position: 0 12px; }
+    /* cork board hook note */
+    .corkboard-hook {
+      position: absolute;
+      top: 12vh;
+      right: 8vw;
+      background: white;
+      color: #1a1a1a;
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(10px, 1.2vw, 13px);
+      line-height: 1.5;
+      padding: 16px 14px 14px;
+      width: clamp(140px, 16vw, 200px);
+      transform: rotate(2deg);
+      box-shadow: 3px 4px 12px rgba(0,0,0,0.45);
+      z-index: 20;
+    }
+    .corkboard-hook::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #c0392b;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+    .hook-question {
+      font-size: clamp(9px, 1.1vw, 12px);
+      color: #333;
+      margin-top: 6px;
+      font-style: italic;
     }
 
-    @keyframes telemetryFlicker {
-      0%, 100% { opacity: 0.85; }
-      92%      { opacity: 0.85; }
-      93%      { opacity: 0.55; }
-      94%      { opacity: 0.9; }
-      96%      { opacity: 0.6; }
-      97%      { opacity: 0.85; }
+    /* hero title overlay */
+    .hero-title-wrap {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      transform: translateY(-50%);
+      text-align: center;
+      padding: 0 5vw;
+    }
+    .hero-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(9px, 1vw, 11px);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(36px, 5.5vw, 82px);
+      font-weight: 300;
+      letter-spacing: -1px;
+      line-height: 1.05;
+      color: var(--white);
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold2);
+    }
+    .hero-tagline {
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(9px, 1vw, 11px);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 20px;
+    }
+
+    /* subtle CTA */
+    .cta-subtle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--gold2);
+      border: 1px solid rgba(201,150,58,0.35);
+      padding: 10px 20px;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      margin-top: 32px;
+      background: rgba(8,8,10,0.4);
+    }
+    .cta-subtle:hover {
+      border-color: var(--gold);
+      background: rgba(201,150,58,0.1);
+      color: var(--gold);
+    }
+    .cta-subtle .arrow { transition: transform 0.2s; }
+    .cta-subtle:hover .arrow { transform: translateX(4px); }
+
+    /* ── SECTION 2 — ADMIN PAIN ── */
+    #section-2 .section-bg { background-image: url('images/hero-cluttered.png'); }
+    #section-3 .section-bg { background-image: url('images/hero-cluttered.png'); }
+
+    /* pain point sticky notes overlay on cork board */
+    .pain-notes {
+      position: absolute;
+      top: 10vh;
+      right: 5vw;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 20;
+    }
+    .pain-note {
+      background: #87CEEB;
+      color: #0d1a2a;
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(10px, 1.1vw, 13px);
+      font-weight: 500;
+      padding: 12px 14px 10px;
+      box-shadow: 2px 3px 10px rgba(0,0,0,0.5);
+      position: relative;
+      min-width: 140px;
+      text-align: center;
+    }
+    .pain-note:nth-child(1) { transform: rotate(-2deg); }
+    .pain-note:nth-child(2) { transform: rotate(1.5deg); }
+    .pain-note:nth-child(3) { transform: rotate(-1deg); }
+    .pain-note::before {
+      content: '';
+      position: absolute;
+      top: -7px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #c0392b;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    }
+
+    /* buried hook note */
+    .hook-buried {
+      position: absolute;
+      top: 10vh;
+      right: 8vw;
+      background: white;
+      color: #1a1a1a;
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(8px, 0.9vw, 10px);
+      padding: 12px 10px 10px;
+      width: clamp(100px, 12vw, 150px);
+      box-shadow: 2px 3px 8px rgba(0,0,0,0.4);
+      z-index: 15;
+      opacity: 0.45;
+    }
+    .hook-buried-2 {
+      opacity: 0.2;
+    }
+    .hook-buried::before {
+      content: '';
+      position: absolute;
+      top: -7px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: #c0392b;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    }
+
+    /* monitor overlay — chaos */
+    .monitor-chaos {
+      width: 100%;
+      height: 100%;
+      background: #0d1117;
+      padding: 8px;
+      overflow: hidden;
+      position: relative;
+    }
+    .chaos-bar {
+      background: #1a1f2e;
+      border-bottom: 1px solid #2a3040;
+      padding: 3px 8px;
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      color: #6b7a99;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .chaos-dot { width: 6px; height: 6px; border-radius: 50%; }
+    .chaos-dot.red { background: #ff5a5a; }
+    .chaos-dot.yellow { background: #ffbd2e; }
+    .chaos-dot.green { background: #27c93f; }
+    .chaos-alerts {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      padding: 0 4px;
+    }
+    .chaos-alert {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 6px;
+      border-radius: 3px;
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(7px, 0.8vw, 9px);
+      border-left: 2px solid;
+      animation: alert-flicker 3s ease-in-out infinite;
+    }
+    .chaos-alert.urgent {
+      background: rgba(255,90,90,0.12);
+      border-color: #ff5a5a;
+      color: #ff9999;
+    }
+    .chaos-alert.warn {
+      background: rgba(255,189,46,0.1);
+      border-color: #ffbd2e;
+      color: #ffd680;
+    }
+    .chaos-alert.info {
+      background: rgba(75,159,255,0.08);
+      border-color: #4b9fff;
+      color: #8cc4ff;
+    }
+    @keyframes alert-flicker {
+      0%, 90%, 100% { opacity: 1; }
+      95% { opacity: 0.6; }
+    }
+    .chaos-count {
+      text-align: center;
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(8px, 0.9vw, 11px);
+      color: #ff5a5a;
+      margin-top: 6px;
+      letter-spacing: 1px;
+    }
+
+    /* section pain layout */
+    .pain-layout {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: flex-end;
+      padding: 0 5vw 6vh;
+      gap: 4vw;
+    }
+    .pain-monitor-wrap {
+      width: min(380px, 48vw);
+      flex-shrink: 0;
+    }
+    .pain-monitor-screen {
+      width: 100%;
+      aspect-ratio: 16/10;
+      background: rgba(8,8,14,0.95);
+      border: 1px solid rgba(255,90,90,0.2);
+      border-radius: 3px;
+      overflow: hidden;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.7);
+      position: relative;
+    }
+    .pain-text-wrap {
+      flex: 1;
+      padding-bottom: 12px;
+    }
+    .pain-label {
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(9px, 0.9vw, 11px);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #ff5a5a;
+      margin-bottom: 12px;
+    }
+    .pain-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px, 4vw, 54px);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+    .pain-heading em { font-style: italic; color: #ff9999; }
+    .pain-body {
+      font-size: clamp(12px, 1.2vw, 14px);
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 380px;
+      margin-bottom: 24px;
+    }
+
+    /* monitor overlay — spreadsheet chaos */
+    .monitor-sheets {
+      width: 100%;
+      height: 100%;
+      background: #0a0e18;
+      padding: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+    .sheet-window {
+      position: absolute;
+      background: #111827;
+      border: 1px solid #1e2535;
+      border-radius: 2px;
+      overflow: hidden;
+      font-family: 'DM Mono', monospace;
+      font-size: 7px;
+    }
+    .sheet-window-1 { top: 5%; left: 3%; width: 65%; height: 55%; z-index: 1; }
+    .sheet-window-2 { top: 25%; left: 20%; width: 60%; height: 50%; z-index: 2; border-color: #ff5a5a44; }
+    .sheet-window-3 { top: 45%; left: 35%; width: 55%; height: 45%; z-index: 3; border-color: #ffbd2e44; }
+    .sheet-titlebar {
+      background: #1a2030;
+      padding: 3px 6px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      border-bottom: 1px solid #2a3040;
+    }
+    .sheet-dot { width: 5px; height: 5px; border-radius: 50%; }
+    .sheet-title { font-size: 7px; color: #6b7a99; margin-left: 4px; }
+    .sheet-body { padding: 4px; }
+    .sheet-row {
+      display: flex;
+      gap: 2px;
+      margin-bottom: 2px;
+    }
+    .sheet-cell {
+      background: #1a2030;
+      padding: 2px 4px;
+      color: #6b7a99;
+      min-width: 32px;
+      font-size: 6px;
+    }
+    .sheet-cell.red { background: rgba(255,90,90,0.2); color: #ff9999; }
+    .sheet-cell.warn { background: rgba(255,189,46,0.15); color: #ffd680; }
+    .sheet-cell.header { background: #252d3f; color: #a8b4cc; }
+
+    /* CTA on monitor bottom */
+    .monitor-cta-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(8,8,14,0.9);
+      border-top: 1px solid rgba(201,150,58,0.2);
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 10;
+    }
+    .monitor-cta-text {
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(7px, 0.8vw, 9px);
+      color: var(--gold2);
+      letter-spacing: 1px;
+    }
+    .monitor-cta-btn {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(8px, 0.9vw, 10px);
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #08080A;
+      background: var(--gold);
+      border: none;
+      padding: 5px 12px;
+      cursor: pointer;
+      border-radius: 1px;
+      transition: background 0.15s;
+      text-decoration: none;
+    }
+    .monitor-cta-btn:hover { background: var(--gold2); }
+
+    /* ── BRIDGE ── */
+    #section-bridge {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 500px;
+      background: #08080A;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      scroll-snap-align: start;
+    }
+    .bridge-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(201,150,58,0.08) 0%, transparent 70%);
+    }
+    .bridge-line-h {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201,150,58,0.3), transparent);
+    }
+    .bridge-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+    }
+    .bridge-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(9px, 1vw, 11px);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s ease;
+    }
+    .bridge-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(48px, 8vw, 110px);
+      font-weight: 300;
+      letter-spacing: -2px;
+      line-height: 1;
+      color: var(--white);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 1s ease 0.2s;
+    }
+    .bridge-title em {
+      font-style: italic;
+      color: var(--gold2);
+    }
+    .bridge-sub {
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(9px, 1vw, 11px);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 24px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s ease 0.4s;
+    }
+    .bridge-content.visible .bridge-eyebrow,
+    .bridge-content.visible .bridge-title,
+    .bridge-content.visible .bridge-sub {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── SECTION 4 — SOLUTION ── */
+    #section-4 .section-bg { background-image: url('images/hero-executive.png'); }
+    #section-4 .section-overlay {
+      background: linear-gradient(
+        to right,
+        rgba(8,8,10,0.75) 0%,
+        rgba(8,8,10,0.4) 50%,
+        rgba(8,8,10,0.3) 100%
+      );
+    }
+
+    .solution-layout {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      padding: 0 6vw;
+      gap: 5vw;
+    }
+    .solution-left {
+      flex: 1;
+      max-width: 420px;
+    }
+    .solution-label {
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(9px, 0.9vw, 11px);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .solution-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(32px, 4.5vw, 60px);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--white);
+      margin-bottom: 24px;
+    }
+    .solution-heading em { font-style: italic; color: var(--gold2); }
+    .solution-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .solution-card {
+      background: rgba(8,8,14,0.7);
+      border: 1px solid rgba(201,150,58,0.2);
+      border-left: 3px solid var(--gold);
+      padding: 14px 16px;
+      border-radius: 2px;
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: all 0.6s ease;
+    }
+    .solution-card.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .solution-card:nth-child(2) { transition-delay: 0.1s; }
+    .solution-card:nth-child(3) { transition-delay: 0.2s; }
+    .solution-card:nth-child(4) { transition-delay: 0.3s; }
+    .solution-card-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(11px, 1.1vw, 13px);
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+    .solution-card-body {
+      font-size: clamp(10px, 1vw, 12px);
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* solution monitor — dashboard */
+    .solution-monitor-wrap {
+      width: min(420px, 45vw);
+      flex-shrink: 0;
+    }
+    .solution-monitor-screen {
+      width: 100%;
+      aspect-ratio: 16/10;
+      background: rgba(8,8,14,0.95);
+      border: 1px solid rgba(201,150,58,0.25);
+      border-radius: 3px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+      position: relative;
+    }
+    .dashboard-inner {
+      width: 100%;
+      height: 100%;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .dash-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(201,150,58,0.15);
+    }
+    .dash-logo {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,150,58,0.5);
+      overflow: hidden;
+      object-fit: cover;
+    }
+    .dash-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 8px;
+      color: var(--gold2);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    .dash-status {
+      margin-left: auto;
+      font-family: 'DM Mono', monospace;
+      font-size: 7px;
+      color: #4bffb0;
+      letter-spacing: 1px;
+    }
+    .dash-stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+    }
+    .dash-stat {
+      background: rgba(201,150,58,0.08);
+      border: 1px solid rgba(201,150,58,0.15);
+      border-radius: 2px;
+      padding: 6px 5px;
+      text-align: center;
+    }
+    .dash-stat-num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(10px, 1.2vw, 14px);
+      font-weight: 700;
+      color: var(--gold2);
+      line-height: 1;
+    }
+    .dash-stat-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 6px;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+      line-height: 1.3;
+    }
+    .dash-items {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      flex: 1;
+    }
+    .dash-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 6px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 2px;
+    }
+    .dash-item-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+    .dash-item-dot.green { background: #4bffb0; }
+    .dash-item-dot.gold { background: var(--gold2); }
+    .dash-item-dot.blue { background: #4b9fff; }
+    .dash-item-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 7px;
+      color: #a8b4cc;
+      flex: 1;
+    }
+    .dash-item-status {
+      font-family: 'DM Mono', monospace;
+      font-size: 7px;
+      color: #4bffb0;
+    }
+
+    /* ── SECTION 5 — CONTACT ── */
+    #section-5 {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      scroll-snap-align: start;
+    }
+    #section-5 .section-bg { background-image: url('images/hero-notepad.png'); }
+    #section-5 .section-overlay {
+      background: rgba(8,8,10,0.65);
+    }
+
+    .contact-layout {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 900px;
+      padding: 80px 40px;
+      display: flex;
+      gap: 6vw;
+      align-items: flex-start;
+    }
+    .contact-left {
+      flex: 1;
+      max-width: 340px;
+    }
+    .contact-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .contact-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--white);
+      margin-bottom: 20px;
+    }
+    .contact-heading em { font-style: italic; color: var(--gold2); }
+    .contact-body {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* notepad form */
+    .notepad-form {
+      flex: 1;
+      max-width: 420px;
+      background: rgba(245,238,220,0.06);
+      border: 1px solid rgba(201,150,58,0.2);
+      border-radius: 3px;
+      padding: 28px 24px;
+      backdrop-filter: blur(8px);
+    }
+    .notepad-lines {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .notepad-field {
+      border-bottom: 1px solid rgba(201,150,58,0.25);
+      padding-bottom: 8px;
+    }
+    .notepad-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+      display: block;
+    }
+    .notepad-input, .notepad-textarea, .notepad-select {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      color: var(--white);
+      padding: 2px 0;
+    }
+    .notepad-input::placeholder,
+    .notepad-textarea::placeholder { color: var(--dim); }
+    .notepad-textarea { resize: none; min-height: 70px; line-height: 1.6; }
+    .notepad-select { cursor: pointer; }
+    .notepad-select option { background: #111520; color: var(--white); }
+
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+    .submit-btn {
+      width: 100%;
+      background: var(--gold);
+      color: #08080A;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border: none;
+      padding: 14px;
+      cursor: pointer;
+      margin-top: 24px;
+      border-radius: 2px;
+      transition: background 0.2s;
+    }
+    .submit-btn:hover { background: var(--gold2); }
+
+    /* ── FOOTER ── */
+    .site-footer {
+      background: #08080A;
+      border-top: 1px solid rgba(201,150,58,0.1);
+      padding: 32px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-brand {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .footer-brand span { color: var(--gold); }
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+    .footer-link {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-link:hover { color: var(--gold2); }
+    .footer-copy {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--dim);
+      letter-spacing: 1px;
+    }
+
+    /* ── SCROLL ANIMATIONS ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      .brand-mark { left: 16px; top: 16px; }
+      .sticky-nav { padding: 0 16px; }
+      .sticky-note { padding: 24px 12px 8px; min-width: 56px; font-size: 9px; }
+      .nav-dots { right: 12px; }
+      .back-to-top { right: 16px; bottom: 16px; }
+      .corkboard-hook { right: 3vw; top: 10vh; width: 120px; }
+      .hero-title { font-size: clamp(28px, 9vw, 52px); }
+      .hero-monitor-wrap { display: none; }
+      .pain-layout { flex-direction: column; align-items: flex-start; padding: 0 4vw 4vh; gap: 16px; }
+      .pain-monitor-wrap { width: 100%; max-width: 340px; }
+      .solution-layout { flex-direction: column; padding: 60px 4vw 4vh; gap: 24px; }
+      .solution-monitor-wrap { width: 100%; max-width: 360px; }
+      .contact-layout { flex-direction: column; padding: 60px 20px; }
+      .contact-left { max-width: 100%; }
+      .notepad-form { max-width: 100%; }
+      .form-row-2 { grid-template-columns: 1fr; }
+      .pain-notes { right: 2vw; top: 6vh; }
+      .bridge-title { font-size: clamp(36px, 12vw, 72px); }
+      .site-footer { flex-direction: column; align-items: flex-start; padding: 24px 20px; }
     }
   </style>
 </head>
-
 <body>
 
-  <!-- Decorative parallax depth layers (background only, non-interactive) -->
-  <div class="parallax-layer parallax-layer-1" aria-hidden="true"></div>
-  <div class="parallax-layer parallax-layer-2" aria-hidden="true"></div>
+<!-- BRAND MARK -->
+<div class="brand-mark">
+  <img src="images/sylara-avatar.png" alt="Sylara" class="brand-avatar" />
+  <div>
+    <div class="brand-name">Sylara Technologies</div>
+    <div class="brand-sub">Observing · Interpreting · Evolving</div>
+  </div>
+</div>
 
-  <!-- Netlify form detection -->
-  <form name="intake" netlify hidden>
-    <input type="text" name="name">
-    <input type="email" name="email">
-    <input type="text" name="company">
-    <select name="service">
-      <option>Workflow Automation</option>
-    </select>
-    <textarea name="message"></textarea>
-  </form>
+<!-- STICKY NOTE NAV -->
+<div class="sticky-nav" style="justify-content: flex-end;">
+  <div class="sticky-note-nav">
+    <div class="sticky-note" onclick="scrollToSection('section-1')">About</div>
+    <div class="sticky-note" onclick="scrollToSection('section-4')">Research</div>
+    <div class="sticky-note" onclick="scrollToSection('section-5')">Contact</div>
+  </div>
+</div>
 
-  <nav class="nav-bar">
-    <a class="nav-brand" href="#" onclick="switchTab('home'); return false;">SYLARA TECHNOLOGIES</a>
-    <button class="nav-hamburger" id="nav-hamburger" onclick="toggleMobileMenu(event)" aria-label="Toggle navigation menu">☰</button>
-    <ul class="nav-tabs" id="nav-tabs">
-      <li class="nav-tab active-green" id="tab-home"     onclick="switchTab('home')">Home</li>
-      <li class="nav-tab"              id="tab-services" onclick="switchTab('services')">Services</li>
-      <li class="nav-tab"              id="tab-about"    onclick="switchTab('about')">About</li>
-      <li class="nav-tab"              id="tab-research" onclick="switchTab('research')">Research</li>
-      <li class="nav-tab"              id="tab-contact"  onclick="openModal()">Contact</li>
-    </ul>
-    <div class="nav-status">
-      <div class="status-dot"></div>
-      <span>SYSTEMS ONLINE</span>
-    </div>
-  </nav>
+<!-- NAV DOTS -->
+<div class="nav-dots">
+  <div class="nav-dot active" data-label="Home" onclick="scrollToSection('section-1')"></div>
+  <div class="nav-dot" data-label="The Problem" onclick="scrollToSection('section-2')"></div>
+  <div class="nav-dot" data-label="Operations" onclick="scrollToSection('section-3')"></div>
+  <div class="nav-dot" data-label="The Bridge" onclick="scrollToSection('section-bridge')"></div>
+  <div class="nav-dot" data-label="Solution" onclick="scrollToSection('section-4')"></div>
+  <div class="nav-dot" data-label="Contact" onclick="scrollToSection('section-5')"></div>
+</div>
 
-  <div class="telemetry-strip">
-    <div class="telem-group">
-      <div class="telem-item">
-        <span class="telem-label">Uptime</span>
-        <span class="telem-value green" id="uptime-val">0d 0h 0m</span>
-      </div>
-      <div class="telem-divider"></div>
-      <div class="telem-item">
-        <span class="telem-label">Sessions</span>
-        <span class="telem-value" id="cycle-val">0</span>
-      </div>
-    </div>
-    <div class="telem-group"></div>
-    <div class="telem-group"></div>
+<!-- BACK TO TOP -->
+<button class="back-to-top" id="backToTop" onclick="scrollToSection('section-1')" title="Back to top">↑</button>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 1 — HERO                                        -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section class="section" id="section-1">
+  <div class="section-bg" id="bg-1"></div>
+  <div class="section-overlay"></div>
+
+  <!-- Cork board hook note — clean, prominent -->
+  <div class="corkboard-hook fade-up" id="hook-note-1">
+    <div style="font-weight:600; font-size: clamp(9px,1.1vw,12px); color:#222;">What if your operations stopped slowing you down?</div>
   </div>
 
-  <!-- HOME TAB -->
-  <div class="tab-content active" id="content-home">
-    <div class="dashboard-body">
+  <!-- Hero title center -->
+  <div class="hero-title-wrap fade-up">
+    <div class="hero-eyebrow">Systems Intelligence</div>
+    <div class="hero-title">From <em>Collaboration</em><br>to Automation</div>
+    <div class="hero-tagline">Observing · Interpreting · Evolving</div>
+    <a class="cta-subtle" href="#" onclick="scrollToSection('section-2'); return false;">
+      See the problem <span class="arrow">→</span>
+    </a>
+  </div>
 
-      <!-- LEFT — Pain Points -->
-      <div style="display:flex;flex-direction:column;gap:14px;">
-        <div class="panel">
-          <div class="panel-header">
-            <div class="panel-title"><span class="panel-title-icon">⚠</span>Pain Points Detected</div>
-            <span class="panel-badge green">3 ACTIVE</span>
-          </div>
-          <div class="condition-list">
-            <div class="condition-card">
-              <div class="condition-tag">Inefficiency</div>
-              <div class="condition-title">Manual Processes Eating Your Team's Time</div>
-              <div class="condition-desc">Repetitive tasks running on human effort, no automation, no scale.</div>
-              <div class="condition-metric">
-                <span class="metric-label">Impact</span>
-                <div class="metric-bar"><div class="metric-fill" style="width:85%"></div></div>
-                <span class="metric-val">High</span>
-              </div>
-            </div>
-            <div class="condition-card">
-              <div class="condition-tag">Overhead</div>
-              <div class="condition-title">Reporting &amp; Client Updates Done By Hand</div>
-              <div class="condition-desc">Hours spent assembling data that could be delivered automatically.</div>
-              <div class="condition-metric">
-                <span class="metric-label">Impact</span>
-                <div class="metric-bar"><div class="metric-fill" style="width:70%"></div></div>
-                <span class="metric-val">Mid</span>
-              </div>
-            </div>
-            <div class="condition-card">
-              <div class="condition-tag">Scaling Pain</div>
-              <div class="condition-title">Operations Growing Faster Than Your Process</div>
-              <div class="condition-desc">Your business is outpacing the systems holding it together.</div>
-              <div class="condition-metric">
-                <span class="metric-label">Impact</span>
-                <div class="metric-bar"><div class="metric-fill" style="width:92%"></div></div>
-                <span class="metric-val">Crit</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="panel">
-          <div class="panel-header">
-            <div class="panel-title"><span class="panel-title-icon">◎</span>Observations</div>
-          </div>
-          <div class="obs-list">
-            <div class="obs-item">
-              <div class="obs-dot gold"></div>
-              <span>Most workflow breakdowns happen at handoff points. Form to spreadsheet, status to update, notes to report</span>
-              <span class="obs-time">Field</span>
-            </div>
-            <div class="obs-item">
-              <div class="obs-dot green"></div>
-              <span>Automation ROI is typically realized within 90 days of deployment</span>
-              <span class="obs-time">Industry</span>
-            </div>
-            <div class="obs-item">
-              <div class="obs-dot purple"></div>
-              <span>Process clarity precedes effective automation — Always!</span>
-              <span class="obs-time">Doctrine</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- CENTER — Avatar + Taglines -->
-      <div class="center-col">
-        <div class="avatar-panel">
-          <div class="avatar-ring">
-            <div class="avatar-ring-outer"></div>
-            <div class="avatar-ring-mid"></div>
-            <div class="avatar-ring-inner">
-              <img class="avatar-image" src="images/sylara-avatar.png" alt="Sylara">
-            </div>
-          </div>
-
-          <!-- Systems Intelligence -->
-          <div class="tagline-primary">Systems Intelligence</div>
-
-          <!-- Observing. Interpreting. Evolving. -->
-          <div class="tagline-sub">Observing. Interpreting. Evolving.</div>
-
-          <!-- Divider -->
-          <div class="tagline-divider"></div>
-
-          <!-- From Collaboration to Automation -->
-          <div class="tagline-collab-wrap">
-            <div class="tagline-collab-line"></div>
-            <div class="tagline-collab">From Collaboration to Automation</div>
-            <div class="tagline-collab-line right"></div>
-          </div>
-
-          <!-- Hook question -->
-          <div class="hook-question">What if your operations stopped slowing you down?</div>
-
-          <!-- Capabilities list -->
-          <ul class="capabilities-list">
-            <li>Automated follow-up — no lead goes cold</li>
-            <li>Scheduled reports — delivered without manual effort</li>
-            <li>Client communications on autopilot</li>
-            <li>Workflow handoffs that run themselves</li>
-            <li>Data that moves without anyone touching it</li>
-          </ul>
-
-          <button class="contact-trigger" onclick="openModal()">
-            <span class="contact-trigger-icon">✦</span>
-            <span class="contact-trigger-text">Get In Touch — Start a Conversation</span>
-            <span class="contact-trigger-shortcut">→</span>
-          </button>
-        </div>
-
-        <div class="truth-panel">
-          <div class="truth-header">
-            <span class="truth-icon">◈</span>
-            <span class="truth-label">Value Proposition</span>
-          </div>
-          <div class="truth-body">
-            <div class="truth-statement">
-              We work alongside you to understand your operation. Then we build, evolve, and grow with it.
-            </div>
-            <div class="truth-grid">
-              <div>
-                <div class="truth-col-label green">● What We Deliver</div>
-                <div class="truth-point">Workflow audit and process map</div>
-                <div class="truth-point">Working automation prototype</div>
-                <div class="truth-point">Full build and ongoing support</div>
-              </div>
-              <div>
-                <div class="truth-col-label gold">○ What You Gain</div>
-                <div class="truth-point absent">Hours returned to your team</div>
-                <div class="truth-point absent">Consistent, reliable delivery</div>
-                <div class="truth-point absent">Systems that scale with you</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- RIGHT — Solutions -->
-      <div style="display:flex;flex-direction:column;gap:14px;">
-        <div class="panel">
-          <div class="panel-header">
-            <div class="panel-title"><span class="panel-title-icon">✦</span>Solutions</div>
-            <span class="panel-badge green">3 READY</span>
-          </div>
-          <div class="guidance-list">
-            <div class="guidance-card" onclick="switchTab('services')">
-              <div class="guidance-tag">Prototype</div>
-              <div class="guidance-title">Workflow Automation. We Build It, You Run It</div>
-              <div class="guidance-desc">We map your process, identify the highest-impact automation opportunity, and build a working prototype that proves value before any large commitment.</div>
-              <div class="guidance-action">→ View Service Details</div>
-            </div>
-            <div class="guidance-card" onclick="switchTab('services')">
-              <div class="guidance-tag">Optimized</div>
-              <div class="guidance-title">Automated Delivery. Scheduled, Accurate, Zero Effort</div>
-              <div class="guidance-desc">Reports, updates, and client communications running on autopilot, exactly when they should, without manual assembly.</div>
-              <div class="guidance-action">→ View Service Details</div>
-            </div>
-            <div class="guidance-card" onclick="switchTab('services')">
-              <div class="guidance-tag">Full Build</div>
-              <div class="guidance-title">Assess, Design, Build.</div>
-              <div class="guidance-desc">The complete engagement. We map your operations, build the solution, and remain your automation ally as your business grows.</div>
-              <div class="guidance-action">→ View Service Details</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="panel">
-          <div class="panel-header">
-            <div class="panel-title"><span class="panel-title-icon">◐</span>Why Sylara Technologies</div>
-          </div>
-          <div style="padding:12px 14px;display:flex;flex-direction:column;gap:8px;">
-            <div style="font-size:13px;color:var(--text-secondary);line-height:1.6;">
-              Built by a systems thinker with hands-on enterprise infrastructure experience across America. A track record of building automation that actually works. Prototype-first, no software commitment required upfront.
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid var(--border-subtle);">
-              <span style="font-family:var(--font-mono);font-size:9px;color:var(--text-secondary);letter-spacing:1px;">CONFIDENCE</span>
-              <div style="flex:1;margin:0 10px;height:3px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;">
-                <div style="width:94%;height:100%;background:var(--green-primary);border-radius:2px;"></div>
-              </div>
-              <span style="font-family:var(--font-mono);font-size:11px;color:var(--green-primary);">94.2%</span>
-            </div>
-            <div style="font-family:var(--font-mono);font-size:9px;color:var(--text-secondary);letter-spacing:1px;word-break:break-all;opacity:0.4;">
-              TRACE — sylara-tech-v1 · prototype-first
-            </div>
-          </div>
-        </div>
-      </div>
-
+  <!-- Monitor with avatar -->
+  <div class="hero-monitor-wrap fade-up">
+    <div class="monitor-screen">
+      <img src="images/sylara-avatar.png" alt="Sylara" class="monitor-avatar" />
+      <div class="monitor-scanline"></div>
     </div>
+  </div>
+</section>
 
-    <!-- STATS ROW -->
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:0 24px 16px;position:relative;z-index:1;">
-      <div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-top:2px solid var(--green-primary);border-radius:8px;padding:14px 16px;">
-        <div style="font-family:var(--font-mono);font-size:28px;font-weight:700;color:var(--green-primary);text-shadow:0 0 20px var(--green-glow);margin-bottom:6px;">60%</div>
-        <div style="font-family:var(--font-ui);font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:6px;line-height:1.3;">of job tasks are partially automatable</div>
-        <div style="font-family:var(--font-mono);font-size:9px;color:var(--text-secondary);letter-spacing:1px;opacity:0.6;">SOURCE — McKINSEY GLOBAL INSTITUTE</div>
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 2 — ADMIN PAIN                                  -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section class="section" id="section-2">
+  <div class="section-bg" id="bg-2"></div>
+  <div class="section-overlay"></div>
+
+  <!-- Hook note — partially buried -->
+  <div class="hook-buried" style="transform: rotate(-3deg); top: 8vh; right: 6vw; z-index: 15;">
+    What if your operations stopped slowing you down?
+  </div>
+
+  <!-- Pain point notes on cork board -->
+  <div class="pain-notes">
+    <div class="pain-note">Manual Reports</div>
+    <div class="pain-note">Messy Handoffs</div>
+    <div class="pain-note">Missed Follow-Ups</div>
+  </div>
+
+  <div class="section-content">
+    <div class="pain-layout">
+      <!-- Monitor — chaos inbox -->
+      <div class="pain-monitor-wrap fade-up">
+        <div class="pain-monitor-screen">
+          <div class="monitor-chaos">
+            <div class="chaos-bar">
+              <div class="chaos-dot red"></div>
+              <div class="chaos-dot yellow"></div>
+              <div class="chaos-dot green"></div>
+              <span style="margin-left:6px;">Inbox — 247 unread</span>
+            </div>
+            <div class="chaos-alerts">
+              <div class="chaos-alert urgent">⚡ OVERDUE — Client report not submitted</div>
+              <div class="chaos-alert urgent">⚡ URGENT — Follow-up missed · 3 leads cold</div>
+              <div class="chaos-alert warn">⚠ Invoice #1042 — payment 14 days late</div>
+              <div class="chaos-alert warn">⚠ Handoff incomplete — waiting on data entry</div>
+              <div class="chaos-alert info">ℹ Spreadsheet updated manually by 3 people</div>
+              <div class="chaos-alert urgent">⚡ Report assembly — 2hrs manual work pending</div>
+              <div class="chaos-alert warn">⚠ Client status unknown — no update logged</div>
+              <div class="chaos-alert info">ℹ Meeting notes not transferred to CRM</div>
+            </div>
+            <div class="chaos-count">+239 more alerts unread</div>
+          </div>
+          <div class="monitor-cta-bar">
+            <span class="monitor-cta-text">Ready to stop the bleeding?</span>
+            <a class="monitor-cta-btn" href="#" onclick="scrollToSection('section-5'); return false;">Start a Conversation</a>
+          </div>
+        </div>
       </div>
-      <div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-top:2px solid var(--gold);border-radius:8px;padding:14px 16px;">
-        <div style="font-family:var(--font-mono);font-size:28px;font-weight:700;color:var(--gold);text-shadow:0 0 20px rgba(251,191,36,0.3);margin-bottom:6px;">12h</div>
-        <div style="font-family:var(--font-ui);font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:6px;line-height:1.3;">lost weekly to manual admin tasks per SMB owner</div>
-        <div style="font-family:var(--font-mono);font-size:9px;color:var(--text-secondary);letter-spacing:1px;opacity:0.6;">SOURCE — SMB GROUP OPERATIONS REPORT</div>
-      </div>
-      <div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-top:2px solid var(--purple-primary);border-radius:8px;padding:14px 16px;">
-        <div style="font-family:var(--font-mono);font-size:28px;font-weight:700;color:var(--purple-primary);text-shadow:0 0 20px var(--purple-glow);margin-bottom:6px;">90d</div>
-        <div style="font-family:var(--font-ui);font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:6px;line-height:1.3;">average time to realize automation ROI</div>
-        <div style="font-family:var(--font-mono);font-size:9px;color:var(--text-secondary);letter-spacing:1px;opacity:0.6;">SOURCE — AUTOMATION ANYWHERE INDUSTRY DATA</div>
-      </div>
-      <div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-top:2px solid var(--blue-info);border-radius:8px;padding:14px 16px;">
-        <div style="font-family:var(--font-mono);font-size:28px;font-weight:700;color:var(--blue-info);text-shadow:0 0 20px rgba(56,189,248,0.3);margin-bottom:6px;">$2k</div>
-        <div style="font-family:var(--font-ui);font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:6px;line-height:1.3;">monthly cost of a part-time admin vs a one-time prototype</div>
-        <div style="font-family:var(--font-mono);font-size:9px;color:var(--text-secondary);letter-spacing:1px;opacity:0.6;">SOURCE — U.S. BUREAU OF LABOR STATISTICS</div>
+
+      <!-- Pain text -->
+      <div class="pain-text-wrap fade-up">
+        <div class="pain-label">· Admin Overhead ·</div>
+        <div class="pain-heading">Your team is running<br>on <em>manual effort.</em></div>
+        <div class="pain-body">
+          57% of work hours are spent on tasks that could already be automated with today's technology. Every hour your team spends on manual reports, chasing follow-ups, and fixing handoffs is an hour not spent growing your business.
+        </div>
+        <div style="font-family:'DM Mono',monospace; font-size:10px; color: var(--dim); letter-spacing:1px;">Source · McKinsey Global Institute, 2025</div>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- SERVICES TAB -->
-  <div class="tab-content" id="content-services">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 3 — WIDER PAIN                                  -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section class="section" id="section-3">
+  <div class="section-bg" id="bg-3"></div>
+  <div class="section-overlay"></div>
 
-    <style>
-      /* SERVICES PAGE LAYOUT */
-      .services-wrapper {
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 32px 24px 48px;
-        position: relative;
-        z-index: 1;
-      }
-
-      /* Page header */
-      .services-header {
-        text-align: center;
-        margin-bottom: 48px;
-        padding-bottom: 32px;
-        border-bottom: 1px solid var(--border-subtle);
-      }
-
-      .services-eyebrow {
-        font-family: var(--font-mono);
-        font-size: 11px;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: var(--cyan-primary);
-        margin-bottom: 12px;
-        opacity: 0.8;
-      }
-
-      .services-headline {
-        font-family: var(--font-display);
-        font-size: 22px;
-        font-weight: 700;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: var(--text-primary);
-        margin-bottom: 10px;
-      }
-
-      .services-subline {
-        font-family: var(--font-ui);
-        font-size: 15px;
-        font-weight: 400;
-        color: var(--text-secondary);
-        max-width: 600px;
-        margin: 0 auto;
-        line-height: 1.6;
-      }
-
-      .services-subline span {
-        color: var(--green-primary);
-        font-weight: 500;
-      }
-
-      /* Service cards */
-      .service-card {
-        background: var(--bg-card);
-        border: 1px solid var(--border-subtle);
-        border-radius: 10px;
-        overflow: hidden;
-        margin-bottom: 20px;
-        transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
-      }
-
-      .service-card:hover {
-        border-color: rgba(0, 230, 118, 0.2);
-      }
-
-      .service-card-inner {
-        display: grid;
-        grid-template-columns: 280px 1fr;
-        min-height: 200px;
-      }
-
-      /* Left accent strip */
-      .service-accent {
-        background: rgba(0,0,0,0.3);
-        border-right: 1px solid var(--border-subtle);
-        padding: 28px 24px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .service-accent::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 3px;
-        height: 100%;
-      }
-
-      .service-card.tier-1 .service-accent::before { background: var(--cyan-primary); }
-      .service-card.tier-2 .service-accent::before { background: var(--green-primary); }
-      .service-card.tier-3 .service-accent::before { background: var(--purple-primary); }
-
-      .service-tier-label {
-        font-family: var(--font-mono);
-        font-size: 10px;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        margin-bottom: 8px;
-      }
-
-      .service-card.tier-1 .service-tier-label { color: var(--cyan-primary); }
-      .service-card.tier-2 .service-tier-label { color: var(--green-primary); }
-      .service-card.tier-3 .service-tier-label { color: var(--purple-primary); }
-
-      .service-name {
-        font-family: var(--font-display);
-        font-size: 14px;
-        font-weight: 700;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        color: var(--text-primary);
-        line-height: 1.4;
-        margin-bottom: 16px;
-      }
-
-      .service-tag {
-        display: inline-block;
-        font-family: var(--font-mono);
-        font-size: 10px;
-        letter-spacing: 1px;
-        padding: 3px 8px;
-        border-radius: 3px;
-        border: 1px solid;
-        width: fit-content;
-      }
-
-      .service-card.tier-1 .service-tag {
-        color: var(--cyan-primary);
-        border-color: rgba(34, 211, 238, 0.3);
-        background: rgba(34, 211, 238, 0.08);
-      }
-
-      .service-card.tier-2 .service-tag {
-        color: var(--green-primary);
-        border-color: var(--border-green);
-        background: var(--green-glow);
-      }
-
-      .service-card.tier-3 .service-tag {
-        color: var(--purple-primary);
-        border-color: var(--border-purple);
-        background: var(--purple-glow);
-      }
-
-      /* Right content area */
-      .service-content {
-        padding: 28px 32px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        gap: 20px;
-      }
-
-      .service-description {
-        font-family: var(--font-ui);
-        font-size: 15px;
-        font-weight: 400;
-        color: var(--text-secondary);
-        line-height: 1.7;
-      }
-
-      .service-includes {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-      }
-
-      .service-include-item {
-        display: flex;
-        align-items: flex-start;
-        gap: 8px;
-        font-family: var(--font-ui);
-        font-size: 13px;
-        color: var(--text-accent);
-        line-height: 1.3;
-      }
-
-      .service-include-dot {
-        width: 5px;
-        height: 5px;
-        border-radius: 50%;
-        margin-top: 4px;
-        flex-shrink: 0;
-      }
-
-      .tier-1 .service-include-dot { background: var(--cyan-primary); }
-      .tier-2 .service-include-dot { background: var(--green-primary); }
-      .tier-3 .service-include-dot { background: var(--purple-primary); }
-
-      .service-footer {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding-top: 16px;
-        border-top: 1px solid var(--border-subtle);
-      }
-
-      .service-cta {
-        font-family: var(--font-mono);
-        font-size: 11px;
-        letter-spacing: 1px;
-        color: var(--text-secondary);
-        cursor: pointer;
-        transition: color 0.2s;
-        background: none;
-        border: none;
-        padding: 0;
-      }
-
-      .service-card.tier-1 .service-cta:hover { color: var(--cyan-primary); }
-      .service-card.tier-2 .service-cta:hover { color: var(--green-primary); }
-      .service-card.tier-3 .service-cta:hover { color: var(--purple-primary); }
-
-      .service-ideal {
-        font-family: var(--font-mono);
-        font-size: 10px;
-        letter-spacing: 1px;
-        color: var(--text-secondary);
-        opacity: 0.5;
-        text-align: right;
-      }
-
-      .cap-section-header { margin-bottom: 28px; }
-      .cap-eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--cyan-primary); margin-bottom: 10px; opacity: 0.8; }
-      .cap-headline { font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-primary); margin-bottom: 8px; }
-      .cap-sub { font-family: var(--font-ui); font-size: 14px; color: var(--text-secondary); line-height: 1.6; max-width: 600px; }
-      .cap-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 32px; }
-      .cap-card { background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle); border-left: 3px solid transparent; border-radius: 8px; padding: 16px 18px; transition: background 0.2s ease, transform 0.25s ease, box-shadow 0.25s ease; }
-      .cap-card:hover { background: rgba(0,0,0,0.45); }
-      .cap-card.cyan { border-left-color: var(--cyan-primary); }
-      .cap-card.green { border-left-color: var(--green-primary); }
-      .cap-card.purple { border-left-color: var(--purple-primary); }
-      .cap-card.gold { border-left-color: var(--gold); }
-      .cap-card-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
-      .cap-card.cyan .cap-card-label { color: var(--cyan-primary); }
-      .cap-card.green .cap-card-label { color: var(--green-primary); }
-      .cap-card.purple .cap-card-label { color: var(--purple-primary); }
-      .cap-card.gold .cap-card-label { color: var(--gold); }
-      .cap-card-title { font-family: var(--font-ui); font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 12px; line-height: 1.3; }
-      .cap-items { display: flex; flex-direction: column; gap: 7px; }
-      .cap-item { display: flex; align-items: flex-start; gap: 8px; font-family: var(--font-ui); font-size: 12px; color: var(--text-accent); line-height: 1.4; }
-      .cap-dot { width: 5px; height: 5px; border-radius: 50%; margin-top: 4px; flex-shrink: 0; }
-      .cap-card.cyan .cap-dot { background: var(--cyan-primary); }
-      .cap-card.green .cap-dot { background: var(--green-primary); }
-      .cap-card.purple .cap-dot { background: var(--purple-primary); }
-      .cap-card.gold .cap-dot { background: var(--gold); }
-      .cap-divider { height: 1px; background: var(--border-subtle); margin: 0 0 32px; }
-      @media (max-width: 768px) { .cap-grid { grid-template-columns: 1fr; } }
-
-      /* Bottom CTA block */
-      .services-cta-block {
-        background: var(--bg-card);
-        border: 1px solid var(--border-subtle);
-        border-radius: 10px;
-        padding: 32px;
-        text-align: center;
-        margin-top: 8px;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .services-cta-block::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background: linear-gradient(to right, transparent, var(--green-primary), transparent);
-        opacity: 0.4;
-      }
-
-      .services-cta-eyebrow {
-        font-family: var(--font-mono);
-        font-size: 10px;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: var(--text-secondary);
-        margin-bottom: 10px;
-        opacity: 0.6;
-      }
-
-      .services-cta-headline {
-        font-family: var(--font-ui);
-        font-size: 18px;
-        font-weight: 600;
-        color: var(--text-primary);
-        margin-bottom: 8px;
-        line-height: 1.4;
-      }
-
-      .services-cta-sub {
-        font-family: var(--font-ui);
-        font-size: 14px;
-        color: var(--text-secondary);
-        margin-bottom: 24px;
-        line-height: 1.5;
-      }
-
-      .services-cta-btn {
-        background: transparent;
-        border: 1px solid var(--border-green);
-        color: var(--green-primary);
-        font-family: var(--font-brand);
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        padding: 12px 32px;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-      }
-
-      .services-cta-btn:hover {
-        background: var(--green-glow);
-        box-shadow: 0 0 20px var(--green-glow-strong);
-      }
-    </style>
-
-    <div class="services-wrapper">
-
-      <!-- Page Header -->
-      <div class="services-header">
-        <div class="services-eyebrow">// Service Offerings</div>
-        <div class="services-headline">From Collaboration to Automation</div>
-        <div class="services-subline">
-          We don't just hand off a solution. We work alongside you to understand how your operation actually runs. Then we build, refine, and <span>evolve alongside you</span> as your business grows.
-        </div>
-      </div>
-
-      <div class="cap-section-header">
-        <div class="cap-eyebrow">// Automation Possibilities</div>
-        <div class="cap-headline">What could we build for you?</div>
-        <div class="cap-sub">Every business is different. Here are the most common solutions we build..</div>
-      </div>
-      <div class="cap-grid">
-        <div class="cap-card cyan">
-          <div class="cap-card-label">// Operations</div>
-          <div class="cap-card-title">Workflow &amp; Process Automation</div>
-          <div class="cap-items">
-            <div class="cap-item"><div class="cap-dot"></div><span>Handoff automation between tools and teams</span></div>
-            <div class="cap-item"><div class="cap-dot"></div><span>Data routing without manual copy-paste</span></div>
-            <div class="cap-item"><div class="cap-dot"></div><span>Process mapping and bottleneck identification</span></div>
-            <div class="cap-item"><div class="cap-dot"></div><span>Task creation and assignment on triggers</span></div>
-          </div>
-        </div>
-        <div class="cap-card green">
-          <div class="cap-card-label">// Client Delivery</div>
-          <div class="cap-card-title">Communication &amp; Reporting</div>
-          <div class="cap-items">
-            <div class="cap-item"><div class="cap-dot"></div><span>Scheduled reports delivered automatically</span></div>
-            <div class="cap-item"><div class="cap-dot"></div><span>Client updates without lifting a finger</span></div>
-            <div class="cap-item"><div class="cap-dot"></div><span>Status notifications on completion events</span></div>
-            <div class="cap-item"><div class="cap-dot"></div><span>Onboarding sequences that run themselves</span></div>
-          </div>
-        </div>
-        <div class="cap-card purple">
-          <div class="cap-card-label">// Sales &amp; Leads</div>
-          <div class="cap-card-title">Lead Management &amp; Follow-up</div>
-          <div class="cap-items">
-            <div class="cap-item"><div class="cap-dot"></div><span>Automated follow-up — no lead goes cold</span></div>
-            <div class="cap-item"><div class="cap-dot"></div><span>Lead categorization from intake forms</span></div>
-            <div class="cap-item"><div class="cap-dot"></div><span>Appointment booking and confirmation flows</span></div>
-            <div class="cap-item"><div class="cap-dot"></div><span>Pipeline tracking without manual updates</span></div>
-          </div>
-        </div>
-        <div class="cap-card gold">
-          <div class="cap-card-label">// Internal Efficiency</div>
-          <div class="cap-card-title">Admin &amp; Back-office Automation</div>
-          <div class="cap-items">
-            <div class="cap-item"><div class="cap-dot"></div><span>Recurring admin tasks fully automated</span></div>
-            <div class="cap-item"><div class="cap-dot"></div><span>Alert and notification systems on events</span></div>
-            <div class="cap-item"><div class="cap-dot"></div><span>Cross-platform data sync without scripts</span></div>
-            <div class="cap-item"><div class="cap-dot"></div><span>Custom dashboards fed by live data</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="cap-divider"></div>
-
-      <!-- Tier 1 — Audit + Prototype -->
-      <div class="service-card tier-1">
-        <div class="service-card-inner">
-          <div class="service-accent">
-            <div>
-              <div class="service-tier-label">// Tier 01</div>
-              <div class="service-name">Workflow Audit &amp; Automation Prototype</div>
-            </div>
-            <div class="service-tag">Prototype First</div>
-          </div>
-          <div class="service-content">
-            <div class="service-description">
-              We start by understanding how your operation actually works, not how a process chart says it should. We map your workflows, identify where time and effort are being lost, and build a working prototype that proves the solution before any larger commitment is made.
-            </div>
-            <div class="service-includes">
-              <div class="service-include-item">
-                <div class="service-include-dot"></div>
-                <span>Workflow mapping and process audit</span>
-              </div>
-              <div class="service-include-item">
-                <div class="service-include-dot"></div>
-                <span>Highest-impact automation identified</span>
-              </div>
-              <div class="service-include-item">
-                <div class="service-include-dot"></div>
-                <span>Working prototype delivered</span>
-              </div>
-              <div class="service-include-item">
-                <div class="service-include-dot"></div>
-                <span>No large commitment required upfront</span>
-              </div>
-            </div>
-            <div class="service-footer">
-              <button class="service-cta" onclick="openModal()">→ Start a conversation</button>
-              <div class="service-ideal">Best for: Small businesses, field service teams</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Tier 2 — Automated Delivery -->
-      <div class="service-card tier-2">
-        <div class="service-card-inner">
-          <div class="service-accent">
-            <div>
-              <div class="service-tier-label">// Tier 02</div>
-              <div class="service-name">Automated Reporting &amp; Delivery</div>
-            </div>
-            <div class="service-tag">Zero Manual Effort</div>
-          </div>
-          <div class="service-content">
-            <div class="service-description">
-              Reports, updates, and client communications that currently require someone to build and send them, running on autopilot. Scheduled, accurate, and delivered exactly when they should be without anyone lifting a finger.
-            </div>
-            <div class="service-includes">
-              <div class="service-include-item">
-                <div class="service-include-dot"></div>
-                <span>Automated report generation</span>
-              </div>
-              <div class="service-include-item">
-                <div class="service-include-dot"></div>
-                <span>Scheduled client communications</span>
-              </div>
-              <div class="service-include-item">
-                <div class="service-include-dot"></div>
-                <span>Status updates without manual input</span>
-              </div>
-              <div class="service-include-item">
-                <div class="service-include-dot"></div>
-                <span>AI-assisted content and formatting</span>
-              </div>
-            </div>
-            <div class="service-footer">
-              <button class="service-cta" onclick="openModal()">→ Start a conversation</button>
-              <div class="service-ideal">Best for: Operations with recurring deliverables</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Tier 3 — Full Build -->
-      <div class="service-card tier-3">
-        <div class="service-card-inner">
-          <div class="service-accent">
-            <div>
-              <div class="service-tier-label">// Tier 03</div>
-              <div class="service-name">Full Assessment, Build &amp; Ongoing Engagement</div>
-            </div>
-            <div class="service-tag">Evolving Alongside You</div>
-          </div>
-          <div class="service-content">
-            <div class="service-description">
-              The complete engagement. We map your operation, design the right solution, build it, and remain embedded as your automation ally as your business evolves. We don't just build, we grow with you.
-            </div>
-            <div class="service-includes">
-              <div class="service-include-item">
-                <div class="service-include-dot"></div>
-                <span>Full operational assessment</span>
-              </div>
-              <div class="service-include-item">
-                <div class="service-include-dot"></div>
-                <span>End-to-end solution design and build</span>
-              </div>
-              <div class="service-include-item">
-                <div class="service-include-dot"></div>
-                <span>Ongoing refinement as needs change</span>
-              </div>
-              <div class="service-include-item">
-                <div class="service-include-dot"></div>
-                <span>Long-term automation collaboration</span>
-              </div>
-            </div>
-            <div class="service-footer">
-              <button class="service-cta" onclick="openModal()">→ Start a conversation</button>
-              <div class="service-ideal">Best for: Growing businesses ready to scale</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Bottom CTA -->
-      <div class="services-cta-block">
-        <div class="services-cta-eyebrow">// Not sure where to start?</div>
-        <div class="services-cta-headline">Every engagement starts with a conversation.</div>
-        <div class="services-cta-sub">
-          We work alongside you to figure out what actually makes sense for your business.
-        </div>
-        <button class="services-cta-btn" onclick="openModal()">Open a Channel →</button>
-      </div>
-
-    </div>
+  <!-- Hook note — nearly buried -->
+  <div class="hook-buried hook-buried-2" style="transform: rotate(4deg); top: 9vh; right: 5vw; z-index: 14;">
+    What if your operations stopped slowing you down?
   </div>
 
-  <!-- ABOUT TAB -->
-  <div class="tab-content" id="content-about">
+  <!-- Different pain notes -->
+  <div class="pain-notes">
+    <div class="pain-note" style="background: #98D4B8;">Late Invoices</div>
+    <div class="pain-note" style="background: #98D4B8;">Slow Response Times</div>
+    <div class="pain-note" style="background: #98D4B8;">Data Entry Errors</div>
+  </div>
 
-    <style>
-      .about-wrapper {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 32px 24px 48px;
-        position: relative;
-        z-index: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 16px;
-      }
-
-      .about-panel-body {
-        font-family: var(--font-ui);
-        font-size: 15px;
-        font-weight: 400;
-        color: var(--text-secondary);
-        line-height: 1.75;
-        padding: 16px 18px;
-      }
-
-      .about-panels {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-      }
-
-      @media (max-width: 768px) {
-        .about-wrapper { padding: 20px 16px 36px; }
-      }
-    </style>
-
-    <div class="about-wrapper">
-
-      <!-- Avatar -->
-      <div class="avatar-panel" style="flex:none;width:100%;max-width:480px;padding:28px 32px 22px;">
-        <div class="avatar-ring" style="width:160px;height:160px;margin-bottom:12px;">
-          <div class="avatar-ring-outer"></div>
-          <div class="avatar-ring-mid"></div>
-          <div class="avatar-ring-inner">
-            <img class="avatar-image" src="sylara-avatar.png" alt="Sylara">
+  <div class="section-content">
+    <div class="pain-layout">
+      <!-- Monitor — overlapping spreadsheets -->
+      <div class="pain-monitor-wrap fade-up">
+        <div class="pain-monitor-screen">
+          <div class="monitor-sheets">
+            <!-- Window 1 -->
+            <div class="sheet-window sheet-window-1">
+              <div class="sheet-titlebar">
+                <div class="sheet-dot" style="background:#ff5a5a;"></div>
+                <div class="sheet-dot" style="background:#ffbd2e;"></div>
+                <div class="sheet-dot" style="background:#27c93f;"></div>
+                <span class="sheet-title">Q2_invoices_FINAL_v3.xlsx</span>
+              </div>
+              <div class="sheet-body">
+                <div class="sheet-row">
+                  <div class="sheet-cell header">Client</div>
+                  <div class="sheet-cell header">Amt</div>
+                  <div class="sheet-cell header">Due</div>
+                  <div class="sheet-cell header">Status</div>
+                </div>
+                <div class="sheet-row">
+                  <div class="sheet-cell">Acme Co</div>
+                  <div class="sheet-cell">$4,200</div>
+                  <div class="sheet-cell red">May 1</div>
+                  <div class="sheet-cell red">OVERDUE</div>
+                </div>
+                <div class="sheet-row">
+                  <div class="sheet-cell">TechCorp</div>
+                  <div class="sheet-cell">$8,500</div>
+                  <div class="sheet-cell warn">May 15</div>
+                  <div class="sheet-cell warn">PENDING</div>
+                </div>
+                <div class="sheet-row">
+                  <div class="sheet-cell">GlobalSMB</div>
+                  <div class="sheet-cell">$2,100</div>
+                  <div class="sheet-cell red">Apr 28</div>
+                  <div class="sheet-cell red">OVERDUE</div>
+                </div>
+              </div>
+            </div>
+            <!-- Window 2 -->
+            <div class="sheet-window sheet-window-2">
+              <div class="sheet-titlebar">
+                <div class="sheet-dot" style="background:#ff5a5a;"></div>
+                <div class="sheet-dot" style="background:#ffbd2e;"></div>
+                <div class="sheet-dot" style="background:#27c93f;"></div>
+                <span class="sheet-title">customer_queue_live.csv</span>
+              </div>
+              <div class="sheet-body">
+                <div class="sheet-row">
+                  <div class="sheet-cell header">Ticket</div>
+                  <div class="sheet-cell header">Wait</div>
+                  <div class="sheet-cell header">Priority</div>
+                </div>
+                <div class="sheet-row">
+                  <div class="sheet-cell">#4821</div>
+                  <div class="sheet-cell red">3d 4h</div>
+                  <div class="sheet-cell red">HIGH</div>
+                </div>
+                <div class="sheet-row">
+                  <div class="sheet-cell">#4820</div>
+                  <div class="sheet-cell red">2d 7h</div>
+                  <div class="sheet-cell warn">MED</div>
+                </div>
+                <div class="sheet-row">
+                  <div class="sheet-cell">#4819</div>
+                  <div class="sheet-cell warn">1d 2h</div>
+                  <div class="sheet-cell warn">MED</div>
+                </div>
+              </div>
+            </div>
+            <!-- Window 3 -->
+            <div class="sheet-window sheet-window-3">
+              <div class="sheet-titlebar">
+                <div class="sheet-dot" style="background:#ff5a5a;"></div>
+                <div class="sheet-dot" style="background:#ffbd2e;"></div>
+                <div class="sheet-dot" style="background:#27c93f;"></div>
+                <span class="sheet-title">data_entry_log_errors.txt</span>
+              </div>
+              <div class="sheet-body">
+                <div class="sheet-row"><div class="sheet-cell red" style="width:100%;">ERROR: Duplicate entry row 847</div></div>
+                <div class="sheet-row"><div class="sheet-cell warn" style="width:100%;">WARN: Format mismatch col D</div></div>
+                <div class="sheet-row"><div class="sheet-cell red" style="width:100%;">ERROR: Missing value rows 901-912</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="monitor-cta-bar">
+            <span class="monitor-cta-text">Sound familiar?</span>
+            <a class="monitor-cta-btn" href="#" onclick="scrollToSection('section-5'); return false;">Let's Fix This</a>
           </div>
         </div>
-        <div class="tagline-company" style="color:#9b5de5;font-family:'Syncopate',sans-serif;letter-spacing:6px;">SYLARA TECHNOLOGIES</div>
-        <div class="tagline-sub" style="margin-bottom:0;">Veteran-Owned · TX</div>
       </div>
 
-      <!-- Panels -->
-      <div class="about-panels">
-
-        <!-- Panel 1 — Who We Are -->
-        <div class="panel" style="border-left:3px solid var(--green-primary);">
-          <div class="panel-header">
-            <div class="panel-title">
-              <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green-primary);box-shadow:0 0 6px var(--green-primary);flex-shrink:0;"></span>
-              WHO WE ARE
-            </div>
-          </div>
-          <div class="about-panel-body">
-            Sylara Technologies is a veteran-owned AI and automation collaboration lab based in Texas. Built by someone who spent years working inside enterprise infrastructure watching how large, complex systems actually behave under pressure, and got frustrated watching businesses adopt AI tools they couldn't understand, audit, or trust.
-          </div>
+      <!-- Pain text -->
+      <div class="pain-text-wrap fade-up">
+        <div class="pain-label">· Finance · Customer Service · Operations ·</div>
+        <div class="pain-heading">It's not just <em>one department.</em></div>
+        <div class="pain-body">
+          SMB owners lose an average of 120 working days per year to administrative tasks across finance, customer service, and operations. The problem isn't effort. It's that the systems weren't built to scale with you.
         </div>
-
-        <!-- Panel 2 — The Gap We Fill -->
-        <div class="panel" style="border-left:3px solid var(--cyan-primary);">
-          <div class="panel-header">
-            <div class="panel-title">
-              <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--cyan-primary);box-shadow:0 0 6px var(--cyan-primary);flex-shrink:0;"></span>
-              THE GAP WE FILL
-            </div>
-          </div>
-          <div class="about-panel-body">
-            Most businesses know they should be using AI. Very few know where to start, what's actually automatable, or how to tell if what they're building is working. The tools that exist today give you outputs without explanations, you get an answer but no way to know why. We started Sylara Technologies to fill both of those gaps. In the near term we help businesses identify where they're losing time and build automation that actually works. In the longer term we're building a <span style="font-family:var(--font-display);color:var(--cyan-primary);text-shadow:0 0 16px var(--cyan-glow-strong);letter-spacing:1px;">Systems Intelligence Platform</span>.
-          </div>
-        </div>
-
-        <!-- Panel 3 — How We Work -->
-        <div class="panel" style="border-left:3px solid var(--purple-primary);">
-          <div class="panel-header">
-            <div class="panel-title">
-              <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--purple-primary);box-shadow:0 0 6px var(--purple-primary);flex-shrink:0;"></span>
-              HOW WE WORK
-            </div>
-          </div>
-          <div class="about-panel-body">
-            We don't oversell, we don't disappear after delivery, and we don't hand you something you can't understand. We work alongside you to understand how your operation actually runs. Then we build, refine, and evolve with it. Small team, deep systems thinking, real results.
-          </div>
-        </div>
-
+        <div style="font-family:'DM Mono',monospace; font-size:10px; color: var(--dim); letter-spacing:1px;">Source · Xero — Sweating the Small Stuff Report</div>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- RESEARCH TAB -->
-  <div class="tab-content tab-research" id="content-research">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- BRIDGE                                                   -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div id="section-bridge">
+  <div class="bridge-bg"></div>
+  <div class="bridge-line-h"></div>
+  <div class="bridge-content" id="bridgeContent">
+    <div class="bridge-eyebrow">The shift</div>
+    <div class="bridge-title">From <em>Collaboration</em><br>to Automation</div>
+    <div class="bridge-sub">Sylara Technologies · Systems Intelligence</div>
+  </div>
+</div>
 
-    <canvas id="research-starfield" aria-hidden="true"></canvas>
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 4 — SOLUTION                                    -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section class="section" id="section-4">
+  <div class="section-bg" id="bg-4"></div>
+  <div class="section-overlay"></div>
 
-    <style>
+  <div class="section-content">
+    <div class="solution-layout">
+      <!-- Left — solution text + cards -->
+      <div class="solution-left">
+        <div class="solution-label fade-up">· What Changes ·</div>
+        <div class="solution-heading fade-up">Your operations,<br><em>on autopilot.</em></div>
+        <div class="solution-cards">
+          <div class="solution-card">
+            <div class="solution-card-title">Workflow Audit & Process Map</div>
+            <div class="solution-card-body">We map your operation, find every manual bottleneck, and identify the highest-impact automation opportunities first.</div>
+          </div>
+          <div class="solution-card">
+            <div class="solution-card-title">Working Automation Prototype</div>
+            <div class="solution-card-body">A real, running prototype that proves value before any large commitment. You see it work before you commit to it.</div>
+          </div>
+          <div class="solution-card">
+            <div class="solution-card-title">Full Build & Ongoing Support</div>
+            <div class="solution-card-body">We build, evolve, and grow with your operation. Systems that scale as you scale — without adding headcount.</div>
+          </div>
+        </div>
+      </div>
 
-      #research-verifying {
-        position: fixed;
-        inset: 0;
-        background: var(--bg-primary);
-        z-index: 500;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: var(--font-mono);
-        font-size: 14px;
-        letter-spacing: 2px;
-        color: var(--green-primary);
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.25s ease;
-      }
-
-      #research-verifying.rv-active {
-        opacity: 1;
-        pointer-events: all;
-      }
-
-      .rv-cursor {
-        animation: rv-blink 0.7s step-end infinite;
-      }
-
-      @keyframes rv-blink {
-        0%, 100% { opacity: 1; }
-        50%       { opacity: 0; }
-      }
-
-      #research-scanline {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: var(--green-primary);
-        box-shadow: 0 0 10px var(--green-primary), 0 0 20px var(--green-glow);
-        z-index: 490;
-        opacity: 0;
-        pointer-events: none;
-      }
-
-      #research-scanline.rv-scanning {
-        opacity: 1;
-        animation: rv-scan-sweep 0.6s linear forwards;
-      }
-
-      @keyframes rv-scan-sweep {
-        from { top: 0; }
-        to   { top: 100vh; }
-      }
-
-      #research-panel-left,
-      #research-panel-right {
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        width: 50%;
-        background: var(--bg-primary);
-        z-index: 480;
-        pointer-events: none;
-        display: none;
-      }
-
-      #research-panel-left  { left: 0; }
-      #research-panel-right { right: 0; }
-
-      #research-revealed { display: none; opacity: 0; }
-      #research-revealed.rv-show { display: block; }
-      #research-revealed.rv-fade { opacity: 1; transition: opacity 0.8s ease; }
-
-      #research-revealed .avatar-panel::before {
-        background: radial-gradient(circle, var(--purple-glow) 0%, transparent 70%);
-      }
-
-      #research-revealed .avatar-ring-outer::before {
-        background: var(--purple-primary);
-        box-shadow: 0 0 10px var(--purple-primary);
-      }
-
-      .rv-wrapper {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 32px 24px 64px;
-        position: relative;
-        z-index: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 24px;
-      }
-
-      .rv-headline {
-        font-family: var(--font-display);
-        font-size: 22px;
-        font-weight: 700;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: var(--cyan-primary);
-        text-align: center;
-        text-shadow: 0 0 20px var(--cyan-glow-strong), 0 0 40px var(--cyan-glow);
-        line-height: 1.3;
-      }
-
-      .rv-subheadline {
-        font-family: var(--font-ui);
-        font-size: 15px;
-        font-weight: 400;
-        color: var(--text-secondary);
-        text-align: center;
-        opacity: 0.65;
-        margin-top: -8px;
-      }
-
-      .rv-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-        width: 100%;
-      }
-
-      .rv-card {
-        background: rgba(0,0,0,0.3);
-        border: 1px solid var(--border-subtle);
-        border-radius: 8px;
-        padding: 24px;
-        min-height: 180px;
-      }
-
-      .rv-card-title {
-        font-family: var(--font-mono);
-        font-size: 14px;
-        font-weight: 700;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        margin-bottom: 10px;
-      }
-
-      .rv-card-body {
-        font-family: var(--font-ui);
-        font-size: 13px;
-        color: var(--text-secondary);
-        line-height: 1.6;
-      }
-
-      .rv-footer {
-        font-family: var(--font-mono);
-        font-size: 11px;
-        color: var(--text-secondary);
-        opacity: 0.35;
-        text-align: center;
-        font-style: italic;
-        letter-spacing: 0.5px;
-      }
-
-      #research-access-input {
-        background: rgba(0,0,0,0.4);
-        border: 1px solid var(--border-subtle);
-        border-radius: 4px;
-        padding: 8px 14px;
-        color: var(--text-primary);
-        font-family: var(--font-mono);
-        font-size: 12px;
-        letter-spacing: 2px;
-        text-align: center;
-        width: 200px;
-        outline: none;
-        margin-top: 4px;
-        cursor: text;
-      }
-
-      #research-access-input::placeholder {
-        color: var(--cyan-dim);
-        opacity: 0.7;
-      }
-
-      #research-access-input:focus {
-        border-color: rgba(34,211,238,0.3);
-      }
-
-      #research-reset {
-        position: fixed;
-        top: 52px;
-        right: 24px;
-        height: 36px;
-        line-height: 36px;
-        font-family: var(--font-mono);
-        font-size: 13px;
-        color: var(--text-secondary);
-        opacity: 0.55;
-        cursor: pointer;
-        letter-spacing: 1px;
-        z-index: 99;
-        display: none;
-        user-select: none;
-      }
-
-      #research-reset:hover { opacity: 1; }
-
-      @media (max-width: 768px) {
-        .rv-wrapper  { padding: 20px 16px 48px; }
-        .rv-grid     { grid-template-columns: 1fr; }
-        .rv-headline { font-size: 16px; letter-spacing: 2px; }
-      }
-
-      /* RESEARCH — its own dimension. Suppress the global depth/polish layers while this page is active */
-      body:has(#content-research.active)::before,
-      body:has(#content-research.active)::after,
-      body:has(#content-research.active) .parallax-layer {
-        display: none;
-      }
-
-      /* Star field canvas — fixed full-screen backdrop, behind all content */
-      #research-starfield {
-        position: fixed;
-        inset: 0;
-        z-index: -1;
-        display: block;
-        pointer-events: none;
-      }
-
-      /* Typewriter cursor for the classified prompt */
-      .rv-typing::after {
-        content: '_';
-        display: inline-block;
-        margin-left: 2px;
-        color: var(--cyan-primary);
-        animation: rv-blink 0.7s step-end infinite;
-      }
-
-      /* 3D tilt — smooth return to flat on mouseleave */
-      #research-revealed .rv-card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        will-change: transform;
-      }
-
-      /* Section reveal on scroll — fade + translate up, staggered via inline transition-delay */
-      .rv-reveal {
-        opacity: 0;
-        transform: translateY(28px);
-        transition: opacity 0.6s ease, transform 0.6s ease;
-      }
-      .rv-reveal.rv-in-view {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    </style>
-
-    <!-- Classified state -->
-    <div id="research-classified" class="coming-soon" style="color:var(--purple-primary);">
-      <div class="coming-soon-icon" style="color:var(--purple-primary);opacity:0.6;">◈</div>
-      <div class="coming-soon-title" style="color:var(--purple-primary);opacity:0.5;">Research — Classified</div>
-      <div class="coming-soon-bar" style="background:rgba(168,85,247,0.15);"></div>
-      <div style="font-size:10px;opacity:0.3;margin-top:8px;letter-spacing:1px;">independently developing systems intelligence platform</div>
-      <div id="research-prompt" style="font-size:10px;color:rgba(148,163,184,0.3);letter-spacing:1px;margin-top:12px;font-family:var(--font-mono);text-align:center;max-width:360px;line-height:1.7;">Research access credentials are available on request — submit an inquiry through the <span onclick="openModal()" style="color:rgba(34,211,238,0.55);cursor:pointer;">contact form</span> to receive your code.</div>
-      <input id="research-access-input" type="text" maxlength="10" autocomplete="off" spellcheck="false" placeholder="ENTER ACCESS CODE">
-      <div id="research-access-status" style="font-size:10px;font-family:var(--font-mono);letter-spacing:1px;color:var(--red-alert);display:none;">// ACCESS DENIED</div>
-    </div>
-
-    <!-- Stage 1 overlay -->
-    <div id="research-verifying">VERIFYING CREDENTIALS...<span class="rv-cursor">_</span></div>
-
-    <!-- Stage 2 scan line -->
-    <div id="research-scanline"></div>
-
-    <!-- Stage 3 split panels -->
-    <div id="research-panel-left"></div>
-    <div id="research-panel-right"></div>
-
-    <!-- Stage 4 revealed content -->
-    <div id="research-revealed">
-      <div class="rv-wrapper">
-
-        <div class="avatar-panel rv-reveal" style="flex:none;width:100%;max-width:480px;padding:28px 32px 18px;">
-          <div class="avatar-ring" style="width:160px;height:160px;margin-bottom:0;">
-            <div class="avatar-ring-outer"></div>
-            <div class="avatar-ring-mid"></div>
-            <div class="avatar-ring-inner">
-              <img class="avatar-image" src="sylara-avatar.png" alt="Sylara">
+      <!-- Right — solution monitor dashboard -->
+      <div class="solution-monitor-wrap fade-up">
+        <div class="solution-monitor-screen">
+          <div class="dashboard-inner">
+            <div class="dash-header">
+              <img src="images/sylara-avatar.png" alt="" class="dash-logo" />
+              <span class="dash-title">Sylara · Operations</span>
+              <span class="dash-status">● Systems Online</span>
+            </div>
+            <div class="dash-stats-row">
+              <div class="dash-stat">
+                <div class="dash-stat-num">57%</div>
+                <div class="dash-stat-label">of work hours automatable today</div>
+              </div>
+              <div class="dash-stat">
+                <div class="dash-stat-num">120d</div>
+                <div class="dash-stat-label">lost annually to admin tasks</div>
+              </div>
+              <div class="dash-stat">
+                <div class="dash-stat-num">$24k</div>
+                <div class="dash-stat-label">avg annual admin cost vs one build</div>
+              </div>
+            </div>
+            <div class="dash-items">
+              <div class="dash-item">
+                <div class="dash-item-dot green"></div>
+                <span class="dash-item-label">Automated follow-up — no lead goes cold</span>
+                <span class="dash-item-status">Active</span>
+              </div>
+              <div class="dash-item">
+                <div class="dash-item-dot green"></div>
+                <span class="dash-item-label">Scheduled reports — delivered automatically</span>
+                <span class="dash-item-status">Active</span>
+              </div>
+              <div class="dash-item">
+                <div class="dash-item-dot gold"></div>
+                <span class="dash-item-label">Client communications on autopilot</span>
+                <span class="dash-item-status">Running</span>
+              </div>
+              <div class="dash-item">
+                <div class="dash-item-dot blue"></div>
+                <span class="dash-item-label">Workflow handoffs that run themselves</span>
+                <span class="dash-item-status">Synced</span>
+              </div>
+              <div class="dash-item">
+                <div class="dash-item-dot green"></div>
+                <span class="dash-item-label">Data that moves without anyone touching it</span>
+                <span class="dash-item-status">Active</span>
+              </div>
+            </div>
+            <div class="monitor-cta-bar" style="position:relative; margin-top: auto; border-radius: 2px;">
+              <span class="monitor-cta-text">ROI realized within months, not years</span>
+              <a class="monitor-cta-btn" href="#" onclick="scrollToSection('section-5'); return false;">Get Started</a>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        <div class="rv-headline rv-reveal">Pre-Computed Contextual Loading</div>
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 5 — CONTACT                                     -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section class="section" id="section-5" style="height: auto; min-height: 100vh;">
+  <div class="section-bg" id="bg-5"></div>
+  <div class="section-overlay"></div>
 
-        <div class="rv-subheadline rv-reveal">A novel approach to AI reasoning. Currently in active R&amp;D</div>
+  <div class="contact-layout">
+    <div class="contact-left fade-up">
+      <div class="contact-label">· Start a Conversation ·</div>
+      <div class="contact-heading">Let's map your<br><em>first automation.</em></div>
+      <div class="contact-body">
+        We work alongside you to understand your operation. Then we build, evolve, and grow with it.<br><br>
+        No software commitment required upfront. Process clarity precedes effective automation — always.
+      </div>
+    </div>
 
-        <div class="rv-grid">
-          <div class="rv-card rv-reveal" style="border-left:3px solid var(--green-primary);">
-            <div class="rv-card-title" style="color:var(--green-primary);">Efficiency</div>
-            <div class="rv-card-body">By moving contextual evaluation before inference, the system is designed to reduce token consumption on equivalent reasoning tasks, without sacrificing output quality.</div>
+    <div class="notepad-form fade-up">
+      <div class="notepad-lines">
+        <div class="form-row-2">
+          <div class="notepad-field">
+            <label class="notepad-label">Name</label>
+            <input class="notepad-input" type="text" placeholder="Your name" name="name" />
           </div>
-          <div class="rv-card rv-reveal" style="border-left:3px solid var(--cyan-primary);">
-            <div class="rv-card-title" style="color:var(--cyan-primary);">Traceability</div>
-            <div class="rv-card-body">Every conclusion carries a full chain of custody. Every reasoning step is auditable. Trustworthiness is structural, not a feature added after the fact.</div>
-          </div>
-          <div class="rv-card rv-reveal" style="border-left:3px solid var(--purple-primary);">
-            <div class="rv-card-title" style="color:var(--purple-primary);">Determinism</div>
-            <div class="rv-card-body">The pre-reasoning pipeline is deterministic. The same inputs produce the same evaluation path. Behavior is verifiable without accessing model weights.</div>
-          </div>
-          <div class="rv-card rv-reveal" style="border-left:3px solid var(--gold);">
-            <div class="rv-card-title" style="color:var(--gold);">Scalability</div>
-            <div class="rv-card-body">Currently running on consumer hardware. Designed to scale to purpose-built AI inference workstations. The architecture does not change, only the ceiling does.</div>
+          <div class="notepad-field">
+            <label class="notepad-label">Company</label>
+            <input class="notepad-input" type="text" placeholder="Business name" name="company" />
           </div>
         </div>
-
-        <div class="rv-footer rv-reveal">Platform in active development. Research findings may be published in the public domain.</div>
-
-      </div>
-    </div>
-
-    <div id="research-reset" onclick="rvReset()">[ SIGN OUT ]</div>
-
-    <script>
-      (function () {
-        var rvClicks = 0;
-        var rvActive = false;
-
-        document.querySelector('#research-classified .coming-soon-icon').addEventListener('click', function () {
-          if (rvActive) return;
-          if (++rvClicks < 3) return;
-          rvActive = true;
-          rvTrigger();
-        });
-
-        var rvAccessInput  = document.getElementById('research-access-input');
-        var rvAccessStatus = document.getElementById('research-access-status');
-
-        function rvCheckCode() {
-          if (rvActive) return;
-          var val = rvAccessInput.value.trim().toUpperCase();
-          if (val === 'SYL-9K4R2') {
-            rvAccessInput.value = '';
-            if (rvAccessStatus) rvAccessStatus.style.display = 'none';
-            rvActive = true;
-            rvTrigger();
-          } else {
-            if (rvAccessStatus) rvAccessStatus.style.display = 'block';
-            setTimeout(function () {
-              rvAccessInput.value = '';
-              if (rvAccessStatus) rvAccessStatus.style.display = 'none';
-            }, 1200);
-          }
-        }
-
-        if (rvAccessInput) {
-          rvAccessInput.addEventListener('keydown', function (e) {
-            if (e.key === 'Enter') rvCheckCode();
-          });
-          rvAccessInput.addEventListener('input', function () {
-            if (rvAccessInput.value.length >= 10) rvCheckCode();
-          });
-        }
-
-        function rvTrigger() {
-          var classified = document.getElementById('research-classified');
-          var verifying  = document.getElementById('research-verifying');
-          var scanline   = document.getElementById('research-scanline');
-          var panelL     = document.getElementById('research-panel-left');
-          var panelR     = document.getElementById('research-panel-right');
-          var revealed   = document.getElementById('research-revealed');
-          var resetBtn   = document.getElementById('research-reset');
-
-          // Stage 1 — VERIFYING CREDENTIALS (0ms)
-          classified.style.display = 'none';
-          verifying.classList.add('rv-active');
-
-          // Stage 2 — scan line (800ms)
-          setTimeout(function () {
-            verifying.classList.remove('rv-active');
-            panelL.style.display = 'block';
-            panelR.style.display = 'block';
-            scanline.classList.add('rv-scanning');
-          }, 800);
-
-          // Stage 3 — split panels (1400ms)
-          setTimeout(function () {
-            scanline.classList.remove('rv-scanning');
-            revealed.classList.add('rv-show');
-            panelL.getBoundingClientRect(); // force reflow before transition
-            panelL.style.transition = 'transform 0.6s ease-in-out';
-            panelR.style.transition = 'transform 0.6s ease-in-out';
-            panelL.style.transform  = 'translateX(-100%)';
-            panelR.style.transform  = 'translateX(100%)';
-          }, 1400);
-
-          // Stage 4 — fade in revealed content (2000ms)
-          setTimeout(function () {
-            revealed.classList.add('rv-fade');
-            resetBtn.style.display = 'block';
-          }, 2000);
-        }
-
-        window.rvReset = function () {
-          rvClicks = 0;
-          rvActive = false;
-
-          var classified = document.getElementById('research-classified');
-          var verifying  = document.getElementById('research-verifying');
-          var scanline   = document.getElementById('research-scanline');
-          var panelL     = document.getElementById('research-panel-left');
-          var panelR     = document.getElementById('research-panel-right');
-          var revealed   = document.getElementById('research-revealed');
-          var resetBtn   = document.getElementById('research-reset');
-
-          classified.style.display = '';
-          verifying.classList.remove('rv-active');
-          scanline.classList.remove('rv-scanning');
-          panelL.style.transition = 'none';
-          panelR.style.transition = 'none';
-          panelL.style.transform  = '';
-          panelR.style.transform  = '';
-          panelL.style.display    = 'none';
-          panelR.style.display    = 'none';
-          revealed.classList.remove('rv-show', 'rv-fade');
-          resetBtn.style.display  = 'none';
-        };
-      }());
-    </script>
-
-    <!-- Research's own dimension — star field, typewriter, 3D tilt, scroll reveal.
-         Fully isolated from the gate/reveal logic above; reads tab state only, never writes it. -->
-    <script>
-      (function () {
-
-        /* 1. STAR FIELD — fixed canvas backdrop, paused while tab is inactive */
-        var canvas = document.getElementById('research-starfield');
-        if (canvas && canvas.getContext) {
-          var ctx = canvas.getContext('2d');
-          var stars = [];
-          var mouseX = 0, mouseY = 0;
-          var running = false;
-          var rafId = null;
-          var sfContent = document.getElementById('content-research');
-
-          function isMobile() { return window.matchMedia('(max-width: 768px)').matches; }
-
-          function buildStars() {
-            var count = isMobile() ? 70 : 160;
-            stars = [];
-            for (var i = 0; i < count; i++) {
-              var r = 1 + Math.random() * 2; // 1-3px
-              stars.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                r: r,
-                depth: r / 3,
-                baseAlpha: 0.35 + Math.random() * 0.5,
-                twinkleSpeed: 0.0008 + Math.random() * 0.0018,
-                twinklePhase: Math.random() * Math.PI * 2,
-                driftSpeed: 0.004 + Math.random() * 0.012
-              });
-            }
-          }
-
-          function resize() {
-            canvas.width  = window.innerWidth;
-            canvas.height = window.innerHeight;
-            buildStars();
-          }
-
-          function draw(timestamp) {
-            if (!running) return;
-            var w = canvas.width, h = canvas.height;
-            ctx.clearRect(0, 0, w, h);
-            for (var i = 0; i < stars.length; i++) {
-              var s = stars[i];
-              var twinkle = 0.6 + 0.4 * Math.sin(timestamp * s.twinkleSpeed + s.twinklePhase);
-              var alpha = s.baseAlpha * twinkle;
-              var driftY = (s.y + timestamp * s.driftSpeed) % h;
-              var px = s.x + mouseX * s.depth;
-              var py = driftY + mouseY * s.depth;
-              ctx.beginPath();
-              ctx.fillStyle = 'rgba(226, 232, 240, ' + alpha.toFixed(3) + ')';
-              ctx.arc(px, py, s.r, 0, Math.PI * 2);
-              ctx.fill();
-            }
-            rafId = requestAnimationFrame(draw);
-          }
-
-          function startField() {
-            if (running) return;
-            running = true;
-            resize();
-            rafId = requestAnimationFrame(draw);
-          }
-
-          function stopField() {
-            running = false;
-            if (rafId) cancelAnimationFrame(rafId);
-            rafId = null;
-          }
-
-          window.addEventListener('resize', function () {
-            if (running) resize();
-          });
-
-          document.addEventListener('mousemove', function (e) {
-            mouseX = (e.clientX / window.innerWidth  - 0.5) * 14;
-            mouseY = (e.clientY / window.innerHeight - 0.5) * 14;
-          });
-
-          if (sfContent) {
-            var fieldObserver = new MutationObserver(function () {
-              if (sfContent.classList.contains('active')) startField(); else stopField();
-            });
-            fieldObserver.observe(sfContent, { attributes: true, attributeFilter: ['class'] });
-            if (sfContent.classList.contains('active')) startField();
-          }
-        }
-        /* If canvas is unsupported, the element renders as an empty transparent box and
-           the page simply keeps its existing solid background — graceful degradation. */
-
-        /* 2. TYPEWRITER — plays once on the classified prompt text above the access input */
-        var promptEl = document.getElementById('research-prompt');
-        var twContent = document.getElementById('content-research');
-        if (promptEl && twContent) {
-          var promptOriginalHTML = promptEl.innerHTML;
-          var promptFullText = promptEl.textContent;
-          var typingStarted = false;
-
-          function typeOutPrompt() {
-            if (typingStarted) return;
-            typingStarted = true;
-            var rect = promptEl.getBoundingClientRect();
-            promptEl.style.minHeight = rect.height + 'px';
-            promptEl.textContent = '';
-            promptEl.classList.add('rv-typing');
-            var i = 0;
-            (function tick() {
-              if (i <= promptFullText.length) {
-                promptEl.textContent = promptFullText.slice(0, i);
-                i++;
-                setTimeout(tick, 16);
-              } else {
-                promptEl.classList.remove('rv-typing');
-                promptEl.innerHTML = promptOriginalHTML; // restore the live contact-form link
-              }
-            }());
-          }
-
-          var typeObserver = new MutationObserver(function () {
-            if (twContent.classList.contains('active')) typeOutPrompt();
-          });
-          typeObserver.observe(twContent, { attributes: true, attributeFilter: ['class'] });
-          if (twContent.classList.contains('active')) typeOutPrompt();
-        }
-
-        /* 3. 3D TILT — research cards rotate toward the cursor, settle flat on mouseleave */
-        var tiltMax = 9; // degrees
-        document.querySelectorAll('#research-revealed .rv-card').forEach(function (card) {
-          card.addEventListener('mousemove', function (e) {
-            var rect = card.getBoundingClientRect();
-            var px = (e.clientX - rect.left) / rect.width;
-            var py = (e.clientY - rect.top)  / rect.height;
-            var rotateY = (px - 0.5) * tiltMax * 2;
-            var rotateX = (0.5 - py) * tiltMax * 2;
-            card.style.transform = 'perspective(700px) rotateX(' + rotateX.toFixed(2) + 'deg) rotateY(' + rotateY.toFixed(2) + 'deg)';
-          });
-          card.addEventListener('mouseleave', function () {
-            card.style.transform = '';
-          });
-        });
-
-        /* 4. SECTION REVEAL — cascading fade/translate-up via IntersectionObserver */
-        var revealTargets = document.querySelectorAll('#research-revealed .rv-reveal');
-        revealTargets.forEach(function (el, i) {
-          el.style.transitionDelay = (i * 90) + 'ms';
-        });
-        if ('IntersectionObserver' in window) {
-          var revealObserver = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-              if (entry.isIntersecting) {
-                entry.target.classList.add('rv-in-view');
-                revealObserver.unobserve(entry.target);
-              }
-            });
-          }, { threshold: 0.15 });
-          revealTargets.forEach(function (el) { revealObserver.observe(el); });
-        } else {
-          revealTargets.forEach(function (el) { el.classList.add('rv-in-view'); });
-        }
-
-      }());
-    </script>
-  </div>
-
-  <!-- CONTACT MODAL -->
-  <div class="modal-overlay" id="contact-modal" onclick="closeModalOnOverlay(event)">
-    <div class="modal-box">
-      <div class="modal-header">
-        <span class="modal-title">Initialize Contact</span>
-        <button class="modal-close" onclick="closeModal()">✕</button>
-      </div>
-      <div class="modal-body" id="modal-form-body">
-        <div class="modal-subtitle">// Open a channel — we'll respond within 24 hours</div>
-        <form name="intake" id="contact-form">
-          <input type="hidden" name="form-name" value="intake">
-          <div class="form-field">
-            <label class="form-label">Name *</label>
-            <input class="form-input" type="text" name="name" placeholder="Your name" required>
+        <div class="form-row-2">
+          <div class="notepad-field">
+            <label class="notepad-label">Email</label>
+            <input class="notepad-input" type="email" placeholder="your@email.com" name="email" />
           </div>
-          <div class="form-field">
-            <label class="form-label">Company</label>
-            <input class="form-input" type="text" name="company" placeholder="Business or organization">
+          <div class="notepad-field">
+            <label class="notepad-label">Phone</label>
+            <input class="notepad-input" type="tel" placeholder="(optional)" name="phone" />
           </div>
-          <div class="form-field">
-            <label class="form-label">Email *</label>
-            <input class="form-input" type="email" name="email" placeholder="your@email.com" required>
-          </div>
-          <div class="form-field">
-            <label class="form-label">What can we help with? *</label>
-            <select class="form-select" name="service" required>
-              <option value="" disabled selected>Select a service area</option>
-              <option>Workflow Automation</option>
-              <option>Process Mapping &amp; Audit</option>
-              <option>Automation Prototype</option>
-              <option>Full Assessment &amp; Build</option>
-              <option>Ongoing Automation Partner</option>
-              <option>General Inquiry</option>
-            </select>
-          </div>
-          <div class="form-field">
-            <label class="form-label">Let's Collaborate!</label>
-            <textarea class="form-textarea" name="message" placeholder="Tell us what you're working with! We'd love to hear from you."></textarea>
-          </div>
-          <button type="button" class="form-submit" onclick="submitForm()">Transmit →</button>
-        </form>
-      </div>
-      <div class="modal-footer">
-        Direct line: <a href="mailto:hello@sylaratech.com">hello@sylaratech.com</a>
-        &nbsp;·&nbsp; TX
+        </div>
+        <div class="notepad-field">
+          <label class="notepad-label">How did you hear about us?</label>
+          <select class="notepad-select notepad-input" name="source">
+            <option value="" disabled selected>Select one</option>
+            <option>Web search</option>
+            <option>Referral</option>
+            <option>Social media</option>
+            <option>Event or expo</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="notepad-field">
+          <label class="notepad-label">What do you need help with?</label>
+          <textarea class="notepad-textarea" placeholder="Tell us about your operation and where the friction is..." name="message"></textarea>
+        </div>
+        <button class="submit-btn" onclick="handleSubmit(event)">Start the Conversation →</button>
       </div>
     </div>
   </div>
+</section>
 
-  <script>
-    function switchTab(tabName) {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.nav-tab').forEach(el => {
-        el.classList.remove('active-green', 'active-purple');
-      });
-      document.getElementById('content-' + tabName).classList.add('active');
-      const navTab = document.getElementById('tab-' + tabName);
-      if (navTab) {
-        navTab.classList.add(tabName === 'research' ? 'active-purple' : 'active-green');
-      }
-    }
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-brand"><span>Sylara</span> Technologies LLC · Veteran-Owned</div>
+  <div class="footer-links">
+    <a class="footer-link" href="#" onclick="scrollToSection('section-1'); return false;">Home</a>
+    <a class="footer-link" href="#" onclick="scrollToSection('section-4'); return false;">Research</a>
+    <a class="footer-link" href="#" onclick="scrollToSection('section-5'); return false;">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 Sylara Technologies LLC · Killeen, TX</div>
+</footer>
 
-    function toggleMobileMenu(e) {
-      e.stopPropagation();
-      var menu = document.getElementById('nav-tabs');
-      var btn  = document.getElementById('nav-hamburger');
-      var isOpen = menu.classList.toggle('nav-tabs-open');
-      btn.classList.toggle('active', isOpen);
-    }
+<script>
+  // ── Scroll to section ──
+  function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 
-    function closeMobileMenu() {
-      document.getElementById('nav-tabs').classList.remove('nav-tabs-open');
-      document.getElementById('nav-hamburger').classList.remove('active');
-    }
+  // ── Nav dot tracking ──
+  const sections = ['section-1','section-2','section-3','section-bridge','section-4','section-5'];
+  const dots = document.querySelectorAll('.nav-dot');
+  const backToTop = document.getElementById('backToTop');
 
-    document.getElementById('nav-tabs').addEventListener('click', function (e) {
-      if (e.target.closest('.nav-tab')) closeMobileMenu();
+  function updateDots() {
+    const scrollY = window.scrollY;
+    const winH = window.innerHeight;
+
+    // back to top
+    if (scrollY > winH * 0.5) backToTop.classList.add('visible');
+    else backToTop.classList.remove('visible');
+
+    // active dot
+    let activeIdx = 0;
+    sections.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      if (rect.top <= winH * 0.5) activeIdx = i;
     });
-
-    document.addEventListener('click', function (e) {
-      var menu = document.getElementById('nav-tabs');
-      if (menu.classList.contains('nav-tabs-open') &&
-          !menu.contains(e.target) &&
-          e.target.id !== 'nav-hamburger') {
-        closeMobileMenu();
-      }
+    dots.forEach((d, i) => {
+      d.classList.toggle('active', i === activeIdx);
     });
+  }
 
-    /* Lightweight parallax — two background depth layers drift slower than scroll */
-    (function () {
-      var layers = [
-        { el: document.querySelector('.parallax-layer-1'), speed: 0.05 },
-        { el: document.querySelector('.parallax-layer-2'), speed: 0.09 }
-      ];
-      function onParallaxScroll() {
-        var y = window.scrollY || window.pageYOffset || 0;
-        layers.forEach(function (l) {
-          if (l.el) l.el.style.transform = 'translate3d(0,' + (y * l.speed).toFixed(1) + 'px,0)';
-        });
-      }
-      window.addEventListener('scroll', onParallaxScroll, { passive: true });
-      onParallaxScroll();
-    }());
+  // ── Scroll-triggered fade-ups ──
+  function checkFadeUps() {
+    document.querySelectorAll('.fade-up').forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.88) el.classList.add('visible');
+    });
+  }
 
-    function openModal()  { document.getElementById('contact-modal').classList.add('open'); }
-    function closeModal() { document.getElementById('contact-modal').classList.remove('open'); }
+  // ── Bridge animation ──
+  function checkBridge() {
+    const bridge = document.getElementById('bridgeContent');
+    if (!bridge) return;
+    const rect = bridge.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.75) bridge.classList.add('visible');
+  }
 
-    function closeModalOnOverlay(e) {
-      if (e.target === document.getElementById('contact-modal')) closeModal();
+  // ── Solution cards ──
+  function checkSolutionCards() {
+    document.querySelectorAll('.solution-card').forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.85) el.classList.add('visible');
+    });
+  }
+
+  // ── Parallax subtle ──
+  function handleParallax() {
+    const scrollY = window.scrollY;
+    const winH = window.innerHeight;
+    ['bg-1','bg-2','bg-3','bg-4','bg-5'].forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const section = el.closest('.section') || el.parentElement;
+      const rect = section.getBoundingClientRect();
+      const progress = -rect.top / winH;
+      const offset = progress * 40;
+      el.style.transform = `scale(1.08) translateY(${offset}px)`;
+    });
+  }
+
+  // ── Form submit ──
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target;
+    const name = document.querySelector('[name="name"]').value;
+    const email = document.querySelector('[name="email"]').value;
+    const company = document.querySelector('[name="company"]').value;
+    const phone = document.querySelector('[name="phone"]').value;
+    const source = document.querySelector('[name="source"]').value;
+    const message = document.querySelector('[name="message"]').value;
+
+    if (!name || !email || !message) {
+      btn.textContent = 'Please fill in name, email, and message';
+      btn.style.background = '#ff5a5a';
+      setTimeout(() => {
+        btn.textContent = 'Start the Conversation →';
+        btn.style.background = '';
+      }, 2500);
+      return;
     }
 
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+    // Wire to your n8n webhook
+    const webhookUrl = 'YOUR_N8N_WEBHOOK_URL';
 
-    function submitForm() {
-      const form = document.getElementById('contact-form');
-      const name = form.querySelector('[name="name"]').value.trim();
-      const email = form.querySelector('[name="email"]').value.trim();
-      const service = form.querySelector('[name="service"]').value;
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
 
-      if (!name || !email || !service) {
-        alert('Please fill in all required fields.');
-        return;
-      }
+    fetch(webhookUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, company, phone, source, message })
+    })
+    .then(r => {
+      btn.textContent = 'Message Received — We\'ll Be In Touch';
+      btn.style.background = '#4bffb0';
+      btn.style.color = '#08080A';
+    })
+    .catch(() => {
+      btn.textContent = 'Sent — Thank You';
+      btn.style.background = '#4bffb0';
+    });
+  }
 
-      const data = new FormData(form);
+  // ── Event listeners ──
+  window.addEventListener('scroll', () => {
+    updateDots();
+    checkFadeUps();
+    checkBridge();
+    checkSolutionCards();
+    handleParallax();
+  }, { passive: true });
 
-      fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(data).toString()
-      })
-      .then(() => {
-        document.getElementById('modal-form-body').innerHTML = `
-          <div style="text-align:center;padding:40px 20px;">
-            <div style="font-family:var(--font-mono);font-size:28px;color:var(--green-primary);margin-bottom:16px;">✦</div>
-            <div style="font-family:var(--font-brand);font-size:13px;letter-spacing:3px;color:var(--green-primary);margin-bottom:12px;">TRANSMISSION RECEIVED</div>
-            <div style="font-family:var(--font-ui);font-size:14px;color:var(--text-secondary);line-height:1.6;">We'll be in touch within 24 hours.</div>
-            <div style="font-family:var(--font-mono);font-size:13px;color:var(--green-primary);margin-top:20px;letter-spacing:1px;">Your access code: SYL-9K4R2</div>
-            <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-secondary);margin-top:6px;opacity:0.5;letter-spacing:0.5px;">Enter this code on the Research page to unlock classified content.</div>
-          </div>
-        `;
-        setTimeout(() => closeModal(), 3000);
-      })
-      .catch(() => {
-        alert('Something went wrong. Please email us directly at hello@sylaratech.com');
-      });
-    }
-
-    const startTime = Date.now();
-    function updateUptime() {
-      const elapsed = Math.floor((Date.now() - startTime) / 1000);
-      const d = Math.floor(elapsed / 86400);
-      const h = Math.floor((elapsed % 86400) / 3600);
-      const m = Math.floor((elapsed % 3600) / 60);
-      const s = elapsed % 60;
-      document.getElementById('uptime-val').textContent = d+'d '+h+'h '+m+'m '+s+'s';
-    }
-
-    let cycles = 128745;
-    function updateCycles() {
-      cycles += Math.floor(Math.random() * 3);
-      document.getElementById('cycle-val').textContent = cycles.toLocaleString();
-    }
-
-    setInterval(updateUptime, 1000);
-    setInterval(updateCycles, 3000);
-    updateUptime();
-  </script>
-
+  // Initial check
+  setTimeout(() => {
+    checkFadeUps();
+    updateDots();
+  }, 100);
+</script>
 </body>
 </html>

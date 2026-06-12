@@ -486,6 +486,9 @@
       text-align: center;
       margin-bottom: 6px;
       position: relative;
+      min-width: 0;
+      overflow-wrap: break-word;
+      word-break: break-word;
     }
 
     /* Subtle decorative lines flanking the collab line */
@@ -1070,7 +1073,7 @@
       }
 
       .tagline-collab {
-        font-size: 11px;
+        font-size: 10px;
         letter-spacing: 1px;
       }
 
@@ -1188,6 +1191,15 @@
       #content-home > div:last-child {
         grid-template-columns: 1fr !important;
       }
+    }
+
+    /* Mid-range: 3-col layout, center col narrow — tighten tagline */
+    @media (max-width: 960px) and (min-width: 769px) {
+      .tagline-collab {
+        font-size: 10px;
+        letter-spacing: 1px;
+      }
+      .tagline-collab-line { display: none; }
     }
 
     /* MOBILE NAV — HAMBURGER MENU */
@@ -2201,7 +2213,7 @@
           <div class="avatar-ring-outer"></div>
           <div class="avatar-ring-mid"></div>
           <div class="avatar-ring-inner">
-            <img class="avatar-image" src="sylara-avatar.png" alt="Sylara">
+            <img class="avatar-image" src="images/sylara-avatar.png" alt="Sylara">
           </div>
         </div>
         <div class="tagline-company" style="color:#9b5de5;font-family:'Syncopate',sans-serif;letter-spacing:6px;">SYLARA TECHNOLOGIES</div>
@@ -2541,7 +2553,7 @@
             <div class="avatar-ring-outer"></div>
             <div class="avatar-ring-mid"></div>
             <div class="avatar-ring-inner">
-              <img class="avatar-image" src="sylara-avatar.png" alt="Sylara">
+              <img class="avatar-image" src="images/sylara-avatar.png" alt="Sylara">
             </div>
           </div>
         </div>
