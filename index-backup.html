@@ -178,27 +178,33 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      background: rgba(8,8,10,0.4);
+      padding: 8px 12px;
+      border-radius: 6px;
     }
     .brand-avatar {
-      width: 36px;
-      height: 36px;
+      width: 64px;
+      height: 64px;
+      min-width: 64px;
+      min-height: 64px;
       border-radius: 50%;
       border: 1.5px solid rgba(201,150,58,0.5);
       overflow: hidden;
       object-fit: cover;
+      flex-shrink: 0;
     }
     .brand-name {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 13px;
-      font-weight: 600;
+      font-size: 18px;
+      font-weight: 700;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: var(--white);
+      color: #7B5EA7;
       line-height: 1.2;
     }
     .brand-sub {
       font-family: 'DM Mono', monospace;
-      font-size: 9px;
+      font-size: 11px;
       letter-spacing: 1.5px;
       color: var(--gold);
       text-transform: uppercase;
@@ -306,34 +312,36 @@
     /* cork board hook note */
     .corkboard-hook {
       position: absolute;
-      top: 12vh;
-      right: 8vw;
-      background: white;
+      top: 18vh;
+      right: 12vw;
+      background: #FFFDE8;
       color: #1a1a1a;
       font-family: 'DM Mono', monospace;
-      font-size: clamp(10px, 1.2vw, 13px);
-      line-height: 1.5;
-      padding: 16px 14px 14px;
-      width: clamp(140px, 16vw, 200px);
-      transform: rotate(2deg);
-      box-shadow: 3px 4px 12px rgba(0,0,0,0.45);
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.7;
+      padding: 28px 18px 18px;
+      width: 220px;
+      transform: rotate(-3deg);
+      box-shadow: 3px 5px 18px rgba(0,0,0,0.55), inset 0 -2px 4px rgba(0,0,0,0.05);
+      border: none;
       z-index: 20;
     }
     .corkboard-hook::before {
       content: '';
       position: absolute;
-      top: -8px;
+      top: -9px;
       left: 50%;
       transform: translateX(-50%);
-      width: 14px;
-      height: 14px;
+      width: 16px;
+      height: 16px;
       border-radius: 50%;
       background: #c0392b;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.6);
     }
     .hook-question {
-      font-size: clamp(9px, 1.1vw, 12px);
-      color: #333;
+      font-size: clamp(10px, 1.2vw, 13px);
+      color: #2a2a2a;
       margin-top: 6px;
       font-style: italic;
     }
@@ -341,12 +349,14 @@
     /* hero title overlay */
     .hero-title-wrap {
       position: absolute;
-      top: 50%;
+      top: 42%;
       left: 0;
-      right: 0;
+      right: 20%;
       transform: translateY(-50%);
       text-align: center;
-      padding: 0 5vw;
+      width: auto;
+      padding: 0 5% 0 8%;
+      box-sizing: border-box;
     }
     .hero-eyebrow {
       font-family: 'DM Mono', monospace;
@@ -358,13 +368,14 @@
     }
     .hero-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(36px, 5.5vw, 82px);
+      font-size: clamp(28px, 4.5vw, 64px);
       font-weight: 300;
       letter-spacing: -1px;
       line-height: 1.05;
       color: var(--white);
-      overflow-wrap: break-word;
+      white-space: normal;
       word-break: break-word;
+      max-width: 100%;
     }
     .hero-title em {
       font-style: italic;
@@ -877,7 +888,7 @@
     }
     .dash-title {
       font-family: 'DM Mono', monospace;
-      font-size: 8px;
+      font-size: 11px;
       color: var(--gold2);
       letter-spacing: 1.5px;
       text-transform: uppercase;
@@ -885,7 +896,7 @@
     .dash-status {
       margin-left: auto;
       font-family: 'DM Mono', monospace;
-      font-size: 7px;
+      font-size: 10px;
       color: #4bffb0;
       letter-spacing: 1px;
     }
@@ -903,14 +914,14 @@
     }
     .dash-stat-num {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(10px, 1.2vw, 14px);
+      font-size: 18px;
       font-weight: 700;
       color: var(--gold2);
       line-height: 1;
     }
     .dash-stat-label {
       font-family: 'DM Mono', monospace;
-      font-size: 6px;
+      font-size: 9px;
       color: var(--muted);
       letter-spacing: 0.5px;
       margin-top: 2px;
@@ -936,13 +947,13 @@
     .dash-item-dot.blue { background: #4b9fff; }
     .dash-item-label {
       font-family: 'DM Mono', monospace;
-      font-size: 7px;
+      font-size: 10px;
       color: #a8b4cc;
       flex: 1;
     }
     .dash-item-status {
       font-family: 'DM Mono', monospace;
-      font-size: 7px;
+      font-size: 10px;
       color: #4bffb0;
     }
 
@@ -1121,7 +1132,7 @@
       .sticky-note { padding: 24px 12px 8px; min-width: 56px; font-size: 9px; }
       .nav-dots { right: 12px; }
       .back-to-top { right: 16px; bottom: 16px; }
-      .corkboard-hook { right: 3vw; top: 10vh; width: 120px; }
+      .corkboard-hook { right: 4vw; top: 10vh; width: 130px; font-size: 11px; }
       .hero-title { font-size: clamp(28px, 9vw, 52px); }
       .hero-monitor-wrap { display: none; }
       .pain-layout { flex-direction: column; align-items: flex-start; padding: 0 4vw 4vh; gap: 16px; }
@@ -1180,7 +1191,8 @@
 
   <!-- Cork board hook note — clean, prominent -->
   <div class="corkboard-hook fade-up" id="hook-note-1">
-    <div style="font-weight:600; font-size: clamp(9px,1.1vw,12px); color:#222;">What if your operations stopped slowing you down?</div>
+    <div style="font-weight:600; color:#222;">What if your operations stopped slowing you down?</div>
+    <div style="font-size:10px; color:#888; margin-top:10px; font-style:italic;">— Sylara Technologies</div>
   </div>
 
   <!-- Hero title center -->
@@ -1193,13 +1205,6 @@
     </a>
   </div>
 
-  <!-- Monitor with avatar -->
-  <div class="hero-monitor-wrap fade-up">
-    <div class="monitor-screen">
-      <img src="images/sylara-avatar.png" alt="Sylara" class="monitor-avatar" />
-      <div class="monitor-scanline"></div>
-    </div>
-  </div>
 </section>
 
 <!-- ═══════════════════════════════════════════════════════ -->
@@ -1221,46 +1226,35 @@
     <div class="pain-note">Missed Follow-Ups</div>
   </div>
 
-  <div class="section-content">
-    <div class="pain-layout">
-      <!-- Monitor — chaos inbox -->
-      <div class="pain-monitor-wrap fade-up">
-        <div class="pain-monitor-screen">
-          <div class="monitor-chaos">
-            <div class="chaos-bar">
-              <div class="chaos-dot red"></div>
-              <div class="chaos-dot yellow"></div>
-              <div class="chaos-dot green"></div>
-              <span style="margin-left:6px;">Inbox — 247 unread</span>
-            </div>
-            <div class="chaos-alerts">
-              <div class="chaos-alert urgent">⚡ OVERDUE — Client report not submitted</div>
-              <div class="chaos-alert urgent">⚡ URGENT — Follow-up missed · 3 leads cold</div>
-              <div class="chaos-alert warn">⚠ Invoice #1042 — payment 14 days late</div>
-              <div class="chaos-alert warn">⚠ Handoff incomplete — waiting on data entry</div>
-              <div class="chaos-alert info">ℹ Spreadsheet updated manually by 3 people</div>
-              <div class="chaos-alert urgent">⚡ Report assembly — 2hrs manual work pending</div>
-              <div class="chaos-alert warn">⚠ Client status unknown — no update logged</div>
-              <div class="chaos-alert info">ℹ Meeting notes not transferred to CRM</div>
-            </div>
-            <div class="chaos-count">+239 more alerts unread</div>
-          </div>
-          <div class="monitor-cta-bar">
-            <span class="monitor-cta-text">Ready to stop the bleeding?</span>
-            <a class="monitor-cta-btn" href="#" onclick="scrollToSection('section-5'); return false;">Start a Conversation</a>
-          </div>
-        </div>
-      </div>
+  <!-- Text block — sits over the monitor screen in the photo -->
+  <div class="pain-text-wrap fade-up" style="position:absolute; top:32vh; left:24%; width:34vw; max-width:420px; padding:20px 24px; background:rgba(8,8,14,0.0);">
+    <div class="pain-label">· Admin Overhead ·</div>
+    <div class="pain-heading">Your team is running<br>on <em>manual effort.</em></div>
+    <div class="pain-body">
+      57% of work hours are spent on tasks that could already be automated with today's technology. Every hour your team spends on manual reports, chasing follow-ups, and fixing handoffs is an hour not spent growing your business.
+    </div>
+    <div style="font-family:'DM Mono',monospace; font-size:10px; color:var(--dim); letter-spacing:1px; margin-top:10px;">Source · McKinsey Global Institute, 2025</div>
+  </div>
 
-      <!-- Pain text -->
-      <div class="pain-text-wrap fade-up">
-        <div class="pain-label">· Admin Overhead ·</div>
-        <div class="pain-heading">Your team is running<br>on <em>manual effort.</em></div>
-        <div class="pain-body">
-          57% of work hours are spent on tasks that could already be automated with today's technology. Every hour your team spends on manual reports, chasing follow-ups, and fixing handoffs is an hour not spent growing your business.
-        </div>
-        <div style="font-family:'DM Mono',monospace; font-size:10px; color: var(--dim); letter-spacing:1px;">Source · McKinsey Global Institute, 2025</div>
-      </div>
+  <!-- Inbox monitor — chaos alerts -->
+  <div style="position:absolute; top:38vh; left:44%; width:280px; background:#0d1117; border:1px solid rgba(255,90,90,0.2); border-radius:3px; overflow:visible; z-index:20;">
+    <div style="background:#1a1f2e; border-bottom:1px solid #2a3040; padding:4px 8px; display:flex; gap:6px; align-items:center;">
+      <div style="width:6px;height:6px;border-radius:50%;background:#ff5a5a;"></div>
+      <div style="width:6px;height:6px;border-radius:50%;background:#ffbd2e;"></div>
+      <div style="width:6px;height:6px;border-radius:50%;background:#27c93f;"></div>
+      <span style="font-family:'DM Mono',monospace;font-size:10px;color:#6b7a99;margin-left:4px;">Inbox — 247 unread</span>
+    </div>
+    <div style="padding:4px 6px; display:flex; flex-direction:column; gap:4px;">
+      <div style="padding:5px 7px;border-radius:2px;background:rgba(255,90,90,0.12);border-left:2px solid #ff5a5a;font-family:'DM Mono',monospace;font-size:9px;color:#ff9999;">⚡ OVERDUE — Client report not submitted</div>
+      <div style="padding:5px 7px;border-radius:2px;background:rgba(255,90,90,0.12);border-left:2px solid #ff5a5a;font-family:'DM Mono',monospace;font-size:9px;color:#ff9999;">⚡ URGENT — Follow-up missed · 3 leads cold</div>
+      <div style="padding:5px 7px;border-radius:2px;background:rgba(255,189,46,0.1);border-left:2px solid #ffbd2e;font-family:'DM Mono',monospace;font-size:9px;color:#ffd680;">⚠ Invoice #1042 — payment 14 days late</div>
+      <div style="padding:5px 7px;border-radius:2px;background:rgba(255,189,46,0.1);border-left:2px solid #ffbd2e;font-family:'DM Mono',monospace;font-size:9px;color:#ffd680;">⚠ Handoff incomplete — waiting on data entry</div>
+      <div style="padding:5px 7px;border-radius:2px;background:rgba(75,159,255,0.08);border-left:2px solid #4b9fff;font-family:'DM Mono',monospace;font-size:9px;color:#8cc4ff;">ℹ Spreadsheet updated manually by 3 people</div>
+      <div style="padding:5px 7px;border-radius:2px;background:rgba(255,90,90,0.12);border-left:2px solid #ff5a5a;font-family:'DM Mono',monospace;font-size:9px;color:#ff9999;">⚡ Report assembly — 2hrs manual work pending</div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 8px;border-top:1px solid rgba(201,150,58,0.2);margin-top:2px;">
+      <span style="font-family:'DM Mono',monospace;font-size:9px;color:#E8B96A;letter-spacing:1px;">Ready to stop the bleeding?</span>
+      <a href="#section-5" style="font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#08080A;background:#C9963A;padding:4px 8px;text-decoration:none;border-radius:1px;">Start a Conversation</a>
     </div>
   </div>
 </section>
@@ -1284,108 +1278,101 @@
     <div class="pain-note" style="background: #98D4B8;">Data Entry Errors</div>
   </div>
 
-  <div class="section-content">
-    <div class="pain-layout">
-      <!-- Monitor — overlapping spreadsheets -->
-      <div class="pain-monitor-wrap fade-up">
-        <div class="pain-monitor-screen">
-          <div class="monitor-sheets">
-            <!-- Window 1 -->
-            <div class="sheet-window sheet-window-1">
-              <div class="sheet-titlebar">
-                <div class="sheet-dot" style="background:#ff5a5a;"></div>
-                <div class="sheet-dot" style="background:#ffbd2e;"></div>
-                <div class="sheet-dot" style="background:#27c93f;"></div>
-                <span class="sheet-title">Q2_invoices_FINAL_v3.xlsx</span>
-              </div>
-              <div class="sheet-body">
-                <div class="sheet-row">
-                  <div class="sheet-cell header">Client</div>
-                  <div class="sheet-cell header">Amt</div>
-                  <div class="sheet-cell header">Due</div>
-                  <div class="sheet-cell header">Status</div>
-                </div>
-                <div class="sheet-row">
-                  <div class="sheet-cell">Acme Co</div>
-                  <div class="sheet-cell">$4,200</div>
-                  <div class="sheet-cell red">May 1</div>
-                  <div class="sheet-cell red">OVERDUE</div>
-                </div>
-                <div class="sheet-row">
-                  <div class="sheet-cell">TechCorp</div>
-                  <div class="sheet-cell">$8,500</div>
-                  <div class="sheet-cell warn">May 15</div>
-                  <div class="sheet-cell warn">PENDING</div>
-                </div>
-                <div class="sheet-row">
-                  <div class="sheet-cell">GlobalSMB</div>
-                  <div class="sheet-cell">$2,100</div>
-                  <div class="sheet-cell red">Apr 28</div>
-                  <div class="sheet-cell red">OVERDUE</div>
-                </div>
-              </div>
+  <!-- Text block — sits over the monitor screen left side -->
+  <div class="pain-text-wrap fade-up" style="position:absolute; top:32vh; left:22%; width:34vw; max-width:420px; padding:20px 24px; background:transparent;">
+    <div class="pain-label">· Finance · Customer Service · Operations ·</div>
+    <div class="pain-heading">It's not just <em>one department.</em></div>
+    <div class="pain-body">
+      SMB owners lose an average of 120 working days per year to administrative tasks across finance, customer service, and operations. The problem isn't effort. It's that the systems weren't built to scale with you.
+    </div>
+    <div style="font-family:'DM Mono',monospace; font-size:10px; color:var(--dim); letter-spacing:1px;">Source · Xero — Sweating the Small Stuff Report</div>
+  </div>
+
+  <!-- Spreadsheet widget — CSS class approach, positioned on monitor -->
+  <div class="pain-monitor-wrap fade-up" style="position:absolute; top:36vh; left:43%; width:min(320px,36vw);">
+    <div class="pain-monitor-screen">
+      <div class="monitor-sheets">
+        <div class="sheet-window sheet-window-1">
+          <div class="sheet-titlebar">
+            <div class="sheet-dot" style="background:#ff5a5a;"></div>
+            <div class="sheet-dot" style="background:#ffbd2e;"></div>
+            <div class="sheet-dot" style="background:#27c93f;"></div>
+            <span class="sheet-title">Q2_invoices_FINAL_v3.xlsx</span>
+          </div>
+          <div class="sheet-body">
+            <div class="sheet-row">
+              <div class="sheet-cell header">Client</div>
+              <div class="sheet-cell header">Amt</div>
+              <div class="sheet-cell header">Due</div>
+              <div class="sheet-cell header">Status</div>
             </div>
-            <!-- Window 2 -->
-            <div class="sheet-window sheet-window-2">
-              <div class="sheet-titlebar">
-                <div class="sheet-dot" style="background:#ff5a5a;"></div>
-                <div class="sheet-dot" style="background:#ffbd2e;"></div>
-                <div class="sheet-dot" style="background:#27c93f;"></div>
-                <span class="sheet-title">customer_queue_live.csv</span>
-              </div>
-              <div class="sheet-body">
-                <div class="sheet-row">
-                  <div class="sheet-cell header">Ticket</div>
-                  <div class="sheet-cell header">Wait</div>
-                  <div class="sheet-cell header">Priority</div>
-                </div>
-                <div class="sheet-row">
-                  <div class="sheet-cell">#4821</div>
-                  <div class="sheet-cell red">3d 4h</div>
-                  <div class="sheet-cell red">HIGH</div>
-                </div>
-                <div class="sheet-row">
-                  <div class="sheet-cell">#4820</div>
-                  <div class="sheet-cell red">2d 7h</div>
-                  <div class="sheet-cell warn">MED</div>
-                </div>
-                <div class="sheet-row">
-                  <div class="sheet-cell">#4819</div>
-                  <div class="sheet-cell warn">1d 2h</div>
-                  <div class="sheet-cell warn">MED</div>
-                </div>
-              </div>
+            <div class="sheet-row">
+              <div class="sheet-cell">Acme Co</div>
+              <div class="sheet-cell">$4,200</div>
+              <div class="sheet-cell red">May 1</div>
+              <div class="sheet-cell red">OVERDUE</div>
             </div>
-            <!-- Window 3 -->
-            <div class="sheet-window sheet-window-3">
-              <div class="sheet-titlebar">
-                <div class="sheet-dot" style="background:#ff5a5a;"></div>
-                <div class="sheet-dot" style="background:#ffbd2e;"></div>
-                <div class="sheet-dot" style="background:#27c93f;"></div>
-                <span class="sheet-title">data_entry_log_errors.txt</span>
-              </div>
-              <div class="sheet-body">
-                <div class="sheet-row"><div class="sheet-cell red" style="width:100%;">ERROR: Duplicate entry row 847</div></div>
-                <div class="sheet-row"><div class="sheet-cell warn" style="width:100%;">WARN: Format mismatch col D</div></div>
-                <div class="sheet-row"><div class="sheet-cell red" style="width:100%;">ERROR: Missing value rows 901-912</div></div>
-              </div>
+            <div class="sheet-row">
+              <div class="sheet-cell">TechCorp</div>
+              <div class="sheet-cell">$8,500</div>
+              <div class="sheet-cell warn">May 15</div>
+              <div class="sheet-cell warn">PENDING</div>
+            </div>
+            <div class="sheet-row">
+              <div class="sheet-cell">GlobalSMB</div>
+              <div class="sheet-cell">$2,100</div>
+              <div class="sheet-cell red">Apr 28</div>
+              <div class="sheet-cell red">OVERDUE</div>
             </div>
           </div>
-          <div class="monitor-cta-bar">
-            <span class="monitor-cta-text">Sound familiar?</span>
-            <a class="monitor-cta-btn" href="#" onclick="scrollToSection('section-5'); return false;">Let's Fix This</a>
+        </div>
+        <div class="sheet-window sheet-window-2">
+          <div class="sheet-titlebar">
+            <div class="sheet-dot" style="background:#ff5a5a;"></div>
+            <div class="sheet-dot" style="background:#ffbd2e;"></div>
+            <div class="sheet-dot" style="background:#27c93f;"></div>
+            <span class="sheet-title">customer_queue_live.csv</span>
+          </div>
+          <div class="sheet-body">
+            <div class="sheet-row">
+              <div class="sheet-cell header">Ticket</div>
+              <div class="sheet-cell header">Wait</div>
+              <div class="sheet-cell header">Priority</div>
+            </div>
+            <div class="sheet-row">
+              <div class="sheet-cell">#4821</div>
+              <div class="sheet-cell red">3d 4h</div>
+              <div class="sheet-cell red">HIGH</div>
+            </div>
+            <div class="sheet-row">
+              <div class="sheet-cell">#4820</div>
+              <div class="sheet-cell red">2d 7h</div>
+              <div class="sheet-cell warn">MED</div>
+            </div>
+            <div class="sheet-row">
+              <div class="sheet-cell">#4819</div>
+              <div class="sheet-cell warn">1d 2h</div>
+              <div class="sheet-cell warn">MED</div>
+            </div>
+          </div>
+        </div>
+        <div class="sheet-window sheet-window-3">
+          <div class="sheet-titlebar">
+            <div class="sheet-dot" style="background:#ff5a5a;"></div>
+            <div class="sheet-dot" style="background:#ffbd2e;"></div>
+            <div class="sheet-dot" style="background:#27c93f;"></div>
+            <span class="sheet-title">data_entry_log_errors.txt</span>
+          </div>
+          <div class="sheet-body">
+            <div class="sheet-row"><div class="sheet-cell red" style="width:100%;">ERROR: Duplicate entry row 847</div></div>
+            <div class="sheet-row"><div class="sheet-cell warn" style="width:100%;">WARN: Format mismatch col D</div></div>
+            <div class="sheet-row"><div class="sheet-cell red" style="width:100%;">ERROR: Missing value rows 901-912</div></div>
           </div>
         </div>
       </div>
-
-      <!-- Pain text -->
-      <div class="pain-text-wrap fade-up">
-        <div class="pain-label">· Finance · Customer Service · Operations ·</div>
-        <div class="pain-heading">It's not just <em>one department.</em></div>
-        <div class="pain-body">
-          SMB owners lose an average of 120 working days per year to administrative tasks across finance, customer service, and operations. The problem isn't effort. It's that the systems weren't built to scale with you.
-        </div>
-        <div style="font-family:'DM Mono',monospace; font-size:10px; color: var(--dim); letter-spacing:1px;">Source · Xero — Sweating the Small Stuff Report</div>
+      <div class="monitor-cta-bar">
+        <span class="monitor-cta-text">Sound familiar?</span>
+        <a class="monitor-cta-btn" href="#" onclick="scrollToSection('section-5'); return false;">Let's Fix This</a>
       </div>
     </div>
   </div>
@@ -1434,8 +1421,8 @@
       </div>
 
       <!-- Right — solution monitor dashboard -->
-      <div class="solution-monitor-wrap fade-up">
-        <div class="solution-monitor-screen">
+      <div class="solution-monitor-wrap fade-up" style="position:absolute; top:40%; left:40%; width:min(480px,52vw);">
+        <div class="solution-monitor-screen" style="min-height:320px;">
           <div class="dashboard-inner">
             <div class="dash-header">
               <img src="images/sylara-avatar.png" alt="" class="dash-logo" />
