@@ -6,8 +6,7 @@
   <title>Sylara Technologies — Systems Intelligence</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <style>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Kalam:wght@400;700&display=swap" rel="stylesheet" />  <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
@@ -132,41 +131,44 @@
       pointer-events: all;
     }
     .sticky-note {
-      background: #F5E642;
-      color: #1a1a1a;
+      background: rgba(8,8,10,0.6);
+      color: var(--gold2);
       font-family: 'DM Mono', monospace;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 500;
-      letter-spacing: 0.5px;
-      padding: 28px 20px 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 10px 18px;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.25s;
       position: relative;
-      box-shadow: 2px 3px 8px rgba(0,0,0,0.35);
+      border-left: 2px solid var(--gold);
+      border-bottom: 1px solid rgba(201,150,58,0.35);
       min-width: 72px;
       text-align: center;
-      transform: rotate(-1deg);
+      transform: none;
       user-select: none;
+      backdrop-filter: blur(8px);
     }
-    .sticky-note:nth-child(2) { transform: rotate(1.5deg); background: #F5E642; margin-left: -2px; }
-    .sticky-note:nth-child(3) { transform: rotate(-0.5deg); background: #F0DC3A; margin-left: -2px; }
-    .sticky-note:nth-child(4) { transform: rotate(2deg); background: #F5E642; margin-left: -2px; }
+    .sticky-note:nth-child(2) { transform: none; background: rgba(8,8,10,0.6); margin-left: 8px;
+      color: #C4A8E0;
+      border-left-color: #9b5de5;
+      border-bottom-color: rgba(155,93,229,0.35);
+    }
+    .sticky-note:nth-child(3) { transform: none; background: rgba(8,8,10,0.6); margin-left: 8px; }
+    .sticky-note:nth-child(4) { transform: none; background: rgba(8,8,10,0.6); margin-left: 8px; }
     .sticky-note::before {
-      content: '';
-      position: absolute;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: rgba(180,30,30,0.7);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+      display: none;
     }
     .sticky-note:hover {
-      transform: rotate(0deg) translateY(-4px) !important;
+      transform: translateY(-2px) !important;
       z-index: 10;
-      box-shadow: 3px 6px 16px rgba(0,0,0,0.5);
+      background: rgba(201,150,58,0.08);
+      color: var(--gold);
+    }
+    .sticky-note:nth-child(2):hover {
+      background: rgba(155,93,229,0.1);
+      color: #d4b8f0;
     }
 
     /* ── BRAND MARK top left ── */
@@ -349,10 +351,10 @@
     /* hero title overlay */
     .hero-title-wrap {
       position: absolute;
-      top: 42%;
+      top: 55%;
       left: 0;
       right: 20%;
-      transform: translateY(-50%);
+      transform: translateY(-50%) perspective(1200px) rotateY(17deg);
       text-align: center;
       width: auto;
       padding: 0 5% 0 8%;
@@ -433,32 +435,23 @@
       z-index: 20;
     }
     .pain-note {
-      background: #87CEEB;
-      color: #0d1a2a;
-      font-family: 'DM Mono', monospace;
-      font-size: clamp(10px, 1.1vw, 13px);
-      font-weight: 500;
-      padding: 12px 14px 10px;
-      box-shadow: 2px 3px 10px rgba(0,0,0,0.5);
+      background: transparent;
+      color: #000000;
+      font-family: 'Kalam', cursive;
+      font-size: clamp(18px, 2vw, 26px);
+      font-weight: 700;
+      line-height: 1.2;
+      padding: 0;
+      box-shadow: none;
       position: relative;
-      min-width: 140px;
+      min-width: 0;
       text-align: center;
+      text-shadow: none;
     }
-    .pain-note:nth-child(1) { transform: rotate(-2deg); }
-    .pain-note:nth-child(2) { transform: rotate(1.5deg); }
-    .pain-note:nth-child(3) { transform: rotate(-1deg); }
-    .pain-note::before {
-      content: '';
-      position: absolute;
-      top: -7px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: #c0392b;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.5);
-    }
+    .pain-note:nth-child(1) { transform: rotate(-3deg); }
+    .pain-note:nth-child(2) { transform: rotate(1deg); }
+    .pain-note:nth-child(3) { transform: rotate(-2deg); }
+    .pain-note::before { display: none; }
 
     /* buried hook note */
     .hook-buried {
@@ -636,15 +629,15 @@
     .sheet-window-3 { top: 45%; left: 35%; width: 55%; height: 45%; z-index: 3; border-color: #ffbd2e44; }
     .sheet-titlebar {
       background: #1a2030;
-      padding: 3px 6px;
+      padding: 6px 8px;
       display: flex;
       align-items: center;
       gap: 4px;
       border-bottom: 1px solid #2a3040;
     }
     .sheet-dot { width: 5px; height: 5px; border-radius: 50%; }
-    .sheet-title { font-size: 7px; color: #6b7a99; margin-left: 4px; }
-    .sheet-body { padding: 4px; }
+    .sheet-title { font-size: 10px; color: #6b7a99; margin-left: 4px; }
+    .sheet-body { padding: 8px; }
     .sheet-row {
       display: flex;
       gap: 2px;
@@ -652,10 +645,11 @@
     }
     .sheet-cell {
       background: #1a2030;
-      padding: 2px 4px;
+      padding: 5px 6px;
       color: #6b7a99;
-      min-width: 32px;
-      font-size: 6px;
+      min-width: 0;
+      flex: 1;
+      font-size: 11px;
     }
     .sheet-cell.red { background: rgba(255,90,90,0.2); color: #ff9999; }
     .sheet-cell.warn { background: rgba(255,189,46,0.15); color: #ffd680; }
@@ -989,15 +983,16 @@
     }
     .contact-label {
       font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 2px;
+      font-size: 13px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
       color: var(--gold);
-      margin-bottom: 16px;
+      margin-bottom: 6px;
+      display: block;
     }
     .contact-heading {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(32px, 4vw, 52px);
+      font-size: clamp(40px, 5.5vw, 68px);
       font-weight: 300;
       line-height: 1.1;
       color: var(--white);
@@ -1005,7 +1000,7 @@
     }
     .contact-heading em { font-style: italic; color: var(--gold2); }
     .contact-body {
-      font-size: 13px;
+      font-size: 15px;
       color: var(--muted);
       line-height: 1.7;
     }
@@ -1044,7 +1039,7 @@
       border: none;
       outline: none;
       font-family: 'DM Mono', monospace;
-      font-size: 13px;
+      font-size: 16px;
       color: var(--white);
       padding: 2px 0;
     }
@@ -1161,7 +1156,7 @@
 </div>
 
 <!-- STICKY NOTE NAV -->
-<div class="sticky-nav" style="justify-content: flex-end;">
+<div class="sticky-nav" style="justify-content: flex-end; padding-right: 14vw;">
   <div class="sticky-note-nav">
     <div class="sticky-note" onclick="scrollToSection('section-1')">About</div>
     <div class="sticky-note" onclick="scrollToSection('section-4')">Research</div>
@@ -1189,19 +1184,13 @@
   <div class="section-bg" id="bg-1"></div>
   <div class="section-overlay"></div>
 
-  <!-- Cork board hook note — clean, prominent -->
-  <div class="corkboard-hook fade-up" id="hook-note-1">
-    <div style="font-weight:600; color:#222;">What if your operations stopped slowing you down?</div>
-    <div style="font-size:10px; color:#888; margin-top:10px; font-style:italic;">— Sylara Technologies</div>
-  </div>
-
   <!-- Hero title center -->
-  <div class="hero-title-wrap fade-up">
+  <div class="hero-title-wrap">
     <div class="hero-eyebrow">Systems Intelligence</div>
     <div class="hero-title">From <em>Collaboration</em><br>to Automation</div>
     <div class="hero-tagline">Observing · Interpreting · Evolving</div>
     <a class="cta-subtle" href="#" onclick="scrollToSection('section-2'); return false;">
-      See the problem <span class="arrow">→</span>
+        EVOLVE FOR TOMORROW <span class="arrow">→</span>
     </a>
   </div>
 
@@ -1220,14 +1209,11 @@
   </div>
 
   <!-- Pain point notes on cork board -->
-  <div class="pain-notes">
-    <div class="pain-note">Manual Reports</div>
-    <div class="pain-note">Messy Handoffs</div>
-    <div class="pain-note">Missed Follow-Ups</div>
-  </div>
-
+  <div style="position:absolute; top:5%; right:30%; transform: rotate(-3deg); z-index:20; font-family:'Kalam',cursive; font-size:clamp(18px,2vw,26px); font-weight:700; line-height:1.2; color:#000000; text-align:center;">Manual<br>Reports</div>
+  <div style="position:absolute; top:25%; right:19%; transform: rotate(1deg); z-index:20; font-family:'Kalam',cursive; font-size:clamp(18px,2vw,26px); font-weight:700; line-height:1.2; color:#000000; text-align:center;">Messy<br>Handoffs</div>
+  <div style="position:absolute; top:25%; right:3%; transform: rotate(-2deg); z-index:20; font-family:'Kalam',cursive; font-size:clamp(18px,2vw,26px); font-weight:700; line-height:1.2; color:#000000; text-align:center;">Missed<br>Follow-Ups</div>
   <!-- Text block — sits over the monitor screen in the photo -->
-  <div class="pain-text-wrap fade-up" style="position:absolute; top:32vh; left:24%; width:34vw; max-width:420px; padding:20px 24px; background:rgba(8,8,14,0.0);">
+  <div class="pain-text-wrap" style="position:absolute; top:32vh; left:24%; width:34vw; max-width:420px; padding:20px 24px; background:rgba(8,8,14,0.0); transform: perspective(1200px) rotateY(17deg);">
     <div class="pain-label">· Admin Overhead ·</div>
     <div class="pain-heading">Your team is running<br>on <em>manual effort.</em></div>
     <div class="pain-body">
@@ -1237,8 +1223,7 @@
   </div>
 
   <!-- Inbox monitor — chaos alerts -->
-  <div style="position:absolute; top:38vh; left:44%; width:280px; background:#0d1117; border:1px solid rgba(255,90,90,0.2); border-radius:3px; overflow:visible; z-index:20;">
-    <div style="background:#1a1f2e; border-bottom:1px solid #2a3040; padding:4px 8px; display:flex; gap:6px; align-items:center;">
+<div style="position:absolute; top:38vh; left:44%; width:280px; background:#0d1117; border:1px solid rgba(255,90,90,0.2); border-radius:3px; overflow:visible; z-index:20; transform: perspective(1200px) rotateY(17deg);">    <div style="background:#1a1f2e; border-bottom:1px solid #2a3040; padding:4px 8px; display:flex; gap:6px; align-items:center;">
       <div style="width:6px;height:6px;border-radius:50%;background:#ff5a5a;"></div>
       <div style="width:6px;height:6px;border-radius:50%;background:#ffbd2e;"></div>
       <div style="width:6px;height:6px;border-radius:50%;background:#27c93f;"></div>
@@ -1253,8 +1238,8 @@
       <div style="padding:5px 7px;border-radius:2px;background:rgba(255,90,90,0.12);border-left:2px solid #ff5a5a;font-family:'DM Mono',monospace;font-size:9px;color:#ff9999;">⚡ Report assembly — 2hrs manual work pending</div>
     </div>
     <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 8px;border-top:1px solid rgba(201,150,58,0.2);margin-top:2px;">
-      <span style="font-family:'DM Mono',monospace;font-size:9px;color:#E8B96A;letter-spacing:1px;">Ready to stop the bleeding?</span>
-      <a href="#section-5" style="font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#08080A;background:#C9963A;padding:4px 8px;text-decoration:none;border-radius:1px;">Start a Conversation</a>
+      <span style="font-family:'DM Mono',monospace;font-size:9px;color:#E8B96A;letter-spacing:1px;">Evolve for Tomorrow</span>
+      <a href="#section-5" style="font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#08080A;background:#C9963A;padding:4px 8px;text-decoration:none;border-radius:1px;">→</a>
     </div>
   </div>
 </section>
@@ -1272,108 +1257,103 @@
   </div>
 
   <!-- Different pain notes -->
-  <div class="pain-notes">
-    <div class="pain-note" style="background: #98D4B8;">Late Invoices</div>
-    <div class="pain-note" style="background: #98D4B8;">Slow Response Times</div>
-    <div class="pain-note" style="background: #98D4B8;">Data Entry Errors</div>
-  </div>
+  <div style="position:absolute; top:5%; right:30%; transform: rotate(-3deg); z-index:20; font-family:'Kalam',cursive; font-size:clamp(18px,2vw,26px); font-weight:700; line-height:1.2; color:#000000; text-align:center;">Late<br>Invoices</div>
+  <div style="position:absolute; top:25%; right:18.7%; transform: rotate(1deg); z-index:20; font-family:'Kalam',cursive; font-size:clamp(18px,2vw,26px); font-weight:700; line-height:1.2; color:#000000; text-align:center;">Missed<br>Deadlines</div>
+  <div style="position:absolute; top:26%; right:2.8%; transform: rotate(-2deg); z-index:20; font-family:'Kalam',cursive; font-size:clamp(18px,2vw,26px); font-weight:700; line-height:1.2; color:#000000; text-align:center;">Data Entry<br>Errors</div>
 
   <!-- Text block — sits over the monitor screen left side -->
-  <div class="pain-text-wrap fade-up" style="position:absolute; top:32vh; left:22%; width:34vw; max-width:420px; padding:20px 24px; background:transparent;">
+  <div class="pain-text-wrap" style="position:absolute; top:36vh; left:24%; width:34vw; max-width:420px; padding:20px 24px; background:transparent; transform: perspective(1200px) rotateY(17deg);">
     <div class="pain-label">· Finance · Customer Service · Operations ·</div>
     <div class="pain-heading">It's not just <em>one department.</em></div>
     <div class="pain-body">
       SMB owners lose an average of 120 working days per year to administrative tasks across finance, customer service, and operations. The problem isn't effort. It's that the systems weren't built to scale with you.
     </div>
     <div style="font-family:'DM Mono',monospace; font-size:10px; color:var(--dim); letter-spacing:1px;">Source · Xero — Sweating the Small Stuff Report</div>
+    <a class="cta-subtle" href="#" onclick="scrollToSection('section-5'); return false;" style="margin-top:24px;">
+      Evolve for Tomorrow <span class="arrow">→</span>
+    </a>
   </div>
 
   <!-- Spreadsheet widget — CSS class approach, positioned on monitor -->
-  <div class="pain-monitor-wrap fade-up" style="position:absolute; top:36vh; left:43%; width:min(320px,36vw);">
-    <div class="pain-monitor-screen">
-      <div class="monitor-sheets">
-        <div class="sheet-window sheet-window-1">
-          <div class="sheet-titlebar">
-            <div class="sheet-dot" style="background:#ff5a5a;"></div>
-            <div class="sheet-dot" style="background:#ffbd2e;"></div>
-            <div class="sheet-dot" style="background:#27c93f;"></div>
-            <span class="sheet-title">Q2_invoices_FINAL_v3.xlsx</span>
-          </div>
-          <div class="sheet-body">
-            <div class="sheet-row">
-              <div class="sheet-cell header">Client</div>
-              <div class="sheet-cell header">Amt</div>
-              <div class="sheet-cell header">Due</div>
-              <div class="sheet-cell header">Status</div>
-            </div>
-            <div class="sheet-row">
-              <div class="sheet-cell">Acme Co</div>
-              <div class="sheet-cell">$4,200</div>
-              <div class="sheet-cell red">May 1</div>
-              <div class="sheet-cell red">OVERDUE</div>
-            </div>
-            <div class="sheet-row">
-              <div class="sheet-cell">TechCorp</div>
-              <div class="sheet-cell">$8,500</div>
-              <div class="sheet-cell warn">May 15</div>
-              <div class="sheet-cell warn">PENDING</div>
-            </div>
-            <div class="sheet-row">
-              <div class="sheet-cell">GlobalSMB</div>
-              <div class="sheet-cell">$2,100</div>
-              <div class="sheet-cell red">Apr 28</div>
-              <div class="sheet-cell red">OVERDUE</div>
-            </div>
-          </div>
-        </div>
-        <div class="sheet-window sheet-window-2">
-          <div class="sheet-titlebar">
-            <div class="sheet-dot" style="background:#ff5a5a;"></div>
-            <div class="sheet-dot" style="background:#ffbd2e;"></div>
-            <div class="sheet-dot" style="background:#27c93f;"></div>
-            <span class="sheet-title">customer_queue_live.csv</span>
-          </div>
-          <div class="sheet-body">
-            <div class="sheet-row">
-              <div class="sheet-cell header">Ticket</div>
-              <div class="sheet-cell header">Wait</div>
-              <div class="sheet-cell header">Priority</div>
-            </div>
-            <div class="sheet-row">
-              <div class="sheet-cell">#4821</div>
-              <div class="sheet-cell red">3d 4h</div>
-              <div class="sheet-cell red">HIGH</div>
-            </div>
-            <div class="sheet-row">
-              <div class="sheet-cell">#4820</div>
-              <div class="sheet-cell red">2d 7h</div>
-              <div class="sheet-cell warn">MED</div>
-            </div>
-            <div class="sheet-row">
-              <div class="sheet-cell">#4819</div>
-              <div class="sheet-cell warn">1d 2h</div>
-              <div class="sheet-cell warn">MED</div>
-            </div>
-          </div>
-        </div>
-        <div class="sheet-window sheet-window-3">
-          <div class="sheet-titlebar">
-            <div class="sheet-dot" style="background:#ff5a5a;"></div>
-            <div class="sheet-dot" style="background:#ffbd2e;"></div>
-            <div class="sheet-dot" style="background:#27c93f;"></div>
-            <span class="sheet-title">data_entry_log_errors.txt</span>
-          </div>
-          <div class="sheet-body">
-            <div class="sheet-row"><div class="sheet-cell red" style="width:100%;">ERROR: Duplicate entry row 847</div></div>
-            <div class="sheet-row"><div class="sheet-cell warn" style="width:100%;">WARN: Format mismatch col D</div></div>
-            <div class="sheet-row"><div class="sheet-cell red" style="width:100%;">ERROR: Missing value rows 901-912</div></div>
-          </div>
-        </div>
+  <div style="position:absolute; top:33%; right:42%; width:300px; background:#111827; border:1px solid #1e2535; border-radius:2px; overflow:hidden; font-family:'DM Mono',monospace; z-index:20; transform: perspective(1200px) rotateY(21deg) rotateX(6deg) rotateZ(1deg);">
+    <div class="sheet-titlebar">
+      <div class="sheet-dot" style="background:#ff5a5a;"></div>
+      <div class="sheet-dot" style="background:#ffbd2e;"></div>
+      <div class="sheet-dot" style="background:#27c93f;"></div>
+      <span class="sheet-title" style="font-size:9px;">Q2_invoices_FINAL_v3.xlsx</span>
+    </div>
+    <div class="sheet-body">
+      <div class="sheet-row">
+        <div class="sheet-cell header">Client</div>
+        <div class="sheet-cell header">Amt</div>
+        <div class="sheet-cell header">Due</div>
+        <div class="sheet-cell header">Status</div>
       </div>
-      <div class="monitor-cta-bar">
-        <span class="monitor-cta-text">Sound familiar?</span>
-        <a class="monitor-cta-btn" href="#" onclick="scrollToSection('section-5'); return false;">Let's Fix This</a>
+      <div class="sheet-row">
+        <div class="sheet-cell">Acme Co</div>
+        <div class="sheet-cell">$4,200</div>
+        <div class="sheet-cell red">May 1</div>
+        <div class="sheet-cell red">OVERDUE</div>
       </div>
+      <div class="sheet-row">
+        <div class="sheet-cell">TechCorp</div>
+        <div class="sheet-cell">$8,500</div>
+        <div class="sheet-cell warn">May 15</div>
+        <div class="sheet-cell warn">PENDING</div>
+      </div>
+      <div class="sheet-row">
+        <div class="sheet-cell">GlobalSMB</div>
+        <div class="sheet-cell">$2,100</div>
+        <div class="sheet-cell red">Apr 28</div>
+        <div class="sheet-cell red">OVERDUE</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sheet 2 — Customer Queue -->
+  <div style="position:absolute; top:49%; right:41.7%; width:300px; background:#111827; border:1px solid #1e2535; border-radius:2px; overflow:hidden; font-family:'DM Mono',monospace; z-index:20; transform: perspective(1200px) rotateY(21deg) rotateX(6deg) rotateZ(-.5deg);">
+    <div class="sheet-titlebar">
+      <div class="sheet-dot" style="background:#ff5a5a;"></div>
+      <div class="sheet-dot" style="background:#ffbd2e;"></div>
+      <div class="sheet-dot" style="background:#27c93f;"></div>
+      <span class="sheet-title">customer_queue_live.csv</span>
+    </div>
+    <div class="sheet-body">
+      <div class="sheet-row">
+        <div class="sheet-cell header">Ticket</div>
+        <div class="sheet-cell header">Wait</div>
+        <div class="sheet-cell header">Priority</div>
+      </div>
+      <div class="sheet-row">
+        <div class="sheet-cell">#4821</div>
+        <div class="sheet-cell red">3d 4h</div>
+        <div class="sheet-cell red">HIGH</div>
+      </div>
+      <div class="sheet-row">
+        <div class="sheet-cell">#4820</div>
+        <div class="sheet-cell red">2d 7h</div>
+        <div class="sheet-cell warn">MED</div>
+      </div>
+      <div class="sheet-row">
+        <div class="sheet-cell">#4819</div>
+        <div class="sheet-cell warn">1d 2h</div>
+        <div class="sheet-cell warn">MED</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sheet 3 — Error Log -->
+  <div style="position:absolute; top:65%; right:41.5%; width:300px; background:#111827; border:1px solid #1e2535; border-radius:2px; overflow:hidden; font-family:'DM Mono',monospace; z-index:20; transform: perspective(1200px) rotateY(21deg) rotateX(6deg) rotateZ(-2deg);">
+    <div class="sheet-titlebar">
+      <div class="sheet-dot" style="background:#ff5a5a;"></div>
+      <div class="sheet-dot" style="background:#ffbd2e;"></div>
+      <div class="sheet-dot" style="background:#27c93f;"></div>
+      <span class="sheet-title">data_entry_log_errors.txt</span>
+    </div>
+    <div class="sheet-body">
+      <div class="sheet-row"><div class="sheet-cell red" style="width:100%;">ERROR: Duplicate entry row 847</div></div>
+      <div class="sheet-row"><div class="sheet-cell warn" style="width:100%;">WARN: Format mismatch col D</div></div>
+      <div class="sheet-row"><div class="sheet-cell red" style="width:100%;">ERROR: Missing value rows 901-912</div></div>
     </div>
   </div>
 </section>
@@ -1385,9 +1365,7 @@
   <div class="bridge-bg"></div>
   <div class="bridge-line-h"></div>
   <div class="bridge-content" id="bridgeContent">
-    <div class="bridge-eyebrow">The shift</div>
-    <div class="bridge-title">From <em>Collaboration</em><br>to Automation</div>
-    <div class="bridge-sub">Sylara Technologies · Systems Intelligence</div>
+    <div class="bridge-title">What if your operations<br><em>stopped slowing you down?</em></div>
   </div>
 </div>
 
@@ -1421,7 +1399,7 @@
       </div>
 
       <!-- Right — solution monitor dashboard -->
-      <div class="solution-monitor-wrap fade-up" style="position:absolute; top:40%; left:40%; width:min(480px,52vw);">
+      <div class="solution-monitor-wrap" style="position:absolute; top:40%; left:41%; width:min(480px,52vw); transform: perspective(1200px) rotateY(17deg) rotateX(2deg) rotateZ(-.5deg);">
         <div class="solution-monitor-screen" style="min-height:320px;">
           <div class="dashboard-inner">
             <div class="dash-header">
@@ -1489,7 +1467,7 @@
   <div class="section-overlay"></div>
 
   <div class="contact-layout">
-    <div class="contact-left fade-up">
+    <div class="contact-left" style="position:relative;">
       <div class="contact-label">· Start a Conversation ·</div>
       <div class="contact-heading">Let's map your<br><em>first automation.</em></div>
       <div class="contact-body">
@@ -1498,45 +1476,57 @@
       </div>
     </div>
 
-    <div class="notepad-form fade-up">
-      <div class="notepad-lines">
-        <div class="form-row-2">
-          <div class="notepad-field">
-            <label class="notepad-label">Name</label>
-            <input class="notepad-input" type="text" placeholder="Your name" name="name" />
-          </div>
-          <div class="notepad-field">
-            <label class="notepad-label">Company</label>
-            <input class="notepad-input" type="text" placeholder="Business name" name="company" />
-          </div>
-        </div>
-        <div class="form-row-2">
-          <div class="notepad-field">
-            <label class="notepad-label">Email</label>
-            <input class="notepad-input" type="email" placeholder="your@email.com" name="email" />
-          </div>
-          <div class="notepad-field">
-            <label class="notepad-label">Phone</label>
-            <input class="notepad-input" type="tel" placeholder="(optional)" name="phone" />
-          </div>
-        </div>
-        <div class="notepad-field">
-          <label class="notepad-label">How did you hear about us?</label>
-          <select class="notepad-select notepad-input" name="source">
-            <option value="" disabled selected>Select one</option>
-            <option>Web search</option>
-            <option>Referral</option>
-            <option>Social media</option>
-            <option>Event or expo</option>
-            <option>Other</option>
-          </select>
-        </div>
-        <div class="notepad-field">
-          <label class="notepad-label">What do you need help with?</label>
-          <textarea class="notepad-textarea" placeholder="Tell us about your operation and where the friction is..." name="message"></textarea>
-        </div>
+    <div style="position:relative; flex:1; max-width:420px; height:600px; margin-top:-176px;">
+
+      <!-- Name -->
+      <div style="position:absolute; top:1.8%; left:0; right:0;">
+        <label class="notepad-label">Name</label>
+        <input class="notepad-input" type="text" placeholder="Your name" name="name" required style="border-bottom:1px solid rgba(201,150,58,0.25); width:100%; padding-bottom:6px;" />
+      </div>
+
+      <!-- Company -->
+      <div style="position:absolute; top:17%; left:0; right:0;">
+        <label class="notepad-label">Company</label>
+        <input class="notepad-input" type="text" placeholder="Business name" name="company" required style="border-bottom:1px solid rgba(201,150,58,0.25); width:100%; padding-bottom:6px;" />
+      </div>
+
+      <!-- Email -->
+      <div style="position:absolute; top:32%; left:0; right:0;">
+        <label class="notepad-label">Email</label>
+        <input class="notepad-input" type="email" placeholder="your@email.com" name="email" required style="border-bottom:1px solid rgba(201,150,58,0.25); width:100%; padding-bottom:6px;" />
+      </div>
+
+      <!-- Phone -->
+      <div style="position:absolute; top:48%; left:0; right:0;">
+        <label class="notepad-label">Phone</label>
+        <input class="notepad-input" type="tel" placeholder="(optional)" name="phone" style="border-bottom:1px solid rgba(201,150,58,0.25); width:100%; padding-bottom:6px;" />
+      </div>
+
+      <!-- Source -->
+      <div style="position:absolute; top:65%; left:0; right:0;">
+        <label class="notepad-label">How Can We Help You?</label>
+        <select class="notepad-select notepad-input" name="source" style="border-bottom:1px solid rgba(201,150,58,0.25); width:100%; padding-bottom:6px;">
+          <option value="" disabled selected>Select one</option>
+          <option>Process Audit</option>
+          <option>Workflow Automation</option>
+          <option>Prototype</option>
+          <option>Full Assessment And Build</option>
+          <option>Ongoing Automation Engagement</option>
+          <option>Just Exploring</option>
+        </select>
+      </div>
+
+      <!-- Message -->
+      <div style="position:absolute; top:82%; left:0; right:0;">
+        <label class="notepad-label">What do you need help with?</label>
+        <textarea class="notepad-textarea" placeholder="Tell us about your operation and where the friction is..." name="message" style="border-bottom:1px solid rgba(201,150,58,0.25); width:100%; padding-bottom:6px;"></textarea>
+      </div>
+
+      <!-- Submit -->
+      <div style="position:absolute; top:96%; left:0; right:0;">
         <button class="submit-btn" onclick="handleSubmit(event)">Start the Conversation →</button>
       </div>
+
     </div>
   </div>
 </section>
@@ -1635,8 +1625,8 @@
     const source = document.querySelector('[name="source"]').value;
     const message = document.querySelector('[name="message"]').value;
 
-    if (!name || !email || !message) {
-      btn.textContent = 'Please fill in name, email, and message';
+    if (!name || !email || !company || !source || !message) {
+      btn.textContent = 'Please fill in all required fields';
       btn.style.background = '#ff5a5a';
       setTimeout(() => {
         btn.textContent = 'Start the Conversation →';
