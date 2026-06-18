@@ -1204,7 +1204,7 @@
   </div>
 
   <!-- Veteran-Owned — sits on the corkboard area -->
-  <div style="position:absolute; bottom:55%; right:15%; z-index:25; font-family:'Kalam',cursive; font-size:clamp(12px,1.2vw,16px); font-weight:700; color:#f78503; text-align:center; line-height:1.5; transform: perspective(900px) rotateY(-10deg) rotateX(4deg) rotateZ(-2deg); pointer-events:none; letter-spacing:0.5px;">Veteran-Owned<br>&amp; Operated</div>
+  <div style="position:absolute; bottom:55%; right:15%; z-index:25; font-family:'Kalam',cursive; font-size:clamp(12px,1.2vw,16px); font-weight:700; color:#fd6702; text-align:center; line-height:1.5; transform: perspective(900px) rotateY(-10deg) rotateX(4deg) rotateZ(-2deg); pointer-events:none; letter-spacing:0.5px;">Veteran-Owned<br>&amp; Operated</div>
 
 </section>
 
@@ -1266,7 +1266,7 @@
   <div style="position:absolute; top:26%; right:2.8%; transform: rotate(-2deg); z-index:20; font-family:'Kalam',cursive; font-size:clamp(18px,2vw,26px); font-weight:700; line-height:1.2; color:#000000; text-align:center;">Data Entry<br>Errors</div>
 
   <!-- Text block — sits over the monitor screen left side -->
-  <div class="pain-text-wrap" style="position:absolute; top:36vh; left:24%; width:34vw; max-width:420px; padding:20px 24px; background:transparent; transform: perspective(1200px) rotateY(17deg);">
+  <div class="pain-text-wrap" style="position:absolute; top:36vh; left:22%; width:34vw; max-width:420px; padding:20px 24px; background:transparent; transform: perspective(1200px) rotateY(17deg);">
     <div class="pain-label">· Finance · Customer Service · Operations ·</div>
     <div class="pain-heading">It's not just <em>one department.</em></div>
     <div class="pain-body">
@@ -1278,7 +1278,7 @@
   </div>
 
   <!-- Spreadsheet widget — CSS class approach, positioned on monitor -->
-  <div style="position:absolute; top:33%; right:42%; width:300px; background:#111827; border:1px solid #1e2535; border-radius:2px; overflow:hidden; font-family:'DM Mono',monospace; z-index:20; transform: perspective(1200px) rotateY(21deg) rotateX(6deg) rotateZ(1deg);">
+  <div style="position:absolute; top:33%; right:41%; width:300px; background:#111827; border:1px solid #1e2535; border-radius:2px; overflow:hidden; font-family:'DM Mono',monospace; z-index:20; transform: perspective(1200px) rotateY(21deg) rotateX(6deg) rotateZ(1deg);">
     <div class="sheet-titlebar">
       <div class="sheet-dot" style="background:#ff5a5a;"></div>
       <div class="sheet-dot" style="background:#ffbd2e;"></div>
@@ -1314,7 +1314,7 @@
   </div>
 
   <!-- Sheet 2 — Customer Queue -->
-  <div style="position:absolute; top:49%; right:41.7%; width:300px; background:#111827; border:1px solid #1e2535; border-radius:2px; overflow:hidden; font-family:'DM Mono',monospace; z-index:20; transform: perspective(1200px) rotateY(21deg) rotateX(6deg) rotateZ(-.5deg);">
+  <div style="position:absolute; top:49%; right:40.7%; width:300px; background:#111827; border:1px solid #1e2535; border-radius:2px; overflow:hidden; font-family:'DM Mono',monospace; z-index:20; transform: perspective(1200px) rotateY(21deg) rotateX(6deg) rotateZ(-.5deg);">
     <div class="sheet-titlebar">
       <div class="sheet-dot" style="background:#ff5a5a;"></div>
       <div class="sheet-dot" style="background:#ffbd2e;"></div>
@@ -1346,7 +1346,7 @@
   </div>
 
   <!-- Sheet 3 — Error Log -->
-  <div style="position:absolute; top:65%; right:41.5%; width:300px; background:#111827; border:1px solid #1e2535; border-radius:2px; overflow:hidden; font-family:'DM Mono',monospace; z-index:20; transform: perspective(1200px) rotateY(21deg) rotateX(6deg) rotateZ(-2deg);">
+  <div style="position:absolute; top:65%; right:40.3%; width:300px; background:#111827; border:1px solid #1e2535; border-radius:2px; overflow:hidden; font-family:'DM Mono',monospace; z-index:20; transform: perspective(1200px) rotateY(21deg) rotateX(6deg) rotateZ(-2deg);">
     <div class="sheet-titlebar">
       <div class="sheet-dot" style="background:#ff5a5a;"></div>
       <div class="sheet-dot" style="background:#ffbd2e;"></div>
@@ -1402,7 +1402,7 @@
       </div>
 
       <!-- Right — solution monitor dashboard -->
-      <div class="solution-monitor-wrap" style="position:absolute; top:40%; left:41%; width:min(480px,52vw); transform: perspective(1200px) rotateY(17deg) rotateX(2deg) rotateZ(-.5deg);">
+      <div class="solution-monitor-wrap" style="position:absolute; top:38%; left:40%; width:min(480px,52vw); transform: perspective(1200px) rotateY(17deg) rotateX(2deg) rotateZ(-.5deg);">
         <div class="solution-monitor-screen" style="min-height:320px;">
           <div class="dashboard-inner">
             <div class="dash-header">
@@ -1696,13 +1696,17 @@
   }
 
   // ── Resize: reposition without animation ──
+  let resizeTimer;
   window.addEventListener('resize', () => {
-    wrapper.style.transition = 'none';
-    const offset = getOffsetFor(currentIdx);
-    wrapper.style.transform = `translateY(-${offset}px)`;
-    requestAnimationFrame(() => {
-      wrapper.style.transition = '';
-    });
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      wrapper.style.transition = 'none';
+      const offset = getOffsetFor(currentIdx);
+      wrapper.style.transform = `translateY(-${offset}px)`;
+      requestAnimationFrame(() => {
+        wrapper.style.transition = '';
+      });
+    }, 100);
   });
 
   // ── Form submit ──
@@ -1747,7 +1751,16 @@
   }
 
   // ── Init ──
-  slideTo(0, true);
+  // Wait for fonts and full layout before computing offsets
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => {
+      requestAnimationFrame(() => slideTo(0, true));
+    });
+  } else {
+    window.addEventListener('load', () => {
+      requestAnimationFrame(() => slideTo(0, true));
+    });
+  }
 </script>
 </body>
 </html>
