@@ -1130,24 +1130,142 @@
 
     /* ── MOBILE ── */
     @media (max-width: 768px) {
-      .brand-mark { left: 16px; top: 16px; }
-      .sticky-nav { padding: 0 16px; }
-      .sticky-note { padding: 24px 12px 8px; min-width: 56px; font-size: 9px; }
-      .nav-dots { right: 12px; }
-      .back-to-top { right: 16px; bottom: 16px; }
-      .corkboard-hook { right: 4vw; top: 10vh; width: 130px; font-size: 11px; }
-      .hero-title { font-size: clamp(28px, 9vw, 52px); }
+
+      /* ── TOP BAR: brand + nav on one row, no collision ── */
+      .brand-mark {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        border-radius: 0;
+        padding: 10px 14px;
+        background: rgba(8,8,10,0.85);
+        backdrop-filter: blur(10px);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        z-index: 100;
+        box-sizing: border-box;
+      }
+      .brand-avatar {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        min-height: 36px;
+      }
+      .brand-name {
+        font-size: 13px;
+        letter-spacing: 1.5px;
+      }
+      .brand-sub {
+        font-size: 9px;
+        letter-spacing: 1px;
+      }
+
+      /* nav shifts to top-right, inside the same bar height.
+         !important overrides the inline style="padding-right:14vw" on desktop */
+      .sticky-nav {
+        position: fixed !important;
+        top: 0 !important;
+        right: 0 !important;
+        left: auto !important;
+        padding: 0 8px 0 0 !important;
+        height: 56px;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        z-index: 101;
+        pointer-events: none;
+      }
+      .sticky-note-nav {
+        pointer-events: all;
+        margin-top: 0;
+        display: flex;
+        gap: 0;
+      }
+      .sticky-note {
+        padding: 8px 10px;
+        min-width: 0;
+        font-size: 8px;
+        letter-spacing: 1.2px;
+        border-left-width: 1.5px;
+        border-bottom: none;
+        background: transparent !important;
+        backdrop-filter: none;
+      }
+      .sticky-note:nth-child(2) {
+        margin-left: 4px;
+      }
+      .sticky-note:nth-child(3) {
+        margin-left: 4px;
+      }
+
+      /* ── HERO (section 1) ── */
       .hero-monitor-wrap { display: none; }
+      .corkboard-hook { display: none; }
+
+      .hero-title-wrap {
+        position: relative;
+        top: auto;
+        left: auto;
+        right: auto;
+        transform: none; /* remove the rotateY on mobile */
+        text-align: center;
+        padding: 80px 24px 0; /* 56px bar + breathing room */
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .hero-eyebrow {
+        font-size: 10px;
+        letter-spacing: 2px;
+        margin-bottom: 12px;
+      }
+      .hero-title {
+        font-size: clamp(32px, 10vw, 52px);
+        white-space: normal;
+      }
+      .hero-tagline {
+        font-size: 9px;
+        letter-spacing: 2px;
+      }
+      .cta-subtle {
+        margin-top: 24px;
+        font-size: 11px;
+        padding: 10px 18px;
+      }
+
+      /* ── Veteran-Owned: badge under CTA on mobile ── */
+      .veteran-badge-mobile {
+        display: block !important;
+      }
+      .veteran-badge-desktop {
+        display: none !important;
+      }
+
+      /* ── NAV DOTS ── */
+      .nav-dots { right: 10px; }
+      .back-to-top { right: 16px; bottom: 16px; }
+
+      /* ── SECTION 2 ── */
       .pain-layout { flex-direction: column; align-items: flex-start; padding: 0 4vw 4vh; gap: 16px; }
       .pain-monitor-wrap { width: 100%; max-width: 340px; }
-      .solution-layout { flex-direction: column; padding: 60px 4vw 4vh; gap: 24px; }
+      .pain-notes { right: 2vw; top: 6vh; }
+
+      /* ── BRIDGE ── */
+      .bridge-title { font-size: clamp(36px, 12vw, 72px); }
+
+      /* ── SECTION 4 — SOLUTION ── */
+      .solution-layout { flex-direction: column; padding: 24px 4vw 4vh; gap: 24px; }
       .solution-monitor-wrap { width: 100%; max-width: 360px; }
-      .contact-layout { flex-direction: column; padding: 60px 20px; }
+
+      /* ── SECTION 5 — CONTACT ── */
+      .contact-layout { flex-direction: column; padding: 24px 20px 40px; }
       .contact-left { max-width: 100%; }
       .notepad-form { max-width: 100%; }
       .form-row-2 { grid-template-columns: 1fr; }
-      .pain-notes { right: 2vw; top: 6vh; }
-      .bridge-title { font-size: clamp(36px, 12vw, 72px); }
+
+      /* ── FOOTER ── */
       .site-footer { flex-direction: column; align-items: flex-start; padding: 24px 20px; }
     }
   </style>
@@ -1201,10 +1319,15 @@
     <a class="cta-subtle" href="#" onclick="scrollToSection('section-2'); return false;">
         EVOLVE FOR TOMORROW <span class="arrow">→</span>
     </a>
+
+    <!-- Veteran-Owned badge: only visible on mobile, sits under CTA -->
+    <div class="veteran-badge-mobile" style="display:none; margin-top:18px; font-family:'Kalam',cursive; font-size:14px; font-weight:700; color:#fd6702; text-align:center; letter-spacing:0.5px; line-height:1.5;">
+      Veteran-Owned &amp; Operated
+    </div>
   </div>
 
-  <!-- Veteran-Owned — sits on the corkboard area -->
-  <div style="position:absolute; bottom:55%; right:15%; z-index:25; font-family:'Kalam',cursive; font-size:clamp(12px,1.2vw,16px); font-weight:700; color:#fd6702; text-align:center; line-height:1.5; transform: perspective(900px) rotateY(-10deg) rotateX(4deg) rotateZ(-2deg); pointer-events:none; letter-spacing:0.5px;">Veteran-Owned<br>&amp; Operated</div>
+  <!-- Veteran-Owned desktop: sits on the corkboard area, hidden on mobile -->
+  <div class="veteran-badge-desktop" style="position:absolute; bottom:55%; right:15%; z-index:25; font-family:'Kalam',cursive; font-size:clamp(12px,1.2vw,16px); font-weight:700; color:#fd6702; text-align:center; line-height:1.5; transform: perspective(900px) rotateY(-10deg) rotateX(4deg) rotateZ(-2deg); pointer-events:none; letter-spacing:0.5px;">Veteran-Owned<br>&amp; Operated</div>
 
 </section>
 
@@ -1730,7 +1853,7 @@
       return;
     }
 
-    const webhookUrl = 'YOUR_N8N_WEBHOOK_URL';
+    const webhookUrl = 'https://sylaratech.app.n8n.cloud/webhook/fa4c8cfb-79ce-4540-bcaa-3929f34a83f1';
     btn.textContent = 'Sending...';
     btn.disabled = true;
 
