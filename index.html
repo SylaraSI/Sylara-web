@@ -1128,10 +1128,20 @@
       transform: translateY(0);
     }
 
+    /* ── HAMBURGER BUTTON (hidden on desktop) ── */
+    .hamburger-btn {
+      display: none;
+    }
+
+    /* ── MOBILE DRAWER ── */
+    .mobile-drawer {
+      display: none;
+    }
+
     /* ── MOBILE ── */
     @media (max-width: 768px) {
 
-      /* ── TOP BAR: brand + nav on one row, no collision ── */
+      /* ── TOP BAR: full-width, brand left, hamburger right ── */
       .brand-mark {
         position: fixed;
         top: 0;
@@ -1140,12 +1150,12 @@
         width: 100%;
         border-radius: 0;
         padding: 10px 14px;
-        background: rgba(8,8,10,0.85);
-        backdrop-filter: blur(10px);
+        background: rgba(8,8,10,0.92);
+        backdrop-filter: blur(12px);
         display: flex;
         align-items: center;
-        gap: 8px;
-        z-index: 100;
+        gap: 10px;
+        z-index: 200;
         box-sizing: border-box;
       }
       .brand-avatar {
@@ -1163,42 +1173,101 @@
         letter-spacing: 1px;
       }
 
-      /* nav shifts to top-right, inside the same bar height.
-         !important overrides the inline style="padding-right:14vw" on desktop */
+      /* ── Hide desktop sticky nav entirely on mobile ── */
       .sticky-nav {
-        position: fixed !important;
-        top: 0 !important;
-        right: 0 !important;
-        left: auto !important;
-        padding: 0 8px 0 0 !important;
-        height: 56px;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: flex-end !important;
-        z-index: 101;
-        pointer-events: none;
+        display: none !important;
       }
-      .sticky-note-nav {
-        pointer-events: all;
-        margin-top: 0;
+
+      /* ── Hamburger button ── */
+      .hamburger-btn {
         display: flex;
-        gap: 0;
-      }
-      .sticky-note {
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        margin-left: auto;
+        background: none;
+        border: 1px solid rgba(201,150,58,0.35);
+        border-radius: 3px;
         padding: 8px 10px;
-        min-width: 0;
-        font-size: 8px;
-        letter-spacing: 1.2px;
-        border-left-width: 1.5px;
+        cursor: pointer;
+        z-index: 201;
+        flex-shrink: 0;
+      }
+      .hamburger-btn span {
+        display: block;
+        width: 20px;
+        height: 1.5px;
+        background: var(--gold2);
+        transition: all 0.25s ease;
+        transform-origin: center;
+      }
+      .hamburger-btn.open span:nth-child(1) {
+        transform: translateY(6.5px) rotate(45deg);
+      }
+      .hamburger-btn.open span:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+      }
+      .hamburger-btn.open span:nth-child(3) {
+        transform: translateY(-6.5px) rotate(-45deg);
+      }
+
+      /* ── Mobile drawer ── */
+      .mobile-drawer {
+        display: block;
+        position: fixed;
+        top: 56px;
+        left: 0;
+        right: 0;
+        background: rgba(8,8,10,0.97);
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid rgba(201,150,58,0.2);
+        z-index: 199;
+        transform: translateY(-100%);
+        opacity: 0;
+        pointer-events: none;
+        transition: transform 0.3s cubic-bezier(0.77,0,0.175,1), opacity 0.3s ease;
+      }
+      .mobile-drawer.open {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: all;
+      }
+      .mobile-drawer-nav {
+        display: flex;
+        flex-direction: column;
+        padding: 8px 0 16px;
+      }
+      .mobile-drawer-item {
+        font-family: 'DM Mono', monospace;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: var(--gold2);
+        padding: 16px 24px;
+        border-bottom: 1px solid rgba(201,150,58,0.1);
+        cursor: pointer;
+        transition: color 0.2s, background 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .mobile-drawer-item:last-child {
         border-bottom: none;
-        background: transparent !important;
-        backdrop-filter: none;
       }
-      .sticky-note:nth-child(2) {
-        margin-left: 4px;
+      .mobile-drawer-item::before {
+        content: '';
+        width: 3px;
+        height: 3px;
+        border-radius: 50%;
+        background: var(--gold);
+        flex-shrink: 0;
       }
-      .sticky-note:nth-child(3) {
-        margin-left: 4px;
+      .mobile-drawer-item:hover,
+      .mobile-drawer-item:active {
+        color: var(--gold);
+        background: rgba(201,150,58,0.06);
       }
 
       /* ── HERO (section 1) ── */
@@ -1210,9 +1279,9 @@
         top: auto;
         left: auto;
         right: auto;
-        transform: none; /* remove the rotateY on mobile */
-        text-align: center;
-        padding: 80px 24px 0; /* 56px bar + breathing room */
+        transform: none;
+        text-align: left;
+        padding: 80px 28px 0 28px;
         width: 100%;
         box-sizing: border-box;
       }
@@ -1220,14 +1289,17 @@
         font-size: 10px;
         letter-spacing: 2px;
         margin-bottom: 12px;
+        text-align: left;
       }
       .hero-title {
         font-size: clamp(32px, 10vw, 52px);
         white-space: normal;
+        text-align: left;
       }
       .hero-tagline {
         font-size: 9px;
         letter-spacing: 2px;
+        text-align: left;
       }
       .cta-subtle {
         margin-top: 24px;
@@ -1235,9 +1307,20 @@
         padding: 10px 18px;
       }
 
-      /* ── Veteran-Owned: badge under CTA on mobile ── */
+      /* ── Veteran-Owned mobile badge — professional treatment ── */
       .veteran-badge-mobile {
-        display: block !important;
+        display: flex !important;
+        align-items: center;
+        gap: 10px;
+        margin-top: 28px;
+      }
+      .veteran-badge-mobile::before {
+        content: '';
+        display: block;
+        width: 24px;
+        height: 1px;
+        background: var(--gold);
+        flex-shrink: 0;
       }
       .veteran-badge-desktop {
         display: none !important;
@@ -1256,11 +1339,11 @@
       .bridge-title { font-size: clamp(36px, 12vw, 72px); }
 
       /* ── SECTION 4 — SOLUTION ── */
-      .solution-layout { flex-direction: column; padding: 24px 4vw 4vh; gap: 24px; }
+      .solution-layout { flex-direction: column; padding: 80px 4vw 4vh; gap: 24px; }
       .solution-monitor-wrap { width: 100%; max-width: 360px; }
 
       /* ── SECTION 5 — CONTACT ── */
-      .contact-layout { flex-direction: column; padding: 24px 20px 40px; }
+      .contact-layout { flex-direction: column; padding: 80px 20px 40px; }
       .contact-left { max-width: 100%; }
       .notepad-form { max-width: 100%; }
       .form-row-2 { grid-template-columns: 1fr; }
@@ -1279,6 +1362,21 @@
     <div class="brand-name">Sylara Technologies</div>
     <div class="brand-sub">Observing · Interpreting · Evolving</div>
   </div>
+  <!-- Hamburger: only renders on mobile via CSS -->
+  <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open navigation">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</div>
+
+<!-- MOBILE DRAWER NAV -->
+<div class="mobile-drawer" id="mobileDrawer">
+  <nav class="mobile-drawer-nav">
+    <div class="mobile-drawer-item" onclick="drawerNav('section-1')">About</div>
+    <div class="mobile-drawer-item" onclick="drawerNav('section-4')">Research</div>
+    <div class="mobile-drawer-item" onclick="drawerNav('section-5')">Contact</div>
+  </nav>
 </div>
 
 <!-- STICKY NOTE NAV -->
@@ -1321,8 +1419,8 @@
     </a>
 
     <!-- Veteran-Owned badge: only visible on mobile, sits under CTA -->
-    <div class="veteran-badge-mobile" style="display:none; margin-top:18px; font-family:'Kalam',cursive; font-size:14px; font-weight:700; color:#fd6702; text-align:center; letter-spacing:0.5px; line-height:1.5;">
-      Veteran-Owned &amp; Operated
+    <div class="veteran-badge-mobile" style="display:none;">
+      <span style="font-family:'DM Mono',monospace; font-size:10px; font-weight:500; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); line-height:1.4;">Veteran-Owned &amp; Operated</span>
     </div>
   </div>
 
@@ -1872,6 +1970,36 @@
       btn.style.background = '#4bffb0';
     });
   }
+
+  // ── Hamburger menu ──
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const mobileDrawer = document.getElementById('mobileDrawer');
+
+  function closeDrawer() {
+    hamburgerBtn.classList.remove('open');
+    mobileDrawer.classList.remove('open');
+  }
+
+  if (hamburgerBtn) {
+    hamburgerBtn.addEventListener('click', () => {
+      const isOpen = mobileDrawer.classList.toggle('open');
+      hamburgerBtn.classList.toggle('open', isOpen);
+    });
+  }
+
+  function drawerNav(sectionId) {
+    closeDrawer();
+    scrollToSection(sectionId);
+  }
+
+  // Close drawer on swipe/slide
+  window.addEventListener('touchstart', (e) => {
+    if (mobileDrawer.classList.contains('open') &&
+        !mobileDrawer.contains(e.target) &&
+        !hamburgerBtn.contains(e.target)) {
+      closeDrawer();
+    }
+  }, { passive: true });
 
   // ── Init ──
   // Wait for fonts and full layout before computing offsets
