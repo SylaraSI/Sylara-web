@@ -1138,6 +1138,11 @@
       display: none;
     }
 
+    /* ── CONTACT MOBILE HEADING (hidden on desktop) ── */
+    .contact-mobile-heading {
+      display: none;
+    }
+
     /* ── MOBILE ── */
     @media (max-width: 768px) {
 
@@ -1375,8 +1380,34 @@
       .solution-monitor-wrap { width: 100%; max-width: 360px; }
 
       /* ── SECTION 5 — CONTACT ── */
-      .contact-layout { flex-direction: column; padding: 80px 20px 40px; }
-      .contact-left { max-width: 100%; }
+      .contact-left-col { display: none; }          /* hide left copy col */
+      .contact-mobile-heading { display: block; }   /* show compact heading */
+
+      .contact-layout {
+        flex-direction: column;
+        padding: 72px 24px 48px;
+        align-items: stretch;
+        gap: 0;
+      }
+
+      /* form column: drop absolute positioning, become a normal flow column */
+      .contact-form-col {
+        position: static !important;
+        height: auto !important;
+        max-width: 100% !important;
+        margin-top: 0 !important;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+
+      /* each field: drop absolute, become a normal block */
+      .contact-field-abs {
+        position: static !important;
+        top: auto !important;
+        margin-bottom: 20px;
+      }
+
       .notepad-form { max-width: 100%; }
       .form-row-2 { grid-template-columns: 1fr; }
 
@@ -1722,7 +1753,9 @@
   <div class="section-overlay"></div>
 
   <div class="contact-layout">
-    <div class="contact-left" style="position:relative;">
+
+    <!-- Left column — hidden on mobile -->
+    <div class="contact-left contact-left-col" style="position:relative;">
       <div class="contact-label">· START WITH CLARITY ·</div>
       <div class="contact-heading">Let's map your<br><em>first automation.</em></div>
       <div class="contact-body">
@@ -1730,34 +1763,41 @@
       </div>
     </div>
 
-    <div style="position:relative; flex:1; max-width:420px; height:600px; margin-top:-176px;">
+    <!-- Form column — desktop uses absolute-positioned fields, mobile uses flow layout -->
+    <div class="contact-form-col" style="position:relative; flex:1; max-width:420px; height:600px; margin-top:-176px;">
+
+      <!-- Mobile-only compact heading above form -->
+      <div class="contact-mobile-heading">
+        <div class="contact-label">· START WITH CLARITY ·</div>
+        <div class="contact-heading" style="font-size: clamp(28px,7vw,40px); margin-bottom:8px;">Let's map your<br><em>first automation.</em></div>
+      </div>
 
       <!-- Name -->
-      <div style="position:absolute; top:1.8%; left:0; right:0;">
+      <div class="contact-field-abs" style="position:absolute; top:1.8%; left:0; right:0;">
         <label class="notepad-label">Name</label>
         <input class="notepad-input" type="text" placeholder="Your name" name="name" required style="border-bottom:1px solid rgba(201,150,58,0.25); width:100%; padding-bottom:6px;" />
       </div>
 
       <!-- Company -->
-      <div style="position:absolute; top:17%; left:0; right:0;">
+      <div class="contact-field-abs" style="position:absolute; top:17%; left:0; right:0;">
         <label class="notepad-label">Company</label>
         <input class="notepad-input" type="text" placeholder="Business name" name="company" required style="border-bottom:1px solid rgba(201,150,58,0.25); width:100%; padding-bottom:6px;" />
       </div>
 
       <!-- Email -->
-      <div style="position:absolute; top:32%; left:0; right:0;">
+      <div class="contact-field-abs" style="position:absolute; top:32%; left:0; right:0;">
         <label class="notepad-label">Email</label>
         <input class="notepad-input" type="email" placeholder="your@email.com" name="email" required style="border-bottom:1px solid rgba(201,150,58,0.25); width:100%; padding-bottom:6px;" />
       </div>
 
       <!-- Phone -->
-      <div style="position:absolute; top:48%; left:0; right:0;">
+      <div class="contact-field-abs" style="position:absolute; top:48%; left:0; right:0;">
         <label class="notepad-label">Phone</label>
         <input class="notepad-input" type="tel" placeholder="(optional)" name="phone" style="border-bottom:1px solid rgba(201,150,58,0.25); width:100%; padding-bottom:6px;" />
       </div>
 
       <!-- Source -->
-      <div style="position:absolute; top:65%; left:0; right:0;">
+      <div class="contact-field-abs" style="position:absolute; top:65%; left:0; right:0;">
         <label class="notepad-label">What would you like to improve first?</label>
         <select class="notepad-select notepad-input" name="source" style="border-bottom:1px solid rgba(201,150,58,0.25); width:100%; padding-bottom:6px;">
           <option value="" disabled selected>Select one</option>
@@ -1771,13 +1811,13 @@
       </div>
 
       <!-- Message -->
-      <div style="position:absolute; top:82%; left:0; right:0;">
+      <div class="contact-field-abs" style="position:absolute; top:82%; left:0; right:0;">
         <label class="notepad-label">What do you need help with?</label>
         <textarea class="notepad-textarea" placeholder="Tell us about your operation and where the friction is..." name="message" style="border-bottom:1px solid rgba(201,150,58,0.25); width:100%; padding-bottom:6px;"></textarea>
       </div>
 
       <!-- Submit -->
-      <div style="position:absolute; top:96%; left:0; right:0;">
+      <div class="contact-field-abs" style="position:absolute; top:96%; left:0; right:0;">
         <button class="submit-btn" onclick="handleSubmit(event)">Start the Conversation →</button>
       </div>
 
