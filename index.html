@@ -1334,7 +1334,7 @@
       .s2-cork-note  { display: none !important; }
       .s2-inbox-widget { display: none !important; }
 
-      /* pain text: full width, left-aligned, clear top bar, no perspective */
+      /* pain text: full width, left-aligned, no background — text-shadow for legibility */
       .s2-text {
         position: absolute !important;
         top: 50% !important;
@@ -1343,8 +1343,21 @@
         max-width: 100% !important;
         transform: translateY(-50%) !important;
         padding: 0 28px !important;
-        background: rgba(8,8,14,0.5) !important;
+        background: transparent !important;
         box-sizing: border-box !important;
+      }
+      .s2-text .pain-label {
+        text-shadow: 0 1px 8px rgba(0,0,0,0.9), 0 0 24px rgba(0,0,0,0.7);
+      }
+      .s2-text .pain-heading {
+        text-shadow: 0 2px 12px rgba(0,0,0,0.95), 0 0 40px rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,0.6);
+      }
+      .s2-text .pain-body {
+        text-shadow: 0 1px 8px rgba(0,0,0,0.95), 0 0 20px rgba(0,0,0,0.85);
+      }
+      .s2-text .cta-subtle {
+        /* CTA button already has its own background, no shadow needed */
+        text-shadow: none;
       }
 
       /* ── SECTION 2 ── */
