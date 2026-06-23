@@ -1369,7 +1369,9 @@
       .bridge-title { font-size: clamp(36px, 12vw, 72px); }
 
       /* ── SECTION 4 — SOLUTION ── */
-      .solution-layout { flex-direction: column; padding: 80px 4vw 4vh; gap: 24px; }
+      .s4-dashboard { display: none !important; }
+      .solution-layout { flex-direction: column; padding: 80px 28px 4vh; gap: 24px; }
+      .solution-left { max-width: 100%; }
       .solution-monitor-wrap { width: 100%; max-width: 360px; }
 
       /* ── SECTION 5 — CONTACT ── */
@@ -1651,8 +1653,8 @@
         </div>
       </div>
 
-      <!-- Right — solution monitor dashboard -->
-      <div class="solution-monitor-wrap" style="position:absolute; top:38%; left:40%; width:min(480px,52vw); transform: perspective(1200px) rotateY(17deg) rotateX(2deg) rotateZ(-.5deg);">
+      <!-- Right — solution monitor dashboard, hidden on mobile -->
+      <div class="solution-monitor-wrap s4-dashboard" style="position:absolute; top:38%; left:40%; width:min(480px,52vw); transform: perspective(1200px) rotateY(17deg) rotateX(2deg) rotateZ(-.5deg);">
         <div class="solution-monitor-screen" style="min-height:320px;">
           <div class="dashboard-inner">
             <div class="dash-header">
