@@ -22,14 +22,25 @@
     }
 
     html {
-      scroll-behavior: smooth;
-      scroll-snap-type: y mandatory;
+      overflow: hidden;
+      height: 100%;
     }
     body {
       background: #08080A;
       color: var(--white);
       font-family: 'Space Grotesk', sans-serif;
-      overflow-x: hidden;
+      overflow: hidden;
+      height: 100%;
+    }
+
+    /* ── SLIDE ENGINE ── */
+    #slide-wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      will-change: transform;
+      transition: transform 0.85s cubic-bezier(0.77, 0, 0.175, 1);
     }
 
     /* ── STICKY NAV DOTS ── */
@@ -222,7 +233,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      scroll-snap-align: start;
     }
 
     .section-bg {
@@ -703,7 +713,6 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      scroll-snap-align: start;
     }
     .bridge-bg {
       position: absolute;
@@ -838,7 +847,7 @@
     }
     .solution-card-body {
       font-size: clamp(10px, 1vw, 12px);
-      color: var(--muted);
+      color: rgba(240,237,232,0.85);
       line-height: 1.5;
     }
 
@@ -960,7 +969,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      scroll-snap-align: start;
     }
     #section-5 .section-bg { background-image: url('images/hero-notepad.png'); }
     #section-5 .section-overlay {
@@ -1180,6 +1188,7 @@
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 1 — HERO                                        -->
 <!-- ═══════════════════════════════════════════════════════ -->
+<div id="slide-wrapper">
 <section class="section" id="section-1">
   <div class="section-bg" id="bg-1"></div>
   <div class="section-overlay"></div>
@@ -1188,11 +1197,14 @@
   <div class="hero-title-wrap">
     <div class="hero-eyebrow">Systems Intelligence</div>
     <div class="hero-title">From <em>Collaboration</em><br>to Automation</div>
-    <div class="hero-tagline">Observing · Interpreting · Evolving</div>
+
     <a class="cta-subtle" href="#" onclick="scrollToSection('section-2'); return false;">
         EVOLVE FOR TOMORROW <span class="arrow">→</span>
     </a>
   </div>
+
+  <!-- Veteran-Owned — sits on the corkboard area -->
+  <div style="position:absolute; bottom:12%; right:8%; z-index:25; font-family:'Kalam',cursive; font-size:clamp(12px,1.2vw,16px); font-weight:700; color:#1a1a1a; text-align:center; line-height:1.5; transform: perspective(900px) rotateY(-10deg) rotateX(4deg) rotateZ(-2deg); pointer-events:none; letter-spacing:0.5px;">Veteran-Owned<br>&amp; Operated</div>
 
 </section>
 
@@ -1203,10 +1215,6 @@
   <div class="section-bg" id="bg-2"></div>
   <div class="section-overlay"></div>
 
-  <!-- Hook note — partially buried -->
-  <div class="hook-buried" style="transform: rotate(-3deg); top: 8vh; right: 6vw; z-index: 15;">
-    What if your operations stopped slowing you down?
-  </div>
 
   <!-- Pain point notes on cork board -->
   <div style="position:absolute; top:5%; right:30%; transform: rotate(-3deg); z-index:20; font-family:'Kalam',cursive; font-size:clamp(18px,2vw,26px); font-weight:700; line-height:1.2; color:#000000; text-align:center;">Manual<br>Reports</div>
@@ -1215,11 +1223,11 @@
   <!-- Text block — sits over the monitor screen in the photo -->
   <div class="pain-text-wrap" style="position:absolute; top:32vh; left:24%; width:34vw; max-width:420px; padding:20px 24px; background:rgba(8,8,14,0.0); transform: perspective(1200px) rotateY(17deg);">
     <div class="pain-label">· Admin Overhead ·</div>
-    <div class="pain-heading">Your team is running<br>on <em>manual effort.</em></div>
+    <div class="pain-heading">Manual work is<br>quietly <em>taxing your business.</em></div>
     <div class="pain-body">
-      57% of work hours are spent on tasks that could already be automated with today's technology. Every hour your team spends on manual reports, chasing follow-ups, and fixing handoffs is an hour not spent growing your business.
+      Every hour your team spends on manual reports, chasing follow-ups, and fixing handoffs is an hour not spent growing your business.
     </div>
-    <div style="font-family:'DM Mono',monospace; font-size:10px; color:var(--dim); letter-spacing:1px; margin-top:10px;">Source · McKinsey Global Institute, 2025</div>
+    
   </div>
 
   <!-- Inbox monitor — chaos alerts -->
@@ -1251,10 +1259,6 @@
   <div class="section-bg" id="bg-3"></div>
   <div class="section-overlay"></div>
 
-  <!-- Hook note — nearly buried -->
-  <div class="hook-buried hook-buried-2" style="transform: rotate(4deg); top: 9vh; right: 5vw; z-index: 14;">
-    What if your operations stopped slowing you down?
-  </div>
 
   <!-- Different pain notes -->
   <div style="position:absolute; top:5%; right:30%; transform: rotate(-3deg); z-index:20; font-family:'Kalam',cursive; font-size:clamp(18px,2vw,26px); font-weight:700; line-height:1.2; color:#000000; text-align:center;">Late<br>Invoices</div>
@@ -1266,9 +1270,8 @@
     <div class="pain-label">· Finance · Customer Service · Operations ·</div>
     <div class="pain-heading">It's not just <em>one department.</em></div>
     <div class="pain-body">
-      SMB owners lose an average of 120 working days per year to administrative tasks across finance, customer service, and operations. The problem isn't effort. It's that the systems weren't built to scale with you.
+      The problem is not effort. It is that manual workflows were never designed to scale.
     </div>
-    <div style="font-family:'DM Mono',monospace; font-size:10px; color:var(--dim); letter-spacing:1px;">Source · Xero — Sweating the Small Stuff Report</div>
     <a class="cta-subtle" href="#" onclick="scrollToSection('section-5'); return false;" style="margin-top:24px;">
       Evolve for Tomorrow <span class="arrow">→</span>
     </a>
@@ -1380,20 +1383,20 @@
     <div class="solution-layout">
       <!-- Left — solution text + cards -->
       <div class="solution-left">
-        <div class="solution-label fade-up">· What Changes ·</div>
+        <div class="solution-label fade-up">· AUTOMATION IN MOTION ·</div>
         <div class="solution-heading fade-up">Your operations,<br><em>on autopilot.</em></div>
         <div class="solution-cards">
           <div class="solution-card">
-            <div class="solution-card-title">Workflow Audit & Process Map</div>
-            <div class="solution-card-body">We map your operation, find every manual bottleneck, and identify the highest-impact automation opportunities first.</div>
+            <div class="solution-card-title">Start with Clarity</div>
+            <div class="solution-card-body">We begin with a Workflow Snapshot — a focused discovery session that maps your operation, surfaces the real friction points, and delivers a clear picture of where automation pays off first.</div>
           </div>
           <div class="solution-card">
-            <div class="solution-card-title">Working Automation Prototype</div>
-            <div class="solution-card-body">A real, running prototype that proves value before any large commitment. You see it work before you commit to it.</div>
+            <div class="solution-card-title">Prove It Before You Scale</div>
+            <div class="solution-card-body">Before any major commitment, we build a working prototype against your actual systems. You see the automation run live — then you decide what comes next.</div>
           </div>
           <div class="solution-card">
-            <div class="solution-card-title">Full Build & Ongoing Support</div>
-            <div class="solution-card-body">We build, evolve, and grow with your operation. Systems that scale as you scale — without adding headcount.</div>
+            <div class="solution-card-title">Build, Support, Evolve</div>
+            <div class="solution-card-body">Once proven, we deploy the full system and stay alongside your operation — refining, expanding, and supporting as your business grows.</div>
           </div>
         </div>
       </div>
@@ -1434,7 +1437,7 @@
               </div>
               <div class="dash-item">
                 <div class="dash-item-dot gold"></div>
-                <span class="dash-item-label">Client communications on autopilot</span>
+                <span class="dash-item-label">Clients updated on time</span>
                 <span class="dash-item-status">Running</span>
               </div>
               <div class="dash-item">
@@ -1468,11 +1471,10 @@
 
   <div class="contact-layout">
     <div class="contact-left" style="position:relative;">
-      <div class="contact-label">· Start a Conversation ·</div>
+      <div class="contact-label">· START WITH CLARITY ·</div>
       <div class="contact-heading">Let's map your<br><em>first automation.</em></div>
       <div class="contact-body">
-        We work alongside you to understand your operation. Then we build, evolve, and grow with it.<br><br>
-        No software commitment required upfront. Process clarity precedes effective automation — always.
+        We work alongside you to understand your operation, identify the friction, and design the right automation path.
       </div>
     </div>
 
@@ -1504,7 +1506,7 @@
 
       <!-- Source -->
       <div style="position:absolute; top:65%; left:0; right:0;">
-        <label class="notepad-label">How Can We Help You?</label>
+        <label class="notepad-label">What would you like to improve first?</label>
         <select class="notepad-select notepad-input" name="source" style="border-bottom:1px solid rgba(201,150,58,0.25); width:100%; padding-bottom:6px;">
           <option value="" disabled selected>Select one</option>
           <option>Process Audit</option>
@@ -1541,78 +1543,171 @@
   </div>
   <div class="footer-copy">© 2026 Sylara Technologies LLC · Killeen, TX</div>
 </footer>
+</div><!-- /#slide-wrapper -->
 
 <script>
-  // ── Scroll to section ──
+  // ── SLIDE ENGINE ──
+  const SECTION_IDS = ['section-1','section-2','section-3','section-bridge','section-4','section-5'];
+  const wrapper    = document.getElementById('slide-wrapper');
+  const dots       = document.querySelectorAll('.nav-dot');
+  const backToTop  = document.getElementById('backToTop');
+
+  let currentIdx   = 0;
+  let isAnimating  = false;
+  const ANIM_DURATION = 900; // ms — matches CSS transition
+
+  // ── Compute Y offset for a given index ──
+  function getOffsetFor(idx) {
+    const el = document.getElementById(SECTION_IDS[idx]);
+    if (!el) return 0;
+    return el.offsetTop;
+  }
+
+  // ── Slide to a section index ──
+  function slideTo(idx, force) {
+    if (isAnimating && !force) return;
+    if (idx < 0) idx = 0;
+    if (idx >= SECTION_IDS.length) idx = SECTION_IDS.length - 1;
+    if (idx === currentIdx && !force) return;
+
+    isAnimating = true;
+    currentIdx  = idx;
+
+    const offset = getOffsetFor(idx);
+    wrapper.style.transform = `translateY(-${offset}px)`;
+
+    updateDots();
+    updateBackToTop();
+    triggerFadeUps();
+    triggerBridge();
+    triggerSolutionCards();
+    triggerParallax(offset);
+
+    setTimeout(() => { isAnimating = false; }, ANIM_DURATION);
+  }
+
+  // ── scrollToSection — called from nav dots / CTAs ──
   function scrollToSection(id) {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const idx = SECTION_IDS.indexOf(id);
+    if (idx !== -1) slideTo(idx);
   }
 
-  // ── Nav dot tracking ──
-  const sections = ['section-1','section-2','section-3','section-bridge','section-4','section-5'];
-  const dots = document.querySelectorAll('.nav-dot');
-  const backToTop = document.getElementById('backToTop');
+  // ── Wheel handler ──
+  let wheelAccum = 0;
+  const WHEEL_THRESHOLD = 50;
 
+  window.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    if (isAnimating) return;
+
+    wheelAccum += e.deltaY;
+
+    if (Math.abs(wheelAccum) >= WHEEL_THRESHOLD) {
+      const dir = wheelAccum > 0 ? 1 : -1;
+      wheelAccum = 0;
+      slideTo(currentIdx + dir);
+    }
+  }, { passive: false });
+
+  // Reset accumulator after idle
+  let wheelResetTimer;
+  window.addEventListener('wheel', () => {
+    clearTimeout(wheelResetTimer);
+    wheelResetTimer = setTimeout(() => { wheelAccum = 0; }, 200);
+  }, { passive: true });
+
+  // ── Touch handler ──
+  let touchStartY = null;
+  const TOUCH_THRESHOLD = 50;
+
+  window.addEventListener('touchstart', (e) => {
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
+  window.addEventListener('touchend', (e) => {
+    if (touchStartY === null || isAnimating) return;
+    const delta = touchStartY - e.changedTouches[0].clientY;
+    if (Math.abs(delta) >= TOUCH_THRESHOLD) {
+      slideTo(currentIdx + (delta > 0 ? 1 : -1));
+    }
+    touchStartY = null;
+  }, { passive: true });
+
+  // ── Keyboard handler ──
+  window.addEventListener('keydown', (e) => {
+    if (isAnimating) return;
+    if (e.key === 'ArrowDown' || e.key === 'PageDown') { e.preventDefault(); slideTo(currentIdx + 1); }
+    if (e.key === 'ArrowUp'   || e.key === 'PageUp')   { e.preventDefault(); slideTo(currentIdx - 1); }
+    if (e.key === 'Home') { e.preventDefault(); slideTo(0); }
+    if (e.key === 'End')  { e.preventDefault(); slideTo(SECTION_IDS.length - 1); }
+  });
+
+  // ── Nav dots ──
   function updateDots() {
-    const scrollY = window.scrollY;
-    const winH = window.innerHeight;
-
-    // back to top
-    if (scrollY > winH * 0.5) backToTop.classList.add('visible');
-    else backToTop.classList.remove('visible');
-
-    // active dot
-    let activeIdx = 0;
-    sections.forEach((id, i) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      if (rect.top <= winH * 0.5) activeIdx = i;
-    });
-    dots.forEach((d, i) => {
-      d.classList.toggle('active', i === activeIdx);
-    });
+    dots.forEach((d, i) => d.classList.toggle('active', i === currentIdx));
   }
 
-  // ── Scroll-triggered fade-ups ──
-  function checkFadeUps() {
+  // ── Back to top ──
+  function updateBackToTop() {
+    if (!backToTop) return;
+    if (currentIdx > 0) backToTop.classList.add('visible');
+    else backToTop.classList.remove('visible');
+  }
+
+  // ── Fade-ups ──
+  function triggerFadeUps() {
+    const winH = window.innerHeight;
+    const offset = getOffsetFor(currentIdx);
     document.querySelectorAll('.fade-up').forEach(el => {
       const rect = el.getBoundingClientRect();
-      if (rect.top < window.innerHeight * 0.88) el.classList.add('visible');
+      // treat as visible if within current slide viewport
+      const elTop = el.offsetTop - offset;
+      if (elTop < winH * 0.92) el.classList.add('visible');
     });
   }
 
   // ── Bridge animation ──
-  function checkBridge() {
+  function triggerBridge() {
     const bridge = document.getElementById('bridgeContent');
     if (!bridge) return;
-    const rect = bridge.getBoundingClientRect();
-    if (rect.top < window.innerHeight * 0.75) bridge.classList.add('visible');
+    if (SECTION_IDS[currentIdx] === 'section-bridge') {
+      bridge.classList.add('visible');
+    }
   }
 
   // ── Solution cards ──
-  function checkSolutionCards() {
-    document.querySelectorAll('.solution-card').forEach(el => {
-      const rect = el.getBoundingClientRect();
-      if (rect.top < window.innerHeight * 0.85) el.classList.add('visible');
-    });
+  function triggerSolutionCards() {
+    if (SECTION_IDS[currentIdx] === 'section-4') {
+      document.querySelectorAll('.solution-card').forEach(el => el.classList.add('visible'));
+    }
   }
 
-  // ── Parallax subtle ──
-  function handleParallax() {
-    const scrollY = window.scrollY;
-    const winH = window.innerHeight;
+  // ── Parallax on background images ──
+  function triggerParallax(offset) {
     ['bg-1','bg-2','bg-3','bg-4','bg-5'].forEach((id, i) => {
       const el = document.getElementById(id);
       if (!el) return;
       const section = el.closest('.section') || el.parentElement;
-      const rect = section.getBoundingClientRect();
-      const progress = -rect.top / winH;
-      const offset = progress * 40;
-      el.style.transform = `scale(1.08) translateY(${offset}px)`;
+      const sectionTop = section.offsetTop - offset;
+      const progress = -sectionTop / window.innerHeight;
+      const shift = progress * 40;
+      el.style.transform = `scale(1.08) translateY(${shift}px)`;
     });
   }
+
+  // ── Resize: reposition without animation ──
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      wrapper.style.transition = 'none';
+      const offset = getOffsetFor(currentIdx);
+      wrapper.style.transform = `translateY(-${offset}px)`;
+      requestAnimationFrame(() => {
+        wrapper.style.transition = '';
+      });
+    }, 100);
+  });
 
   // ── Form submit ──
   function handleSubmit(e) {
@@ -1635,9 +1730,7 @@
       return;
     }
 
-    // Wire to your n8n webhook
     const webhookUrl = 'YOUR_N8N_WEBHOOK_URL';
-
     btn.textContent = 'Sending...';
     btn.disabled = true;
 
@@ -1657,20 +1750,17 @@
     });
   }
 
-  // ── Event listeners ──
-  window.addEventListener('scroll', () => {
-    updateDots();
-    checkFadeUps();
-    checkBridge();
-    checkSolutionCards();
-    handleParallax();
-  }, { passive: true });
-
-  // Initial check
-  setTimeout(() => {
-    checkFadeUps();
-    updateDots();
-  }, 100);
+  // ── Init ──
+  // Wait for fonts and full layout before computing offsets
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => {
+      requestAnimationFrame(() => slideTo(0, true));
+    });
+  } else {
+    window.addEventListener('load', () => {
+      requestAnimationFrame(() => slideTo(0, true));
+    });
+  }
 </script>
 </body>
 </html>
