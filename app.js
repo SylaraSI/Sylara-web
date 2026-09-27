@@ -1,8 +1,35 @@
 const body = document.body;
 const homeScene = document.querySelector(".home-scene");
+const architectureScene = document.querySelector(".architecture-scene");
 const researchScene = document.querySelector(".research-scene");
+const architectureHeader = document.querySelector(".architecture-header");
 const researchHeader = document.querySelector(".research-header");
-const routeStatus = document.querySelector("[data-route-status]");
+const skipLink = document.querySelector(".skip-link");
+const routeStatuses = [...document.querySelectorAll("[data-route-status]")];
+const architectureScroll = document.querySelector("[data-architecture-scroll]");
+const architectureDomainScroll = document.querySelector("[data-architecture-domain-scroll]");
+const architectureMap = document.querySelector("[data-architecture-map]");
+const architectureDomains = [...document.querySelectorAll("[data-domain]")];
+const architectureRelations = [...document.querySelectorAll("[data-relation]")];
+const architectureStatus = document.querySelector("[data-architecture-status]");
+const architectureScrollTarget = document.querySelector("[data-architecture-scroll-target]");
+const architectureOverviewControl = document.querySelector("[data-architecture-overview]");
+const architectureDomainTitle = document.querySelector("[data-domain-title]");
+const architectureDomainKicker = document.querySelector("[data-domain-kicker]");
+const architectureDomainSummary = document.querySelector("[data-domain-summary]");
+const architectureDomainFigureTitle = document.querySelector("[data-domain-figure-title]");
+const architectureDomainFigureIntro = document.querySelector("[data-domain-figure-intro]");
+const architectureDomainFigureNodes = [...document.querySelectorAll("[data-domain-figure-node]")];
+const architectureDomainComments = document.querySelector("[data-domain-comments]");
+const architectureDomainPressures = document.querySelector("[data-domain-pressures]");
+const architectureDomainRelatedResearch = document.querySelector("[data-domain-related-research]");
+const architectureDomainFooter = document.querySelector("[data-domain-footer]");
+const architectureIndexToggle = document.querySelector("[data-architecture-index-toggle]");
+const architectureIndex = document.querySelector("[data-architecture-index]");
+const architectureIndexPanel = architectureIndex.querySelector(".architecture-index-panel");
+const architectureIndexList = document.querySelector("[data-architecture-index-list]");
+const architectureIndexDismiss = document.querySelector("[data-architecture-index-dismiss]");
+const architectureIndexClose = document.querySelector("[data-architecture-index-close]");
 const subjectControlsContainer = document.querySelector(".subject-controls");
 const subjectControls = [...document.querySelectorAll(".subject-control")];
 const subjectOrbs = [...document.querySelectorAll(".subject-orb")];
@@ -24,6 +51,99 @@ const starField = [
 ];
 
 const subjectOrder = ["foundations", "memory-context", "reasoning-evidence", "adaptive-systems"];
+
+/*
+  ARCHITECTURE DOMAIN SKELETON COPY
+  These public-safe working descriptions can be replaced independently later;
+  the shared domain-page shell does not need to be rebuilt when copy matures.
+*/
+const architectureDomainOrder = [
+  "observation-provenance",
+  "memory-continuity",
+  "context-compilation",
+  "reasoning-verification",
+  "adaptive-systems",
+];
+
+const architectureDomainSections = [
+  ["domain-overview", "Overview"],
+  ["domain-system-view", "System view"],
+  ["domain-design-pressures", "Design pressures"],
+  ["domain-related", "Related material"],
+];
+
+const architectureDomainContent = {
+  "observation-provenance": {
+    index: "01",
+    title: "Observation & Provenance",
+    summary: "The public boundary where information enters the system and retains a recoverable account of where it came from, what it represents, and how it may be used.",
+    figureTitle: "From observation to attributable record",
+    figureIntro: "This figure is reserved for the public-safe flow that turns incoming information into evidence with origin, scope, and authority still attached.",
+    nodes: { input: "Observation", core: "Attribution", state: "Evidence state", output: "Governed use" },
+    comments: ["Identify the source", "Preserve origin and scope", "Keep uncertainty visible", "Bound downstream use"],
+    pressures: [
+      "Information cannot become trustworthy merely by entering memory. Its origin, transformation history, and authority must remain inspectable as it moves through the system.",
+      "The final content pass will explain how Sylara separates observation from interpretation without exposing exact internal contracts or implementation structures.",
+    ],
+    relatedResearch: "Connect this domain to research on evidence, attribution, uncertainty, and the boundary between observation and conclusion.",
+  },
+  "memory-continuity": {
+    index: "02",
+    title: "Memory & Continuity",
+    summary: "The structures that preserve meaningful state across time while allowing knowledge to age, be challenged, and remain connected to its history.",
+    figureTitle: "Continuity across changing state",
+    figureIntro: "This figure will explain how durable knowledge, temporary working state, and recoverable history remain distinct while still supporting one continuous body of work.",
+    nodes: { input: "Experience", core: "Memory fabric", state: "Historical state", output: "Continuity" },
+    comments: ["Separate working and durable state", "Preserve historical lineage", "Allow revision without erasure", "Recover prior context"],
+    pressures: [
+      "Long-running work needs more than storage. The architecture must preserve why information mattered, when it was valid, and what later evidence changed its standing.",
+      "The final explanation can introduce model-independent continuity and the Memory Fabric while keeping proprietary retention and retrieval mechanisms abstracted.",
+    ],
+    relatedResearch: "Connect this domain to research on memory, context aging, historical identity, and continuity across tools or models.",
+  },
+  "context-compilation": {
+    index: "03",
+    title: "Context Compilation",
+    summary: "The process of assembling the smallest sufficient working context for a task without flattening provenance, uncertainty, or competing interpretations.",
+    figureTitle: "Compiling task-relevant context",
+    figureIntro: "This figure is prepared for a bounded context flow: selecting relevant material, retaining its relationships, and producing a usable working view.",
+    nodes: { input: "Available memory", core: "Context compiler", state: "Task frame", output: "Working context" },
+    comments: ["Start from the task boundary", "Select relevant material", "Preserve relationships", "Emit sufficient context"],
+    pressures: [
+      "More context is not automatically better context. Unbounded accumulation can obscure the evidence and decisions most relevant to the work being performed.",
+      "The mature copy will describe minimum-sufficient context and provenance-aware compilation at a conceptual level, with deeper engineering lessons reserved for Journal.",
+    ],
+    relatedResearch: "Connect this domain to research on context selection, ambiguity preservation, and coherent work across extended investigations.",
+  },
+  "reasoning-verification": {
+    index: "04",
+    title: "Reasoning & Verification",
+    summary: "The architecture that keeps claims connected to evidence, separates readiness from proof, and makes missing or conflicting support visible.",
+    figureTitle: "From evidence to bounded conclusion",
+    figureIntro: "This figure will carry the public reasoning loop from available evidence through challenge and verification to an inspectable outcome.",
+    nodes: { input: "Evidence", core: "Reasoning", state: "Verification", output: "Bounded result" },
+    comments: ["Form a supported claim", "Test against constraints", "Expose missing proof", "Preserve the verdict boundary"],
+    pressures: [
+      "A conclusion is useful only when its basis and limitations remain recoverable. The architecture therefore treats evidence, reasoning, execution, and proof as distinct states.",
+      "The final pass can introduce SSIR and public-safe verification flows without revealing exact algorithms, thresholds, or internal execution contracts.",
+    ],
+    relatedResearch: "Connect this domain to research on evidence sufficiency, competing hypotheses, verification, and reasoning under uncertainty.",
+  },
+  "adaptive-systems": {
+    index: "05",
+    title: "Adaptive Systems",
+    summary: "The bounded feedback structures that allow Sylara to learn and reorganize without silently broadening authority or losing accountability.",
+    figureTitle: "Adaptation with preserved control",
+    figureIntro: "This figure is ready for the public improvement loop: observe behavior, evaluate change, verify the proposal, and adopt or reject it explicitly.",
+    nodes: { input: "Observed behavior", core: "Feedback loop", state: "Verified change", output: "Governed adaptation" },
+    comments: ["Observe system behavior", "Propose a bounded change", "Verify before adoption", "Retain rollback and lineage"],
+    pressures: [
+      "Adaptation cannot be allowed to erase the conditions that made the system trustworthy. Change must remain observable, attributable, and reversible where the risk requires it.",
+      "The mature domain can explain the Observe → Preserve → Compile → Reason → Test → Learn loop while keeping sensitive mechanisms behind the public boundary.",
+    ],
+    relatedResearch: "Connect this domain to research on feedback, bounded self-improvement, graceful recovery, and model-independent system identity.",
+  },
+};
 
 /* Keep the future cross-page structure visible before its real links exist. */
 function buildRelatedSkeleton() {
@@ -184,9 +304,14 @@ let focusTimer;
 let routeTimers = [];
 let tabletTransitionTimer;
 let researchHistoryFrame;
+let architectureHistoryFrame;
 let isRestoringResearchHistory = false;
 let activeSubject = null;
 let tabletReturnFocus = null;
+let activeArchitectureDomain = null;
+let activeArchitectureSection = "domain-overview";
+let expandedArchitectureIndexDomain = null;
+let architectureIndexReturnFocus = null;
 
 function buildAmbientStars() {
   const layer = document.querySelector("[data-stars]");
@@ -209,6 +334,7 @@ function clearRouteTransition() {
   routeTimers.forEach((timer) => window.clearTimeout(timer));
   routeTimers = [];
   body.classList.remove("is-spatial-transition", "is-direct-transition");
+  delete body.dataset.transitionTarget;
 }
 
 function renderTabletSubject(subject) {
@@ -505,37 +631,416 @@ function clearSubjectSelection() {
   setSubjectVisualState();
 }
 
-function setScene(nextView, { updateHistory = true, focusDelay = 760 } = {}) {
-  const isResearch = nextView === "research";
-  const wasResearch = body.dataset.view === "research";
+/*
+  ARCHITECTURE MAP STATE
+  The landing graph never changes position. Hover/focus brightens only the
+  selected module, its direct relationships, and their connected modules.
+*/
+function setArchitectureMapState(domain = null) {
+  const connectedDomains = new Set();
 
-  if (!isResearch && wasResearch && updateHistory) syncResearchHistoryState();
+  architectureRelations.forEach((relation) => {
+    const isConnected = domain && [relation.dataset.from, relation.dataset.to].includes(domain);
+    relation.classList.toggle("is-active", Boolean(isConnected));
 
-  body.dataset.view = isResearch ? "research" : "home";
+    if (isConnected) {
+      connectedDomains.add(relation.dataset.from);
+      connectedDomains.add(relation.dataset.to);
+    }
+  });
 
-  if (isResearch) {
-    body.style.setProperty("--pointer-x", "0px");
-    body.style.setProperty("--pointer-y", "0px");
-  } else {
-    closeResearchTablet({ restoreFocus: false, syncHistory: false });
+  architectureDomains.forEach((control) => {
+    control.classList.toggle("is-active", control.dataset.domain === domain);
+    control.classList.toggle(
+      "is-connected",
+      connectedDomains.has(control.dataset.domain) && control.dataset.domain !== domain,
+    );
+  });
+}
+
+function getArchitectureHashDomain() {
+  const match = location.hash.match(/^#architecture\/([^/]+)$/);
+  return match && architectureDomainContent[match[1]] ? match[1] : null;
+}
+
+function renderArchitectureDomain(domain) {
+  const domainData = architectureDomainContent[domain];
+  if (!domainData) return;
+
+  activeArchitectureDomain = domain;
+  activeArchitectureSection = "domain-overview";
+  architectureDomainKicker.textContent = `Architecture domain / ${domainData.index}`;
+  architectureDomainTitle.textContent = domainData.title;
+  architectureDomainSummary.textContent = domainData.summary;
+  architectureDomainFigureTitle.textContent = domainData.figureTitle;
+  architectureDomainFigureIntro.textContent = domainData.figureIntro;
+  architectureDomainRelatedResearch.textContent = domainData.relatedResearch;
+  architectureDomainFooter.textContent = `Architecture / ${domainData.title}`;
+
+  architectureDomainFigureNodes.forEach((node) => {
+    node.textContent = domainData.nodes[node.dataset.domainFigureNode];
+  });
+
+  architectureDomainComments.replaceChildren(
+    ...domainData.comments.map((comment) => {
+      const item = document.createElement("li");
+      item.textContent = comment;
+      return item;
+    }),
+  );
+
+  architectureDomainPressures.replaceChildren(
+    ...domainData.pressures.map((paragraphText) => {
+      const paragraph = document.createElement("p");
+      paragraph.textContent = paragraphText;
+      return paragraph;
+    }),
+  );
+
+  architectureScene.dataset.architectureView = "domain";
+  architectureScene.setAttribute("aria-labelledby", "architecture-domain-title");
+  architectureScroll.setAttribute("aria-hidden", "true");
+  architectureScroll.setAttribute("inert", "");
+  architectureDomainScroll.setAttribute("aria-hidden", "false");
+  architectureDomainScroll.removeAttribute("inert");
+  renderArchitectureIndex();
+}
+
+function showArchitectureDomain(domain, {
+  updateHistory = true,
+  scrollTop = 0,
+  focusPage = true,
+  keepIndexOpen = false,
+} = {}) {
+  if (!architectureDomainContent[domain]) return;
+
+  if (!keepIndexOpen) closeArchitectureIndexVisual({ restoreFocus: false });
+  renderArchitectureDomain(domain);
+
+  /* The index may remain over the newly selected domain so its hierarchy can expand in place. */
+  if (keepIndexOpen) {
+    architectureDomainScroll.setAttribute("inert", "");
+    architectureHeader.setAttribute("inert", "");
   }
 
-  homeScene.toggleAttribute("inert", isResearch);
-  researchScene.toggleAttribute("inert", !isResearch);
-  homeScene.setAttribute("aria-hidden", String(isResearch));
-  researchScene.setAttribute("aria-hidden", String(!isResearch));
+  window.requestAnimationFrame(() => {
+    architectureDomainScroll.scrollTop = Math.max(0, Number(scrollTop) || 0);
+    updateActiveArchitectureSection();
+    if (keepIndexOpen) {
+      architectureIndexList.querySelector(`[data-index-domain="${domain}"]`)?.focus({ preventScroll: true });
+    } else if (focusPage) {
+      architectureDomainScroll.focus({ preventScroll: true });
+    }
+  });
 
   if (updateHistory) {
     history.pushState(
-      { view: nextView, research: isResearch ? { subject: null, tabletOpen: false, scrollTop: 0 } : null },
+      {
+        view: "architecture",
+        architecture: { page: "domain", domain, scrollTop: 0, indexOpen: keepIndexOpen },
+      },
       "",
-      isResearch ? "#research" : "#home",
+      `#architecture/${domain}`,
+    );
+  }
+
+  skipLink.href = "#domain-overview";
+  skipLink.textContent = `Skip to ${architectureDomainContent[domain].title}`;
+}
+
+/* INDEX DOMAIN SWITCH — expand the destination while the index stays visible. */
+function showArchitectureDomainFromIndex(domain) {
+  if (!architectureDomainContent[domain] || domain === activeArchitectureDomain) return;
+
+  /* Leave the previous domain as a normal closed page in Back history. */
+  history.replaceState(
+    {
+      ...history.state,
+      view: "architecture",
+      architecture: {
+        page: "domain",
+        domain: activeArchitectureDomain,
+        scrollTop: architectureDomainScroll.scrollTop,
+        indexOpen: false,
+      },
+    },
+    "",
+    location.href,
+  );
+
+  expandedArchitectureIndexDomain = domain;
+  showArchitectureDomain(domain, {
+    updateHistory: true,
+    scrollTop: 0,
+    focusPage: false,
+    keepIndexOpen: true,
+  });
+}
+
+function showArchitectureLanding({ updateHistory = true, scrollTop = 0, focusMap = true } = {}) {
+  closeArchitectureIndexVisual({ restoreFocus: false });
+  activeArchitectureDomain = null;
+  activeArchitectureSection = "domain-overview";
+  architectureScene.dataset.architectureView = "landing";
+  architectureScene.setAttribute("aria-labelledby", "architecture-title");
+  architectureScroll.setAttribute("aria-hidden", "false");
+  architectureScroll.removeAttribute("inert");
+  architectureDomainScroll.setAttribute("aria-hidden", "true");
+  architectureDomainScroll.setAttribute("inert", "");
+  architectureScroll.scrollTop = Math.max(0, Number(scrollTop) || 0);
+
+  if (updateHistory) {
+    history.pushState(
+      { view: "architecture", architecture: { page: "landing", scrollTop, indexOpen: false } },
+      "",
+      "#architecture",
+    );
+  }
+
+  skipLink.href = "#architecture-domain-map";
+  skipLink.textContent = "Skip to the Architecture map";
+  if (focusMap) architectureDomains[0]?.focus({ preventScroll: true });
+}
+
+function renderArchitectureIndex() {
+  if (!activeArchitectureDomain) return;
+
+  const fragment = document.createDocumentFragment();
+
+  architectureDomainOrder.forEach((domain) => {
+    const domainData = architectureDomainContent[domain];
+    const row = document.createElement("button");
+    const isCurrent = domain === activeArchitectureDomain;
+    const isExpanded = domain === expandedArchitectureIndexDomain;
+    row.type = "button";
+    row.className = "architecture-index-domain-row";
+    row.textContent = `${domainData.index} / ${domainData.title}`;
+    row.dataset.indexDomain = domain;
+    row.setAttribute("aria-expanded", String(isExpanded));
+    if (isCurrent) row.setAttribute("aria-current", "page");
+    fragment.appendChild(row);
+
+    if (isExpanded) {
+      const sectionList = document.createElement("div");
+      sectionList.className = "architecture-index-sections";
+
+      architectureDomainSections.forEach(([sectionId, sectionLabel]) => {
+        const sectionRow = document.createElement("button");
+        sectionRow.type = "button";
+        sectionRow.className = "architecture-index-section-row";
+        sectionRow.classList.toggle("is-active", sectionId === activeArchitectureSection);
+        sectionRow.textContent = sectionLabel;
+        sectionRow.dataset.indexSection = sectionId;
+        sectionList.appendChild(sectionRow);
+      });
+
+      fragment.appendChild(sectionList);
+    }
+  });
+
+  architectureIndexList.replaceChildren(fragment);
+}
+
+function updateArchitectureIndexActiveSection() {
+  architectureIndexList.querySelectorAll("[data-index-section]").forEach((control) => {
+    control.classList.toggle("is-active", control.dataset.indexSection === activeArchitectureSection);
+  });
+}
+
+function updateActiveArchitectureSection() {
+  if (!activeArchitectureDomain) return;
+
+  const threshold = architectureDomainScroll.getBoundingClientRect().top + window.innerHeight * 0.36;
+  let nextSection = architectureDomainSections[0][0];
+
+  architectureDomainSections.forEach(([sectionId]) => {
+    const section = document.getElementById(sectionId);
+    if (section && section.getBoundingClientRect().top <= threshold) nextSection = sectionId;
+  });
+
+  if (nextSection !== activeArchitectureSection) {
+    activeArchitectureSection = nextSection;
+    updateArchitectureIndexActiveSection();
+  }
+}
+
+function openArchitectureIndex({ updateHistory = true, focusPanel = true } = {}) {
+  if (!activeArchitectureDomain || architectureScene.classList.contains("has-architecture-index")) return;
+
+  architectureIndexReturnFocus = architectureIndexToggle;
+  expandedArchitectureIndexDomain = activeArchitectureDomain;
+  renderArchitectureIndex();
+  architectureScene.classList.add("has-architecture-index");
+  architectureIndex.setAttribute("aria-hidden", "false");
+  architectureIndex.removeAttribute("inert");
+  architectureIndexToggle.setAttribute("aria-expanded", "true");
+  architectureDomainScroll.setAttribute("inert", "");
+  architectureHeader.setAttribute("inert", "");
+  if (focusPanel) architectureIndexPanel.focus({ preventScroll: true });
+
+  if (updateHistory) {
+    history.replaceState(
+      {
+        ...history.state,
+        architecture: { ...history.state?.architecture, indexOpen: true },
+      },
+      "",
+      location.href,
+    );
+  }
+}
+
+function closeArchitectureIndexVisual({ restoreFocus = true } = {}) {
+  if (!architectureScene.classList.contains("has-architecture-index")) return;
+
+  architectureScene.classList.remove("has-architecture-index");
+  architectureIndex.setAttribute("aria-hidden", "true");
+  architectureIndex.setAttribute("inert", "");
+  architectureIndexToggle.setAttribute("aria-expanded", "false");
+  architectureHeader.removeAttribute("inert");
+  if (activeArchitectureDomain) architectureDomainScroll.removeAttribute("inert");
+  if (restoreFocus) architectureIndexReturnFocus?.focus({ preventScroll: true });
+  architectureIndexReturnFocus = null;
+}
+
+function closeArchitectureIndex({ restoreFocus = true, updateHistory = true } = {}) {
+  if (!architectureScene.classList.contains("has-architecture-index")) return;
+
+  if (updateHistory) {
+    history.replaceState(
+      {
+        ...history.state,
+        architecture: {
+          ...history.state?.architecture,
+          scrollTop: architectureDomainScroll.scrollTop,
+          indexOpen: false,
+        },
+      },
+      "",
+      location.href,
+    );
+  }
+
+  closeArchitectureIndexVisual({ restoreFocus });
+}
+
+function syncArchitectureHistoryState() {
+  if (body.dataset.view !== "architecture") return;
+
+  const isDomain = Boolean(activeArchitectureDomain);
+  const activeScroll = isDomain ? architectureDomainScroll : architectureScroll;
+
+  history.replaceState(
+    {
+      ...history.state,
+      view: "architecture",
+      architecture: {
+        page: isDomain ? "domain" : "landing",
+        domain: isDomain ? activeArchitectureDomain : null,
+        scrollTop: activeScroll.scrollTop,
+        indexOpen: architectureScene.classList.contains("has-architecture-index"),
+      },
+    },
+    "",
+    location.href,
+  );
+}
+
+function scheduleArchitectureHistorySync() {
+  window.cancelAnimationFrame(architectureHistoryFrame);
+  architectureHistoryFrame = window.requestAnimationFrame(() => {
+    updateActiveArchitectureSection();
+    syncArchitectureHistoryState();
+  });
+}
+
+function restoreArchitectureHistoryState(architectureState) {
+  const domain = architectureState?.domain || getArchitectureHashDomain();
+
+  if (architectureState?.page === "domain" || domain) {
+    showArchitectureDomain(domain, {
+      updateHistory: false,
+      scrollTop: architectureState?.scrollTop,
+      focusPage: false,
+    });
+
+    if (architectureState?.indexOpen) {
+      window.requestAnimationFrame(() => openArchitectureIndex({ updateHistory: false, focusPanel: false }));
+    }
+    return;
+  }
+
+  showArchitectureLanding({
+    updateHistory: false,
+    scrollTop: architectureState?.scrollTop,
+    focusMap: false,
+  });
+}
+
+function setScene(nextView, { updateHistory = true, focusDelay = 760 } = {}) {
+  const validViews = ["home", "architecture", "research"];
+  const resolvedView = validViews.includes(nextView) ? nextView : "home";
+  const isHome = resolvedView === "home";
+  const isArchitecture = resolvedView === "architecture";
+  const isResearch = resolvedView === "research";
+  const wasResearch = body.dataset.view === "research";
+  const wasArchitecture = body.dataset.view === "architecture";
+
+  if (!isResearch && wasResearch && updateHistory) syncResearchHistoryState();
+  if (!isArchitecture && wasArchitecture && updateHistory) syncArchitectureHistoryState();
+
+  if (!isArchitecture) closeArchitectureIndexVisual({ restoreFocus: false });
+  if (isArchitecture && !wasArchitecture && updateHistory) {
+    showArchitectureLanding({ updateHistory: false, scrollTop: 0, focusMap: false });
+  }
+
+  body.dataset.view = resolvedView;
+
+  if (!isHome) {
+    body.style.setProperty("--pointer-x", "0px");
+    body.style.setProperty("--pointer-y", "0px");
+  }
+
+  if (!isResearch) {
+    closeResearchTablet({ restoreFocus: false, syncHistory: false });
+  }
+
+  homeScene.toggleAttribute("inert", !isHome);
+  architectureScene.toggleAttribute("inert", !isArchitecture);
+  researchScene.toggleAttribute("inert", !isResearch);
+  homeScene.setAttribute("aria-hidden", String(!isHome));
+  architectureScene.setAttribute("aria-hidden", String(!isArchitecture));
+  researchScene.setAttribute("aria-hidden", String(!isResearch));
+
+  const skipLinkTargets = {
+    home: ["#home-map", "Skip to the Sylara map"],
+    architecture: activeArchitectureDomain
+      ? ["#domain-overview", `Skip to ${architectureDomainContent[activeArchitectureDomain].title}`]
+      : ["#architecture-domain-map", "Skip to the Architecture map"],
+    research: ["#research-title", "Skip to Research"],
+  };
+  [skipLink.href, skipLink.textContent] = skipLinkTargets[resolvedView];
+
+  if (updateHistory) {
+    history.pushState(
+      {
+        view: resolvedView,
+        architecture: isArchitecture ? { page: "landing", domain: null, scrollTop: 0, indexOpen: false } : null,
+        research: isResearch ? { subject: null, tabletOpen: false, scrollTop: 0 } : null,
+      },
+      "",
+      `#${resolvedView}`,
     );
   }
 
   window.clearTimeout(focusTimer);
   focusTimer = window.setTimeout(() => {
-    const focusTarget = isResearch ? researchScene.querySelector("[data-route='home']") : homeScene.querySelector(".map-node--research");
+    const focusTargets = {
+      home: homeScene.querySelector(".map-node--architecture"),
+      architecture: architectureScene.querySelector("[data-route='home']"),
+      research: researchScene.querySelector("[data-route='home']"),
+    };
+    const focusTarget = focusTargets[resolvedView];
     focusTarget?.focus({ preventScroll: true });
   }, prefersReducedMotion.matches ? 0 : focusDelay);
 }
@@ -543,10 +1048,11 @@ function setScene(nextView, { updateHistory = true, focusDelay = 760 } = {}) {
 function navigateTo(nextView, { mode = "direct", updateHistory = true } = {}) {
   clearRouteTransition();
 
-  const useSpatialTransition = mode === "spatial" && nextView === "research" && !prefersReducedMotion.matches;
+  const useSpatialTransition = mode === "spatial" && ["architecture", "research"].includes(nextView) && !prefersReducedMotion.matches;
 
   if (useSpatialTransition) {
     body.classList.add("is-spatial-transition");
+    body.dataset.transitionTarget = nextView;
     routeTimers.push(window.setTimeout(() => {
       setScene(nextView, { updateHistory, focusDelay: 760 });
     }, 440));
@@ -560,16 +1066,113 @@ function navigateTo(nextView, { mode = "direct", updateHistory = true } = {}) {
 }
 
 document.querySelectorAll("[data-route]").forEach((control) => {
-  control.addEventListener("click", () => navigateTo(control.dataset.route, { mode: control.dataset.routeMode }));
+  control.addEventListener("click", () => {
+    if (control.dataset.route === body.dataset.view) {
+      if (control.dataset.route === "architecture" && activeArchitectureDomain) {
+        showArchitectureLanding({ updateHistory: true, scrollTop: 0 });
+      }
+      return;
+    }
+    navigateTo(control.dataset.route, { mode: control.dataset.routeMode });
+  });
 });
 
 document.querySelectorAll("[data-pending]").forEach((control) => {
   control.addEventListener("click", () => {
+    const routeStatus = control.closest(".scene")?.querySelector("[data-route-status]") || routeStatuses[0];
     routeStatus.textContent = `${control.dataset.pending} is mapped for the next prototype pass.`;
     routeStatus.classList.add("is-visible");
     window.clearTimeout(routeStatus.hideTimer);
     routeStatus.hideTimer = window.setTimeout(() => routeStatus.classList.remove("is-visible"), 2800);
   });
+});
+
+architectureDomains.forEach((control) => {
+  const domain = control.dataset.domain;
+
+  control.addEventListener("pointerenter", () => setArchitectureMapState(domain));
+  control.addEventListener("pointerleave", () => {
+    if (!control.matches(":focus-visible")) setArchitectureMapState();
+  });
+  control.addEventListener("focus", () => setArchitectureMapState(domain));
+  control.addEventListener("blur", () => {
+    if (!control.matches(":hover")) setArchitectureMapState();
+  });
+  control.addEventListener("click", () => {
+    showArchitectureDomain(domain);
+  });
+});
+
+/* Scroll inside the Architecture surface without replacing the page route hash. */
+architectureScrollTarget.addEventListener("click", (event) => {
+  event.preventDefault();
+  document.querySelector("#architecture-biography")?.scrollIntoView({
+    behavior: prefersReducedMotion.matches ? "auto" : "smooth",
+    block: "start",
+  });
+});
+
+architectureOverviewControl.addEventListener("click", () => {
+  showArchitectureLanding({ updateHistory: true, scrollTop: 0 });
+});
+
+architectureIndexToggle.addEventListener("click", () => openArchitectureIndex());
+architectureIndexDismiss.addEventListener("click", () => closeArchitectureIndex());
+architectureIndexClose.addEventListener("click", () => closeArchitectureIndex());
+
+architectureIndexList.addEventListener("click", (event) => {
+  const domainControl = event.target.closest("[data-index-domain]");
+  const sectionControl = event.target.closest("[data-index-section]");
+
+  if (domainControl) {
+    const nextDomain = domainControl.dataset.indexDomain;
+    if (nextDomain === activeArchitectureDomain) {
+      expandedArchitectureIndexDomain = expandedArchitectureIndexDomain === nextDomain ? null : nextDomain;
+      renderArchitectureIndex();
+      window.requestAnimationFrame(() => {
+        architectureIndexList.querySelector(`[data-index-domain="${nextDomain}"]`)?.focus({ preventScroll: true });
+      });
+    } else {
+      showArchitectureDomainFromIndex(nextDomain);
+    }
+    return;
+  }
+
+  if (sectionControl) {
+    const sectionId = sectionControl.dataset.indexSection;
+    document.getElementById(sectionId)?.scrollIntoView({
+      behavior: prefersReducedMotion.matches ? "auto" : "smooth",
+      block: "start",
+    });
+    activeArchitectureSection = sectionId;
+    updateArchitectureIndexActiveSection();
+    syncArchitectureHistoryState();
+  }
+});
+
+architectureIndex.addEventListener("keydown", (event) => {
+  if (!architectureScene.classList.contains("has-architecture-index")) return;
+
+  if (event.key === "Escape") {
+    event.preventDefault();
+    closeArchitectureIndex();
+    return;
+  }
+
+  if (event.key !== "Tab") return;
+  const focusable = [
+    architectureIndexClose,
+    ...architectureIndexList.querySelectorAll("button"),
+  ];
+  const currentIndex = focusable.indexOf(document.activeElement);
+
+  if (event.shiftKey && currentIndex <= 0) {
+    event.preventDefault();
+    focusable[focusable.length - 1]?.focus();
+  } else if (!event.shiftKey && currentIndex === focusable.length - 1) {
+    event.preventDefault();
+    focusable[0]?.focus();
+  }
 });
 
 subjectControls.forEach((control) => {
@@ -634,9 +1237,16 @@ tabletScroll.addEventListener("scroll", () => {
   updateTabletScrollCue();
   scheduleResearchHistorySync();
 }, { passive: true });
+architectureScroll.addEventListener("scroll", scheduleArchitectureHistorySync, { passive: true });
+architectureDomainScroll.addEventListener("scroll", scheduleArchitectureHistorySync, { passive: true });
 window.addEventListener("resize", updateTabletScrollCue);
 
 window.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && body.dataset.view === "architecture" && architectureScene.classList.contains("has-architecture-index")) {
+    closeArchitectureIndex();
+    return;
+  }
+
   if (event.key !== "Escape" || body.dataset.view !== "research") return;
 
   if (researchScene.classList.contains("has-tablet")) {
@@ -653,10 +1263,13 @@ window.addEventListener("keydown", (event) => {
 });
 
 window.addEventListener("popstate", (event) => {
-  const nextView = event.state?.view || (location.hash === "#research" ? "research" : "home");
+  const hashView = location.hash.slice(1);
+  const nextView = event.state?.view
+    || (hashView.startsWith("architecture") ? "architecture" : hashView === "research" ? "research" : "home");
   navigateTo(nextView, { updateHistory: false });
 
   if (nextView === "research") restoreResearchHistoryState(event.state?.research);
+  if (nextView === "architecture") restoreArchitectureHistoryState(event.state?.architecture);
 });
 
 if (!prefersReducedMotion.matches) {
@@ -676,15 +1289,31 @@ if (!prefersReducedMotion.matches) {
 
 buildAmbientStars();
 setSubjectVisualState();
-const initialView = location.hash === "#research" ? "research" : "home";
+setArchitectureMapState();
+const initialHashView = location.hash.slice(1);
+const initialView = initialHashView.startsWith("architecture")
+  ? "architecture"
+  : initialHashView === "research" ? "research" : "home";
 setScene(initialView, { updateHistory: false });
 
 if (history.state?.view === initialView) {
   if (initialView === "research") restoreResearchHistoryState(history.state.research);
+  if (initialView === "architecture") restoreArchitectureHistoryState(history.state.architecture);
 } else {
+  const initialArchitectureDomain = initialView === "architecture" ? getArchitectureHashDomain() : null;
+  const initialArchitectureState = initialArchitectureDomain
+    ? { page: "domain", domain: initialArchitectureDomain, scrollTop: 0, indexOpen: false }
+    : { page: "landing", domain: null, scrollTop: 0, indexOpen: false };
+
   history.replaceState(
-    { view: initialView, research: initialView === "research" ? { subject: null, tabletOpen: false, scrollTop: 0 } : null },
+    {
+      view: initialView,
+      architecture: initialView === "architecture" ? initialArchitectureState : null,
+      research: initialView === "research" ? { subject: null, tabletOpen: false, scrollTop: 0 } : null,
+    },
     "",
     location.href,
   );
+
+  if (initialView === "architecture") restoreArchitectureHistoryState(initialArchitectureState);
 }

@@ -7,8 +7,8 @@
     <meta name="description" content="Sylara — systems intelligence, architecture, and research." />
     <title>Sylara — Systems Intelligence</title>
     <link rel="preload" as="image" href="assets/redesign/home-network.png" />
-    <link rel="stylesheet" href="styles.css?v=research-accessibility-1" />
-    <script src="app.js?v=research-accessibility-1" defer></script>
+    <link rel="stylesheet" href="styles.css?v=architecture-index-4" />
+    <script src="app.js?v=architecture-index-4" defer></script>
   </head>
   <body data-view="home">
     <a class="skip-link" href="#home-map">Skip to the Sylara map</a>
@@ -28,7 +28,7 @@
           </div>
 
           <nav class="route-index" aria-label="Quick navigation">
-            <button type="button" data-pending="Architecture">Architecture</button>
+            <button type="button" data-route="architecture" data-route-mode="direct">Architecture</button>
             <button type="button" data-route="research" data-route-mode="direct">Research</button>
             <button type="button" data-pending="Journal">Journal</button>
             <button type="button" data-pending="About">About</button>
@@ -47,10 +47,11 @@
           </div>
 
           <nav class="spatial-map" aria-label="Sylara destinations">
-            <button class="map-node map-node--architecture" type="button" data-pending="Architecture">
+            <button class="map-node map-node--architecture" type="button" data-route="architecture" data-route-mode="spatial" aria-label="Enter Architecture">
               <span class="node-orbit" aria-hidden="true"></span>
               <span class="node-core" aria-hidden="true"></span>
               <span class="node-label">Architecture</span>
+              <span class="node-action">Enter</span>
             </button>
 
             <button class="map-node map-node--research map-node--active" type="button" data-route="research" data-route-mode="spatial" aria-label="Enter Research">
@@ -83,14 +84,259 @@
         <p class="route-status" data-route-status aria-live="polite"></p>
       </section>
 
+      <section class="scene architecture-scene" id="architecture" data-architecture-view="landing" aria-labelledby="architecture-title" aria-hidden="true" inert>
+        <div class="architecture-field" aria-hidden="true">
+          <span class="architecture-field__grid"></span>
+          <span class="architecture-field__halo architecture-field__halo--one"></span>
+          <span class="architecture-field__halo architecture-field__halo--two"></span>
+        </div>
+
+        <header class="architecture-header">
+          <img class="wordmark wordmark--small" src="assets/redesign/sylara-wordmark.png" width="4317" height="486" alt="Sylara" />
+
+          <nav class="route-index interior-route-index" aria-label="Primary navigation">
+            <button type="button" data-route="architecture" data-route-mode="direct" aria-current="page">Architecture</button>
+            <button type="button" data-route="research" data-route-mode="direct">Research</button>
+            <button type="button" data-pending="Journal">Journal</button>
+            <button type="button" data-pending="About">About</button>
+            <button type="button" data-pending="Contact">Contact</button>
+          </nav>
+
+          <button class="map-return" type="button" data-route="home" data-route-mode="direct"><span aria-hidden="true">←</span> Return to map</button>
+        </header>
+
+        <p class="route-status architecture-route-status" data-route-status aria-live="polite"></p>
+
+        <div class="architecture-scroll" data-architecture-scroll tabindex="-1">
+          <section class="architecture-hero" aria-describedby="architecture-intro">
+            <div class="architecture-heading">
+              <p class="architecture-kicker">System architecture / public map</p>
+              <h2 id="architecture-title">Architecture</h2>
+              <p id="architecture-intro">A structural view of how Sylara preserves continuity, compiles context, and keeps reasoning connected to evidence.</p>
+            </div>
+
+            <!--
+              ARCHITECTURE DOMAIN MAP
+              Position each module in styles.css. Keep the graph static at rest;
+              JavaScript adds brightness only for hover and keyboard focus.
+            -->
+            <nav class="architecture-map" id="architecture-domain-map" data-architecture-map aria-label="Architecture domains">
+              <svg class="architecture-map__relations" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden="true">
+                <line data-relation data-from="observation-provenance" data-to="memory-continuity" x1="500" y1="90" x2="190" y2="255"></line>
+                <line data-relation data-from="observation-provenance" data-to="reasoning-verification" x1="500" y1="90" x2="810" y2="255"></line>
+                <line data-relation data-from="observation-provenance" data-to="context-compilation" x1="500" y1="90" x2="500" y2="305"></line>
+                <line data-relation data-from="memory-continuity" data-to="context-compilation" x1="190" y1="255" x2="500" y2="305"></line>
+                <line data-relation data-from="context-compilation" data-to="reasoning-verification" x1="500" y1="305" x2="810" y2="255"></line>
+                <line data-relation data-from="memory-continuity" data-to="adaptive-systems" x1="190" y1="255" x2="500" y2="515"></line>
+                <line data-relation data-from="context-compilation" data-to="adaptive-systems" x1="500" y1="305" x2="500" y2="515"></line>
+                <line data-relation data-from="reasoning-verification" data-to="adaptive-systems" x1="810" y1="255" x2="500" y2="515"></line>
+              </svg>
+
+              <button class="architecture-domain architecture-domain--observation" type="button" data-domain="observation-provenance">
+                <span class="architecture-domain__index">01</span>
+                <span>Observation <i>&amp;</i> Provenance</span>
+              </button>
+              <button class="architecture-domain architecture-domain--memory" type="button" data-domain="memory-continuity">
+                <span class="architecture-domain__index">02</span>
+                <span>Memory <i>&amp;</i> Continuity</span>
+              </button>
+              <button class="architecture-domain architecture-domain--context" type="button" data-domain="context-compilation">
+                <span class="architecture-domain__index">03</span>
+                <span>Context Compilation</span>
+              </button>
+              <button class="architecture-domain architecture-domain--reasoning" type="button" data-domain="reasoning-verification">
+                <span class="architecture-domain__index">04</span>
+                <span>Reasoning <i>&amp;</i> Verification</span>
+              </button>
+              <button class="architecture-domain architecture-domain--adaptive" type="button" data-domain="adaptive-systems">
+                <span class="architecture-domain__index">05</span>
+                <span>Adaptive Systems</span>
+              </button>
+
+              <p class="architecture-map__status" data-architecture-status aria-live="polite">Select a domain to enter its dedicated architecture page.</p>
+            </nav>
+
+            <a class="architecture-scroll-cue" href="#architecture-biography" data-architecture-scroll-target>
+              <span>Architectural biography</span>
+              <i aria-hidden="true">↓</i>
+            </a>
+          </section>
+
+          <!--
+            ARCHITECTURAL BIOGRAPHY SKELETON
+            Replace copy inside these sections without changing page structure.
+          -->
+          <article class="architecture-biography" id="architecture-biography">
+            <header class="architecture-biography__intro">
+              <p class="architecture-section-label">Orientation</p>
+              <h3>A system shaped by the need to remember responsibly.</h3>
+              <p>Sylara begins with a structural question: how can an intelligent system continue complex work over time without losing the evidence, boundaries, and decisions that make its reasoning trustworthy?</p>
+            </header>
+
+            <section class="architecture-chapter" id="architecture-continuity">
+              <div class="architecture-chapter__number" aria-hidden="true">01</div>
+              <div class="architecture-chapter__body">
+                <p class="architecture-section-label">Design pressure</p>
+                <h3>Continuity without flattening uncertainty</h3>
+                <p>This section is reserved for the architectural consequences of long-running work: what must persist, what must remain revisable, and how historical state stays recoverable.</p>
+                <aside class="architecture-aside">
+                  <strong>Content note</strong>
+                  <p>Add the final public-safe explanation here without changing the surrounding layout.</p>
+                </aside>
+              </div>
+            </section>
+
+            <section class="architecture-chapter" id="architecture-context">
+              <div class="architecture-chapter__number" aria-hidden="true">02</div>
+              <div class="architecture-chapter__body">
+                <p class="architecture-section-label">System shape</p>
+                <h3>Context must be compiled, not merely collected</h3>
+                <p>This section holds the narrative for minimum-sufficient context, provenance-aware retrieval, and the boundaries between durable knowledge and temporary working state.</p>
+              </div>
+            </section>
+
+            <section class="architecture-chapter" id="architecture-authority">
+              <div class="architecture-chapter__number" aria-hidden="true">03</div>
+              <div class="architecture-chapter__body">
+                <p class="architecture-section-label">Structural principle</p>
+                <h3>Authority remains explicit and bounded</h3>
+                <p>This section is ready for the story of how verification, reversibility, attribution, and clear execution boundaries became structural requirements rather than afterthoughts.</p>
+              </div>
+            </section>
+          </article>
+
+          <section class="architecture-handoff" aria-labelledby="architecture-handoff-title">
+            <p class="architecture-section-label">Beyond the present architecture</p>
+            <h3 id="architecture-handoff-title">The structure supports a larger field of questions.</h3>
+            <p>The architecture describes what Sylara is building now. Research examines the questions that remain open—and what persistent intelligence may make possible next.</p>
+            <button type="button" data-route="research" data-route-mode="direct">
+              <span>Explore the research</span>
+              <i aria-hidden="true">→</i>
+            </button>
+          </section>
+
+          <footer class="architecture-footer">
+            <span>Sylara Technologies</span>
+            <span>Architecture / public overview</span>
+          </footer>
+        </div>
+
+        <!--
+          SHARED ARCHITECTURE DOMAIN PAGE
+          All five map modules reuse this shell. Final copy and explanatory
+          figures are populated from the selected domain in app.js.
+        -->
+        <button class="architecture-index-toggle" type="button" data-architecture-index-toggle aria-controls="architecture-index" aria-expanded="false">
+          <span class="architecture-index-toggle__mark" aria-hidden="true"></span>
+          <span>Architecture index</span>
+        </button>
+
+        <div class="architecture-domain-scroll" data-architecture-domain-scroll aria-hidden="true" inert tabindex="-1">
+          <section class="architecture-domain-hero" id="domain-overview" aria-labelledby="architecture-domain-title">
+            <button class="architecture-domain-back" type="button" data-architecture-overview>
+              <span aria-hidden="true">←</span>
+              <span>Architecture overview</span>
+            </button>
+            <p class="architecture-kicker" data-domain-kicker>Architecture domain / 01</p>
+            <h2 id="architecture-domain-title" data-domain-title>Observation &amp; Provenance</h2>
+            <p data-domain-summary></p>
+          </section>
+
+          <section class="architecture-domain-section architecture-domain-section--figure" id="domain-system-view" aria-labelledby="domain-system-view-title">
+            <header class="architecture-domain-section__header">
+              <p class="architecture-section-label">System view</p>
+              <h3 id="domain-system-view-title" data-domain-figure-title>Public-safe system view</h3>
+              <p data-domain-figure-intro></p>
+            </header>
+
+            <div class="architecture-figure-layout">
+              <figure class="architecture-figure" aria-labelledby="domain-figure-caption">
+                <div class="architecture-figure__canvas" data-domain-figure aria-hidden="true">
+                  <span class="architecture-figure__node architecture-figure__node--input" data-domain-figure-node="input">Source</span>
+                  <span class="architecture-figure__node architecture-figure__node--core" data-domain-figure-node="core">Domain</span>
+                  <span class="architecture-figure__node architecture-figure__node--state" data-domain-figure-node="state">State</span>
+                  <span class="architecture-figure__node architecture-figure__node--output" data-domain-figure-node="output">Boundary</span>
+                  <svg viewBox="0 0 800 420" preserveAspectRatio="none">
+                    <path d="M155 210 C245 210 255 126 350 126"></path>
+                    <path d="M350 126 C458 126 446 298 558 298"></path>
+                    <path d="M350 126 C458 126 455 210 650 210"></path>
+                    <path d="M558 298 C620 298 618 238 650 210"></path>
+                  </svg>
+                </div>
+                <figcaption id="domain-figure-caption">Animation-ready architecture figure</figcaption>
+              </figure>
+
+              <ol class="architecture-quick-comments" data-domain-comments aria-label="Figure notes"></ol>
+            </div>
+          </section>
+
+          <section class="architecture-domain-section" id="domain-design-pressures" aria-labelledby="domain-design-pressures-title">
+            <header class="architecture-domain-section__header">
+              <p class="architecture-section-label">Design pressures</p>
+              <h3 id="domain-design-pressures-title">Why this part of the architecture exists</h3>
+            </header>
+            <div class="architecture-domain-copy" data-domain-pressures></div>
+          </section>
+
+          <section class="architecture-domain-section architecture-domain-related" id="domain-related" aria-labelledby="domain-related-title">
+            <header class="architecture-domain-section__header">
+              <p class="architecture-section-label">Related material</p>
+              <h3 id="domain-related-title">Continue through the system</h3>
+            </header>
+            <div class="architecture-related-grid">
+              <section>
+                <h4>Research</h4>
+                <p data-domain-related-research></p>
+                <button type="button" data-route="research" data-route-mode="direct">Explore related research <span aria-hidden="true">→</span></button>
+              </section>
+              <section>
+                <h4>Journal</h4>
+                <p>Curated engineering notes and development history will appear here as the Journal is built.</p>
+                <button type="button" data-pending="Journal">Journal connection forthcoming</button>
+              </section>
+            </div>
+          </section>
+
+          <footer class="architecture-footer">
+            <span>Sylara Technologies</span>
+            <span data-domain-footer>Architecture / domain</span>
+          </footer>
+        </div>
+
+        <aside class="architecture-index-overlay" id="architecture-index" data-architecture-index aria-hidden="true" inert>
+          <button class="architecture-index-backdrop" type="button" data-architecture-index-dismiss aria-label="Close Architecture index"></button>
+          <nav class="architecture-index-panel" aria-label="Architecture index" tabindex="-1">
+            <header>
+              <p>Architecture</p>
+              <button type="button" data-architecture-index-close aria-label="Minimize Architecture index">
+                <span>Minimize</span>
+                <span aria-hidden="true">←</span>
+              </button>
+            </header>
+            <div class="architecture-index-list" data-architecture-index-list></div>
+          </nav>
+        </aside>
+      </section>
+
       <section class="scene research-scene" id="research" aria-labelledby="research-title" aria-hidden="true" inert>
         <div class="scene-image research-image" aria-hidden="true"></div>
         <div class="research-wash" aria-hidden="true"></div>
 
         <header class="research-header">
           <img class="wordmark wordmark--small" src="assets/redesign/sylara-wordmark.png" width="4317" height="486" alt="Sylara" />
+
+          <nav class="route-index interior-route-index" aria-label="Primary navigation">
+            <button type="button" data-route="architecture" data-route-mode="direct">Architecture</button>
+            <button type="button" data-route="research" data-route-mode="direct" aria-current="page">Research</button>
+            <button type="button" data-pending="Journal">Journal</button>
+            <button type="button" data-pending="About">About</button>
+            <button type="button" data-pending="Contact">Contact</button>
+          </nav>
+
           <button class="map-return" type="button" data-route="home" data-route-mode="direct"><span aria-hidden="true">←</span> Return to map</button>
         </header>
+
+        <p class="route-status research-route-status" data-route-status aria-live="polite"></p>
 
         <div class="research-content">
           <h2 id="research-title">Research</h2>
