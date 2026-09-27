@@ -78,7 +78,14 @@ button { color: inherit; }
 }
 
 .home-scene { opacity: 1; visibility: visible; transform: scale(1); }
-.research-scene { opacity: 0; visibility: hidden; pointer-events: none; transform: scale(0.965); filter: blur(8px); }
+.research-scene {
+  overflow: clip;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: scale(0.965);
+  filter: blur(8px);
+}
 
 body[data-view="research"] .home-scene {
   opacity: 0;
@@ -215,6 +222,7 @@ body[data-view="research"] .research-scene {
   right: 0;
 }
 
+/* HOME HERO CARD — adjust top/left to move it; width/padding control its footprint. */
 .home-intro {
   position: absolute;
   z-index: 4;
@@ -401,6 +409,7 @@ body[data-view="research"] .research-scene {
 .map-node--active .node-orbit { border-color: rgba(236, 221, 255, 0.78); box-shadow: 0 0 18px rgba(157, 92, 255, 0.22); }
 .map-node--active .node-label { color: white; }
 
+/* HOME NODE POSITIONS — left moves side-to-side; top moves up/down. */
 .map-node--architecture { --trace-angle: -7deg; left: 77%; top: 34%; }
 .map-node--research { --trace-angle: 5deg; left: 61%; top: 48%; }
 .map-node--journal { --trace-angle: -3deg; left: 82%; top: 57%; }
@@ -542,15 +551,6 @@ body.is-direct-transition[data-view="research"] .home-scene {
   pointer-events: none;
 }
 
-.section-kicker {
-  margin: 0 0 1.1rem;
-  color: rgba(160, 198, 255, 0.72);
-  font-family: "DM Mono", ui-monospace, monospace;
-  font-size: clamp(0.58rem, 0.72vw, 0.72rem);
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-}
-
 .research-content h2 {
   margin: 0;
   color: white;
@@ -573,6 +573,11 @@ body.is-direct-transition[data-view="research"] .home-scene {
   line-height: 1.7;
 }
 
+/*
+  RESEARCH HOLOGRAM — QUICK TUNING
+  top: moves the complete hologram up/down.
+  width: scales the complete hologram.
+*/
 .research-projection {
   position: absolute;
   z-index: 1;
@@ -583,12 +588,14 @@ body.is-direct-transition[data-view="research"] .home-scene {
   transform: translate(-50%, -50%);
   filter: drop-shadow(0 0 24px rgba(102, 175, 255, 0.28));
   pointer-events: none;
+  transition: left 480ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .research-scene[aria-hidden="true"] .research-projection {
   display: none;
 }
 
+/* PROJECTION LIGHT CONE — top sets its start; width/height set its spread and reach. */
 .projection-beam {
   position: absolute;
   left: 50%;
@@ -602,8 +609,10 @@ body.is-direct-transition[data-view="research"] .home-scene {
   opacity: 0.8;
 }
 
+/* PROJECTION GLOBE — top moves only the orb; width changes only the orb size. */
 .projection-globe {
   position: absolute;
+  z-index: 3;
   left: 50%;
   top: 24%;
   width: 43%;
@@ -617,13 +626,13 @@ body.is-direct-transition[data-view="research"] .home-scene {
     repeating-linear-gradient(90deg, transparent 0 15%, rgba(164, 215, 255, 0.18) 16%, transparent 17% 30%);
   box-shadow: inset 0 0 28px rgba(133, 203, 255, 0.44), 0 0 18px rgba(129, 193, 255, 0.74), 0 0 55px rgba(75, 151, 255, 0.34);
   transform: translateX(-50%);
-  animation: globe-float 6s ease-in-out infinite;
 }
 
 .projection-globe::before,
 .projection-globe::after {
   content: "";
   position: absolute;
+  z-index: 4;
   border-radius: 50%;
 }
 
@@ -637,8 +646,49 @@ body.is-direct-transition[data-view="research"] .home-scene {
   border: 1px solid rgba(170, 216, 255, 0.34);
 }
 
+/*
+  INNER GLOBE GEOMETRY
+  animation duration controls rotation speed; larger seconds = slower rotation.
+  The outer .projection-globe remains fixed while this deeper layer turns.
+*/
+.globe-inner {
+  position: absolute;
+  z-index: 1;
+  inset: 11%;
+  overflow: hidden;
+  border: 1px solid rgba(167, 216, 255, 0.22);
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(from 12deg, rgba(189, 226, 255, 0.18) 0 1deg, transparent 1.5deg 24deg),
+    radial-gradient(circle at 42% 38%, rgba(171, 217, 255, 0.18), transparent 48%);
+  box-shadow: inset 0 0 22px rgba(109, 183, 255, 0.22);
+  opacity: 0.74;
+  transform: rotate(0deg) scale(0.84);
+  animation: globe-inner-turn 82s linear infinite;
+  will-change: transform;
+}
+
+.globe-inner::before,
+.globe-inner::after {
+  content: "";
+  position: absolute;
+  border: 1px solid rgba(180, 221, 255, 0.26);
+  border-radius: 50%;
+}
+
+.globe-inner::before {
+  inset: 23% -12%;
+  transform: rotate(24deg);
+}
+
+.globe-inner::after {
+  inset: -12% 29%;
+  transform: rotate(-19deg);
+}
+
 .globe-line {
   position: absolute;
+  z-index: 2;
   left: 50%;
   top: 50%;
   width: 70%;
@@ -651,36 +701,248 @@ body.is-direct-transition[data-view="research"] .home-scene {
 .globe-line--two { transform: translate(-50%, -50%) rotate(91deg); }
 .globe-line--three { transform: translate(-50%, -50%) rotate(151deg); }
 
-.projection-orbit {
+/*
+  LOCALIZED LINE TRANSITS
+  Change top/left to relocate a transit; duration and delay control frequency.
+*/
+.globe-transit {
+  --transit-angle: 0deg;
+  position: absolute;
+  z-index: 3;
+  width: 31%;
+  height: 1px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(244, 251, 255, 0.95) 58%, rgba(129, 199, 255, 0.22));
+  box-shadow: 0 0 7px rgba(159, 216, 255, 0.72);
+  opacity: 0;
+  transform-origin: left center;
+  animation: globe-line-transit 8.4s ease-in-out infinite;
+}
+
+.globe-transit--one { --transit-angle: 18deg; left: 23%; top: 33%; }
+.globe-transit--two { --transit-angle: -27deg; left: 48%; top: 57%; animation-delay: -3.1s; animation-duration: 9.2s; }
+.globe-transit--three { --transit-angle: 7deg; left: 28%; top: 72%; animation-delay: -6.4s; animation-duration: 10.1s; }
+
+/*
+  RESEARCH SUBJECT PLANES
+  width/height shape each orbit; transform rotate() sets its angle.
+  duration controls travel speed; a larger number is slower.
+*/
+.subject-plane {
+  --orbit-duration: 40s;
+  --orbit-delay: 0s;
   position: absolute;
   left: 50%;
   top: 45%;
-  border: 1px solid rgba(158, 210, 255, 0.52);
-  border-radius: 50%;
-  transform: translate(-50%, -50%) rotateX(70deg);
+  z-index: 2;
+  transform: translate(-50%, -50%) rotate(var(--plane-angle));
+  animation: subject-plane-depth var(--orbit-duration) linear var(--orbit-delay) infinite;
 }
 
-.projection-orbit--one { width: 75%; height: 31%; animation: orbit-breathe 5.5s ease-in-out infinite; }
-.projection-orbit--two { width: 58%; height: 22%; animation: orbit-breathe 5.5s ease-in-out -2.8s infinite; }
-
-.projection-satellite {
+.subject-plane__path {
   position: absolute;
-  width: 2.3%;
-  aspect-ratio: 1;
+  inset: 0;
+  border: 1px solid rgba(158, 210, 255, 0.22);
   border-radius: 50%;
-  background: white;
-  box-shadow: 0 0 7px 2px #a9d9ff, 0 0 17px #78baff;
+  box-shadow: 0 0 9px rgba(102, 175, 255, 0.08);
+  transition: border-color 240ms ease, box-shadow 240ms ease;
 }
 
-.projection-satellite--one { left: 15%; top: 41%; }
-.projection-satellite--two { right: 17%; top: 52%; }
+.subject-orb {
+  --glyph-opacity: 0.48;
+  --glyph-brightness: 0.9;
+  --glyph-duration: 26s;
+  --glyph-direction: normal;
+  --orb-front-opacity: 0.78;
+  --orb-back-opacity: 0.42;
+  --orb-front-brightness: 0.94;
+  --orb-back-brightness: 0.72;
+  position: absolute;
+  width: clamp(0.76rem, 1.12vw, 0.98rem);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 36% 31%, rgba(255, 255, 255, 0.9) 0 8%, rgba(179, 223, 255, 0.78) 20%, rgba(75, 145, 235, 0.62) 48%, rgba(13, 47, 99, 0.88) 72%);
+  border: 1px solid rgba(225, 244, 255, 0.72);
+  box-shadow: 0 0 5px 1px rgba(188, 226, 255, 0.72), 0 0 13px rgba(92, 167, 255, 0.46);
+  offset-path: ellipse(50% 50% at 50% 50%);
+  offset-distance: 0%;
+  offset-rotate: 0deg;
+  transition: box-shadow 260ms ease;
+  animation:
+    subject-orbit-travel var(--orbit-duration) linear var(--orbit-delay) infinite,
+    subject-orb-depth var(--orbit-duration) linear var(--orbit-delay) infinite;
+}
 
+/*
+  SUBJECT GLYPHS
+  Every orb keeps the same shell. Only this faint internal geometry changes:
+  lattice, linked context, branching evidence, or an adaptive feedback loop.
+*/
+.subject-orb__glyph {
+  position: absolute;
+  inset: 20%;
+  color: rgba(236, 248, 255, 0.9);
+  opacity: var(--glyph-opacity);
+  filter: brightness(var(--glyph-brightness)) drop-shadow(0 0 2px rgba(186, 226, 255, 0.78));
+  transform-origin: center;
+  animation: subject-glyph-turn var(--glyph-duration) linear infinite;
+  animation-direction: var(--glyph-direction);
+  transition: opacity 180ms ease, filter 180ms ease;
+  will-change: transform;
+}
+
+.subject-orb__glyph::before,
+.subject-orb__glyph::after {
+  content: "";
+  position: absolute;
+  box-sizing: border-box;
+}
+
+/* Foundations — stable axes held inside a structural frame. */
+.subject-plane--foundations .subject-orb__glyph {
+  --glyph-duration: 30s;
+  inset: 23%;
+  border: 1px solid currentColor;
+}
+
+.subject-plane--foundations .subject-orb__glyph::before {
+  left: 50%;
+  top: -45%;
+  width: 1px;
+  height: 190%;
+  background: currentColor;
+}
+
+.subject-plane--foundations .subject-orb__glyph::after {
+  left: -45%;
+  top: 50%;
+  width: 190%;
+  height: 1px;
+  background: currentColor;
+}
+
+/* Memory & Context — two overlapping relationships sharing one boundary. */
+.subject-plane--memory .subject-orb__glyph {
+  --glyph-duration: 28s;
+  --glyph-direction: reverse;
+  inset: 17%;
+}
+
+.subject-plane--memory .subject-orb__glyph::before,
+.subject-plane--memory .subject-orb__glyph::after {
+  top: 50%;
+  width: 61%;
+  aspect-ratio: 1;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+
+.subject-plane--memory .subject-orb__glyph::before { left: 0; }
+.subject-plane--memory .subject-orb__glyph::after { right: 0; }
+
+/* Reasoning & Evidence — two evidence branches converge into one stem. */
+.subject-plane--reasoning .subject-orb__glyph {
+  --glyph-duration: 34s;
+  inset: 17%;
+  background: radial-gradient(circle, currentColor 0 12%, transparent 15%);
+}
+
+.subject-plane--reasoning .subject-orb__glyph::before {
+  left: 50%;
+  top: 45%;
+  width: 1px;
+  height: 55%;
+  background: currentColor;
+}
+
+.subject-plane--reasoning .subject-orb__glyph::after {
+  left: 15%;
+  top: 2%;
+  width: 70%;
+  height: 56%;
+  background:
+    linear-gradient(36deg, transparent 47%, currentColor 49% 52%, transparent 54%) left / 50% 100% no-repeat,
+    linear-gradient(-36deg, transparent 47%, currentColor 49% 52%, transparent 54%) right / 50% 100% no-repeat;
+}
+
+/* Adaptive Systems — a deliberately incomplete feedback loop. */
+.subject-plane--adaptive .subject-orb__glyph {
+  --glyph-duration: 24s;
+  --glyph-direction: reverse;
+  inset: 17%;
+  border: 1px solid currentColor;
+  border-left-color: transparent;
+  border-radius: 50%;
+}
+
+.subject-plane--adaptive .subject-orb__glyph::before,
+.subject-plane--adaptive .subject-orb__glyph::after {
+  width: 34%;
+  height: 34%;
+  border-color: currentColor;
+}
+
+.subject-plane--adaptive .subject-orb__glyph::before {
+  top: -4%;
+  right: -2%;
+  border-top: 1px solid;
+  border-right: 1px solid;
+}
+
+.subject-plane--adaptive .subject-orb__glyph::after {
+  left: -2%;
+  bottom: -4%;
+  border-bottom: 1px solid;
+  border-left: 1px solid;
+}
+
+.subject-plane--foundations {
+  --plane-angle: 0deg;
+  --orbit-duration: 44s;
+  --orbit-delay: 0s;
+  width: 86%;
+  height: 25%;
+}
+
+.subject-plane--memory {
+  --plane-angle: 28deg;
+  --orbit-duration: 44s;
+  --orbit-delay: -22s;
+  width: 76%;
+  height: 32%;
+}
+
+.subject-plane--reasoning {
+  --plane-angle: -28deg;
+  --orbit-duration: 44s;
+  --orbit-delay: -11s;
+  width: 76%;
+  height: 32%;
+}
+
+.subject-plane--adaptive {
+  --plane-angle: 72deg;
+  --orbit-duration: 44s;
+  --orbit-delay: -33s;
+  width: 58%;
+  height: 44%;
+}
+
+/*
+  BOTTOM PROJECTION RING
+  bottom: increase to move up; decrease to move down.
+  width: controls how long the oval is.
+  height: controls how flat the oval is.
+*/
 .projection-base {
   position: absolute;
   left: 50%;
-  bottom: 18%;
-  width: 64%;
-  height: 10%;
+  bottom: 20%;
+  width: 92%;
+  height: 6.5%;
   border: 1px solid rgba(153, 208, 255, 0.62);
   border-radius: 50%;
   background: radial-gradient(ellipse, rgba(167, 218, 255, 0.28), transparent 68%);
@@ -702,7 +964,539 @@ body.is-direct-transition[data-view="research"] .home-scene {
   animation: ring-shimmer 5.2s ease-in-out infinite;
 }
 
-.research-caption { position: absolute; right: clamp(1rem, 4.2vw, 4.5rem); bottom: clamp(1rem, 2.7vw, 2.5rem); margin: 0; color: rgba(198, 218, 246, 0.42); font-family: "DM Mono", ui-monospace, monospace; font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; }
+/*
+  OPTION 2 — TWIN HOLOGRAPHIC SUBJECT RAILS
+  The control area copies the hologram's size and center. Two readouts sit to
+  each side of the globe, leaving both the orb and podium face unobstructed.
+*/
+.subject-controls {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: 55%;
+  width: clamp(17rem, 31vw, 32rem);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  transition: left 480ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.subject-controls__label { display: none; }
+
+.subject-control {
+  --label-left: 50%;
+  --label-top: 50%;
+  --label-shift-x: -50%;
+  position: absolute;
+  left: var(--label-left);
+  top: var(--label-top);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: clamp(8.75rem, 12vw, 10.5rem);
+  min-width: 0;
+  padding: 0.46rem 0.6rem 0.5rem;
+  border: 0;
+  border-bottom: 1px solid rgba(166, 215, 255, 0.4);
+  color: rgba(235, 246, 255, 0.88);
+  filter: drop-shadow(0 4px 7px rgba(0, 6, 18, 0.74));
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: clamp(0.56rem, 0.78vw, 0.7rem);
+  font-weight: 500;
+  letter-spacing: 0.11em;
+  line-height: 1.25;
+  text-align: left;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(117, 185, 255, 0.68), 0 1px 5px rgba(0, 5, 18, 0.9);
+  white-space: nowrap;
+  transform: translate(var(--label-shift-x), -50%);
+  cursor: pointer;
+  pointer-events: auto;
+  transition: color 220ms ease, border-color 220ms ease, box-shadow 220ms ease, filter 220ms ease;
+}
+
+.subject-control::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 0.28rem;
+  aspect-ratio: 1;
+  border: 1px solid rgba(206, 235, 255, 0.74);
+  border-radius: 50%;
+  background: rgba(137, 195, 255, 0.52);
+  box-shadow: 0 0 7px rgba(106, 177, 255, 0.52);
+  transition: background-color 220ms ease, border-color 220ms ease, box-shadow 220ms ease, scale 220ms ease;
+}
+
+.subject-control::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: clamp(1.25rem, 2.2vw, 2rem);
+  height: 1px;
+  background: linear-gradient(90deg, rgba(151, 209, 255, 0.68), rgba(151, 209, 255, 0.08));
+  opacity: 0.76;
+  transition: opacity 220ms ease, filter 220ms ease;
+}
+
+.subject-control:focus-visible {
+  color: rgba(242, 249, 255, 0.96);
+  border-bottom-color: rgba(202, 232, 255, 0.84);
+  background-color: rgba(12, 38, 72, 0.42);
+  outline: 1px solid rgba(171, 217, 255, 0.46);
+  outline-offset: 3px;
+}
+
+/*
+  LEFT RAIL — the dot and bright edge face inward toward the projection.
+  left/top percentages remain relative to the hologram, not the background.
+*/
+.subject-control--foundations,
+.subject-control--memory {
+  /* 2% keeps the readout outside the widest orbit; increase to move inward. */
+  --label-left: 2%;
+  --label-shift-x: -100%;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  border-right: 1px solid rgba(180, 222, 255, 0.48);
+  background: linear-gradient(270deg, rgba(10, 34, 66, 0.5), rgba(3, 13, 30, 0.14) 72%, transparent);
+  text-align: right;
+}
+
+.subject-control--foundations::after,
+.subject-control--memory::after { left: 100%; }
+
+/* RIGHT RAIL — mirrors the left rail and keeps its bright edge facing inward. */
+.subject-control--reasoning,
+.subject-control--adaptive {
+  /* 98% mirrors the left rail; decrease to move this pair inward. */
+  --label-left: 98%;
+  --label-shift-x: 0%;
+  justify-content: flex-start;
+  border-left: 1px solid rgba(180, 222, 255, 0.48);
+  background: linear-gradient(90deg, rgba(10, 34, 66, 0.5), rgba(3, 13, 30, 0.14) 72%, transparent);
+}
+
+.subject-control--reasoning::after,
+.subject-control--adaptive::after {
+  right: 100%;
+  transform: rotate(180deg);
+}
+
+/* INDIVIDUAL RAIL HEIGHTS — top controls each readout's vertical position. */
+.subject-control--foundations { --label-top: 34%; }
+.subject-control--memory { --label-top: 52%; }
+.subject-control--reasoning { --label-top: 34%; }
+.subject-control--adaptive { --label-top: 52%; }
+
+/*
+  SUBJECT INTERACTION STATES
+  Preview is deliberately restrained; Active is a locked selection. Only the
+  matching orb changes, so the remaining projection never globally dims.
+*/
+.subject-control.is-preview {
+  color: rgba(248, 252, 255, 0.98);
+  border-bottom-color: rgba(192, 226, 255, 0.72);
+  box-shadow: inset 0 0 18px rgba(71, 145, 230, 0.16);
+  filter: drop-shadow(0 4px 9px rgba(60, 137, 226, 0.34));
+}
+
+.subject-control.is-active {
+  color: white;
+  border-bottom-color: rgba(210, 236, 255, 0.9);
+  box-shadow: inset 0 0 22px rgba(80, 155, 241, 0.24), 0 0 14px rgba(76, 153, 239, 0.12);
+  filter: drop-shadow(0 4px 10px rgba(72, 151, 241, 0.46));
+}
+
+.subject-control.is-preview::before,
+.subject-control.is-active::before {
+  border-color: rgba(235, 248, 255, 0.96);
+  background: rgba(195, 228, 255, 0.88);
+  box-shadow: 0 0 7px rgba(184, 224, 255, 0.82), 0 0 13px rgba(93, 172, 255, 0.48);
+}
+
+.subject-control.is-preview::after { opacity: 0.92; filter: brightness(1.1); }
+.subject-control.is-active::after { opacity: 1; filter: brightness(1.22); }
+
+.subject-orb.is-preview {
+  --glyph-opacity: 0.8;
+  --glyph-brightness: 1.08;
+  --orb-front-opacity: 0.9;
+  --orb-back-opacity: 0.52;
+  --orb-front-brightness: 1.04;
+  --orb-back-brightness: 0.82;
+  box-shadow: 0 0 6px 1px rgba(198, 232, 255, 0.82), 0 0 16px rgba(93, 171, 255, 0.56);
+}
+
+.subject-orb.is-active {
+  --glyph-opacity: 0.98;
+  --glyph-brightness: 1.18;
+  --orb-front-opacity: 0.96;
+  --orb-back-opacity: 0.6;
+  --orb-front-brightness: 1.1;
+  --orb-back-brightness: 0.88;
+  box-shadow: 0 0 7px 2px rgba(209, 238, 255, 0.86), 0 0 20px rgba(99, 178, 255, 0.62);
+}
+
+/* Active adds light to the selected orbital path without changing its geometry. */
+.subject-plane.is-active .subject-plane__path {
+  border-color: rgba(180, 224, 255, 0.56);
+  box-shadow: 0 0 10px rgba(112, 190, 255, 0.2), inset 0 0 8px rgba(117, 194, 255, 0.08);
+}
+
+/*
+  RESEARCH TABLET
+  width and height control the panel footprint. The tablet overlays the settled
+  observatory; opening it does not move the projection or either subject rail.
+*/
+/* Once the tablet is open, its arrows are the only research navigation. */
+.research-scene.has-tablet .subject-controls { pointer-events: none; }
+
+.research-tablet {
+  position: absolute;
+  z-index: 8;
+  top: 50%;
+  right: clamp(1rem, 2vw, 2.5rem);
+  display: grid;
+  grid-template-rows: auto 1px minmax(0, 1fr);
+  width: min(32vw, 28rem);
+  height: min(75vh, 46rem);
+  overflow: hidden;
+  border: 1px solid rgba(155, 201, 255, 0.3);
+  border-radius: 0.18rem;
+  clip-path: polygon(0 0.7rem, 0.7rem 0, calc(100% - 0.7rem) 0, 100% 0.7rem, 100% calc(100% - 0.7rem), calc(100% - 0.7rem) 100%, 0.7rem 100%, 0 calc(100% - 0.7rem));
+  background:
+    linear-gradient(145deg, rgba(20, 31, 48, 0.74), rgba(5, 11, 22, 0.92) 54%, rgba(2, 7, 17, 0.95)),
+    rgba(4, 9, 18, 0.9);
+  box-shadow:
+    0 28px 70px rgba(0, 3, 12, 0.56),
+    0 0 34px rgba(59, 130, 219, 0.12),
+    inset 0 1px rgba(220, 239, 255, 0.1);
+  backdrop-filter: blur(16px) saturate(1.08);
+  opacity: 0;
+  transform: translate(0, -50%) scaleX(0.018);
+  transform-origin: right center;
+  pointer-events: none;
+  transition:
+    opacity 120ms ease 330ms,
+    transform 360ms cubic-bezier(0.4, 0, 0.6, 1) 70ms,
+    border-color 140ms ease 300ms,
+    box-shadow 140ms ease 300ms;
+}
+
+.research-tablet::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 12%;
+  right: 12%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(162, 215, 255, 0.9), transparent);
+  box-shadow: 0 0 12px rgba(101, 180, 255, 0.5);
+  pointer-events: none;
+}
+
+/* A fixed bottom veil quietly indicates that more tablet content is below. */
+.research-tablet::after {
+  content: "";
+  position: absolute;
+  z-index: 5;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 3.2rem;
+  background: linear-gradient(180deg, transparent, rgba(3, 8, 17, 0.76) 90%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+
+.research-tablet.has-scroll-cue::after { opacity: 1; }
+
+.tablet-header,
+.tablet-accent,
+.tablet-scroll {
+  opacity: 0;
+  transition: opacity 115ms ease, transform 130ms ease;
+}
+
+.research-scene.has-tablet .research-tablet {
+  opacity: 1;
+  transform: translate(0, -50%) scaleX(1);
+  pointer-events: auto;
+  transition:
+    opacity 80ms ease,
+    transform 480ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.research-scene.has-tablet .tablet-header,
+.research-scene.has-tablet .tablet-accent,
+.research-scene.has-tablet .tablet-scroll {
+  opacity: 1;
+  transition-delay: 330ms;
+}
+
+.tablet-header {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.2rem minmax(0, 1fr) 2.2rem;
+  gap: 0.55rem;
+  align-items: center;
+  padding: clamp(1.35rem, 2vw, 1.75rem) clamp(0.72rem, 1.2vw, 1rem) clamp(0.9rem, 1.4vw, 1.2rem);
+}
+
+.tablet-heading {
+  min-width: 0;
+  text-align: center;
+}
+
+.tablet-kicker,
+.tablet-index {
+  margin: 0;
+  font-family: "DM Mono", ui-monospace, monospace;
+  text-transform: uppercase;
+}
+
+.tablet-kicker {
+  color: rgba(157, 205, 255, 0.66);
+  font-size: 0.5rem;
+  letter-spacing: 0.24em;
+}
+
+.tablet-index {
+  margin-top: 0.4rem;
+  color: rgba(204, 227, 255, 0.46);
+  font-size: 0.5rem;
+  letter-spacing: 0.16em;
+}
+
+.tablet-heading h3 {
+  margin: 0.52rem 0 0;
+  color: rgba(247, 251, 255, 0.98);
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: clamp(1.12rem, 1.62vw, 1.5rem);
+  font-weight: 400;
+  letter-spacing: 0.09em;
+  line-height: 1.16;
+  text-shadow: 0 0 24px rgba(74, 148, 236, 0.24);
+  text-transform: uppercase;
+}
+
+.tablet-control {
+  width: 2.2rem;
+  height: 2.8rem;
+  padding: 0;
+  border: 0;
+  border-top: 1px solid rgba(163, 205, 255, 0.13);
+  border-bottom: 1px solid rgba(163, 205, 255, 0.22);
+  border-radius: 0;
+  color: rgba(224, 240, 255, 0.72);
+  background: linear-gradient(90deg, transparent, rgba(31, 66, 108, 0.25), transparent);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: color 160ms ease, border-color 160ms ease, background 160ms ease, filter 160ms ease;
+}
+
+.tablet-control:hover,
+.tablet-control:focus-visible {
+  color: white;
+  border-color: rgba(185, 224, 255, 0.62);
+  background: linear-gradient(90deg, transparent, rgba(54, 104, 163, 0.42), transparent);
+  filter: drop-shadow(0 0 8px rgba(92, 168, 255, 0.34));
+  outline: none;
+}
+
+.tablet-control--previous { justify-self: start; }
+.tablet-control--next { justify-self: end; }
+
+/* Geometric collapse mark — intentionally not a generic circular X button. */
+.tablet-control--close {
+  position: absolute;
+  z-index: 6;
+  top: 0.28rem;
+  right: 0.35rem;
+  width: 1.65rem;
+  height: 1.15rem;
+  border: 0;
+  border-right: 1px solid rgba(162, 211, 255, 0.28);
+  border-bottom: 1px solid rgba(162, 211, 255, 0.28);
+  background: transparent;
+}
+
+.tablet-collapse-mark,
+.tablet-collapse-mark::before,
+.tablet-collapse-mark::after {
+  position: absolute;
+  display: block;
+  width: 0.48rem;
+  height: 1px;
+  background: currentColor;
+}
+
+.tablet-collapse-mark {
+  left: 50%;
+  top: 52%;
+  width: 0;
+  transform: translate(-50%, -50%);
+}
+
+.tablet-collapse-mark::before,
+.tablet-collapse-mark::after { content: ""; top: 0; }
+.tablet-collapse-mark::before { right: -0.04rem; transform: rotate(32deg); transform-origin: right center; }
+.tablet-collapse-mark::after { left: -0.04rem; transform: rotate(-32deg); transform-origin: left center; }
+
+.tablet-accent {
+  height: 1px;
+  margin: 0 clamp(1rem, 1.7vw, 1.45rem);
+  background: linear-gradient(90deg, rgba(157, 209, 255, 0.55), rgba(157, 209, 255, 0.08));
+}
+
+.tablet-scroll {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: clamp(1rem, 1.7vw, 1.45rem) clamp(1rem, 1.7vw, 1.45rem) 3.4rem;
+  scrollbar-width: none;
+}
+
+.tablet-scroll::-webkit-scrollbar { display: none; }
+
+.tablet-scroll:focus-visible {
+  outline: 1px solid rgba(156, 207, 255, 0.46);
+  outline-offset: -4px;
+}
+
+.tablet-summary {
+  margin: 0;
+  color: rgba(235, 244, 255, 0.88);
+  font-size: clamp(0.85rem, 1vw, 0.98rem);
+  font-weight: 300;
+  letter-spacing: 0.025em;
+  line-height: 1.7;
+}
+
+.tablet-sections {
+  display: grid;
+  gap: 1.35rem;
+  margin-top: 1.4rem;
+  padding-bottom: 0.6rem;
+}
+
+.tablet-section {
+  position: relative;
+  padding-top: 1rem;
+  border-top: 0;
+}
+
+.tablet-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(168, 216, 255, 0.62) 0 1.7rem, rgba(147, 197, 250, 0.16) 1.7rem 72%, transparent);
+}
+
+.tablet-section h4 {
+  margin: 0 0 0.72rem;
+  color: rgba(159, 207, 255, 0.78);
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.19em;
+  text-transform: uppercase;
+}
+
+.tablet-section p,
+.tablet-section li {
+  color: rgba(220, 233, 249, 0.72);
+  font-size: clamp(0.76rem, 0.88vw, 0.88rem);
+  font-weight: 300;
+  line-height: 1.68;
+}
+
+.tablet-section p { margin: 0; }
+
+.tablet-section ul {
+  display: grid;
+  gap: 0.62rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tablet-section li {
+  padding-left: 0;
+}
+
+/*
+  RELATED CONTENT SKELETON
+  These two groups stay visible before their real routes exist. Empty rows are
+  intentionally quiet and non-interactive; future links will receive their own
+  hover line only after they have a genuine destination.
+*/
+.tablet-related-groups {
+  display: grid;
+  gap: 1rem;
+}
+
+.tablet-related-group {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.tablet-related-group h5 {
+  margin: 0;
+  color: rgba(208, 230, 255, 0.68);
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: 0.56rem;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.tablet-related-empty {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0;
+  color: rgba(185, 205, 230, 0.44) !important;
+  font-size: clamp(0.72rem, 0.8vw, 0.8rem) !important;
+}
+
+.tablet-related-empty::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 0.32rem;
+  aspect-ratio: 1;
+  border: 1px solid rgba(151, 202, 255, 0.38);
+  transform: rotate(45deg);
+}
+
+/* Directional subject changes move the complete content view, not the frame. */
+.research-tablet.is-leaving-next .tablet-heading,
+.research-tablet.is-leaving-next .tablet-scroll,
+.research-tablet.is-leaving-previous .tablet-heading,
+.research-tablet.is-leaving-previous .tablet-scroll {
+  opacity: 0;
+  transition-delay: 0ms;
+  transition-duration: 130ms;
+}
+
+.research-tablet.is-leaving-next .tablet-heading,
+.research-tablet.is-leaving-next .tablet-scroll { transform: translateX(-0.8rem); }
+.research-tablet.is-leaving-previous .tablet-heading,
+.research-tablet.is-leaving-previous .tablet-scroll { transform: translateX(0.8rem); }
+
+.research-tablet.is-entering-next .tablet-heading,
+.research-tablet.is-entering-next .tablet-scroll { animation: tablet-view-enter-next 240ms cubic-bezier(0.22, 1, 0.36, 1); }
+.research-tablet.is-entering-previous .tablet-heading,
+.research-tablet.is-entering-previous .tablet-scroll { animation: tablet-view-enter-previous 240ms cubic-bezier(0.22, 1, 0.36, 1); }
+
 .noscript-message { position: fixed; z-index: 200; left: 50%; bottom: 1rem; margin: 0; padding: 0.7rem 1rem; border-radius: 0.5rem; background: #151020; transform: translateX(-50%); }
 
 .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
@@ -711,8 +1505,37 @@ body.is-direct-transition[data-view="research"] .home-scene {
 @keyframes star-breathe { 0%, 100% { opacity: 0.08; transform: scale(0.75); } 50% { opacity: 0.62; transform: scale(1.2); } }
 @keyframes node-orbit { 0%, 100% { transform: translate(-50%, -50%) scale(0.86); opacity: 0.42; } 50% { transform: translate(-50%, -50%) scale(1.18); opacity: 0.9; } }
 @keyframes status-pulse { 0%, 100% { opacity: 0.35; transform: scale(0.78); } 50% { opacity: 1; transform: scale(1); } }
-@keyframes globe-float { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, -0.5rem); } }
-@keyframes orbit-breathe { 0%, 100% { opacity: 0.35; filter: brightness(0.9); } 50% { opacity: 0.9; filter: brightness(1.35); } }
+@keyframes globe-inner-turn { from { transform: rotate(0deg) scale(0.84); } to { transform: rotate(360deg) scale(0.84); } }
+@keyframes globe-line-transit {
+  0%, 68%, 100% { opacity: 0; transform: rotate(var(--transit-angle)) translateX(-0.45rem) scaleX(0.16); }
+  76% { opacity: 0.82; }
+  90% { opacity: 0.64; transform: rotate(var(--transit-angle)) translateX(0.9rem) scaleX(1); }
+  95% { opacity: 0; transform: rotate(var(--transit-angle)) translateX(1.2rem) scaleX(0.72); }
+}
+@keyframes subject-orbit-travel { to { offset-distance: 100%; } }
+@keyframes subject-glyph-turn { to { transform: rotate(360deg); } }
+@keyframes tablet-view-enter-next {
+  from { opacity: 0; transform: translateX(0.8rem); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes tablet-view-enter-previous {
+  from { opacity: 0; transform: translateX(-0.8rem); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes subject-plane-depth {
+  0%, 49.9% { z-index: 4; }
+  50%, 100% { z-index: 2; }
+}
+
+/*
+  SUBJECT OCCLUSION WINDOW
+  The plane moves behind the globe at 50%, but the orb only dims while it
+  actually crosses the center. Keep 62%–88% narrow to avoid an early fade.
+*/
+@keyframes subject-orb-depth {
+  0%, 55%, 95%, 100% { opacity: var(--orb-front-opacity); filter: brightness(var(--orb-front-brightness)); }
+  62%, 88% { opacity: var(--orb-back-opacity); filter: brightness(var(--orb-back-brightness)); }
+}
 @keyframes ring-shimmer { 0%, 18% { background-position: 130% 0; opacity: 0.16; } 46% { opacity: 0.88; } 76%, 100% { background-position: -110% 0; opacity: 0.18; } }
 
 @media (max-width: 760px) {
@@ -725,16 +1548,148 @@ body.is-direct-transition[data-view="research"] .home-scene {
   .map-axis { width: 54vw; }
   .map-node { min-width: 7.7rem; padding: 0.7rem; column-gap: 0.65rem; }
   .node-orbit, .node-core { left: 1.45rem; }
+  /* MOBILE NODE POSITIONS — these override the desktop positions above. */
   .map-node--architecture { left: 80%; top: 32%; }
   .map-node--research { left: 84%; top: 42%; }
   .map-node--journal { left: 24%; top: 64%; }
   .map-node--about { left: 70%; top: 70%; }
   .map-node--contact { left: 84%; top: 22%; }
   .route-status { left: 1rem; right: 1rem; bottom: 3.6rem; text-align: center; }
+
+  /* MOBILE RESEARCH HEADER — compact enough for 320px screens, but still easy to tap. */
+  .research-header {
+    top: max(0.8rem, env(safe-area-inset-top));
+    left: max(0.8rem, env(safe-area-inset-left));
+    right: max(0.8rem, env(safe-area-inset-right));
+    gap: 0.7rem;
+  }
+
+  .research-header .wordmark--small { width: min(9.4rem, 42vw); }
+
+  .map-return {
+    flex: 0 0 auto;
+    min-height: 2.75rem;
+    gap: 0.45rem;
+    padding: 0.65rem 0.75rem;
+    font-size: clamp(0.5rem, 2.35vw, 0.58rem);
+    letter-spacing: 0.12em;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
   .research-content { left: 1.5rem; bottom: 2rem; width: calc(100vw - 3rem); }
   .research-intro { max-width: 19rem; }
-  .research-projection { top: 48%; width: min(77vw, 25rem); }
-  .research-caption { display: none; }
+  /* MOBILE HOLOGRAM POSITION — increase top to move the complete projection down. */
+  .research-projection { top: 58%; width: min(77vw, 25rem); }
+
+  /*
+    MOBILE SUBJECT RAIL
+    The four subjects stay visible as part of the page skeleton. min-height is
+    the touch-target size; top/left move the complete rail without moving orbs.
+  */
+  .subject-controls {
+    left: max(0.75rem, env(safe-area-inset-left));
+    top: 41.5%;
+    width: min(10.4rem, 44vw);
+    height: auto;
+    aspect-ratio: auto;
+    display: grid;
+    gap: 0.3rem;
+    padding-top: 1.15rem;
+    transform: none;
+  }
+
+  .subject-controls__label {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0.55rem;
+    color: rgba(181, 216, 255, 0.58);
+    font-family: "DM Mono", ui-monospace, monospace;
+    font-size: 0.46rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .subject-control {
+    position: relative;
+    left: auto;
+    top: auto;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+    min-width: 0;
+    min-height: 2.75rem;
+    padding: 0.58rem 0.62rem;
+    border-right: 0;
+    border-left: 1px solid rgba(167, 215, 255, 0.24);
+    background: linear-gradient(90deg, rgba(5, 19, 41, 0.68), rgba(4, 13, 29, 0.18) 82%, transparent);
+    font-size: clamp(0.5rem, 2.25vw, 0.57rem);
+    line-height: 1.25;
+    text-align: left;
+    transform: none;
+    backdrop-filter: blur(6px) saturate(1.06);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .subject-control:active {
+    color: white;
+    border-bottom-color: rgba(203, 232, 255, 0.78);
+    background: linear-gradient(90deg, rgba(17, 48, 86, 0.78), rgba(7, 23, 48, 0.3) 82%, transparent);
+  }
+
+  .subject-control::before { width: 0.34rem; }
+  .subject-control::after { display: none; }
+
+  /* The tablet becomes a full-screen research surface on small screens. */
+  .research-tablet {
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100dvh;
+    border: 0;
+    border-radius: 0;
+    clip-path: none;
+    background: linear-gradient(155deg, rgba(14, 25, 42, 0.98), rgba(2, 7, 16, 0.99) 58%);
+    transform: scaleX(0.018);
+    transform-origin: center;
+  }
+  .research-scene.has-tablet .research-tablet { transform: scaleX(1); }
+
+  .tablet-header {
+    grid-template-columns: 2.75rem minmax(0, 1fr) 2.75rem;
+    padding: max(1.45rem, env(safe-area-inset-top)) 0.75rem 1rem;
+  }
+
+  .tablet-control {
+    width: 2.75rem;
+    height: 2.75rem;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* MOBILE TABLET CLOSE — top/right move the chevron; width/height set its tap area. */
+  .tablet-control--close {
+    top: max(0.25rem, env(safe-area-inset-top));
+    right: max(0.25rem, env(safe-area-inset-right));
+    width: 2.75rem;
+    height: 2.5rem;
+  }
+
+  .tablet-collapse-mark::before,
+  .tablet-collapse-mark::after { width: 0.62rem; }
+
+  .tablet-accent { margin: 0 1.1rem; }
+  .tablet-scroll {
+    padding: 1.15rem 1.1rem calc(3.8rem + env(safe-area-inset-bottom));
+    touch-action: pan-y;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tablet-heading h3 { font-size: clamp(1.3rem, 5.8vw, 1.8rem); }
+  .tablet-summary { font-size: 0.9rem; }
+  .tablet-section p,
+  .tablet-section li { font-size: 0.82rem; }
 }
 
 @media (max-height: 590px) and (orientation: landscape) {
@@ -747,7 +1702,76 @@ body.is-direct-transition[data-view="research"] .home-scene {
   .research-projection { top: 54%; width: 18rem; }
 }
 
+/* Phone landscape keeps the settled observatory, then gives reading the full screen. */
+@media (max-height: 590px) and (orientation: landscape) and (max-width: 960px) {
+  .research-tablet {
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100dvh;
+    border: 0;
+    border-radius: 0;
+    clip-path: none;
+    background: linear-gradient(155deg, rgba(14, 25, 42, 0.98), rgba(2, 7, 16, 0.99) 58%);
+    transform: scaleX(0.018);
+    transform-origin: center;
+  }
+
+  .research-scene.has-tablet .research-tablet { transform: scaleX(1); }
+
+  .tablet-header {
+    grid-template-columns: 2.75rem minmax(0, 1fr) 2.75rem;
+    padding: max(0.7rem, env(safe-area-inset-top)) max(3.25rem, env(safe-area-inset-right)) 0.55rem max(3.25rem, env(safe-area-inset-left));
+  }
+
+  .tablet-control { width: 2.75rem; height: 2.75rem; }
+
+  .tablet-control--close {
+    top: max(0.2rem, env(safe-area-inset-top));
+    right: max(0.25rem, env(safe-area-inset-right));
+    width: 2.75rem;
+    height: 2.5rem;
+  }
+
+  .tablet-heading h3 {
+    margin-top: 0.3rem;
+    font-size: 1.12rem;
+  }
+
+  .tablet-index { margin-top: 0.22rem; }
+  .tablet-accent { margin: 0 1.2rem; }
+
+  .tablet-scroll {
+    padding: 0.8rem max(1.2rem, env(safe-area-inset-right)) calc(2.6rem + env(safe-area-inset-bottom)) max(1.2rem, env(safe-area-inset-left));
+    touch-action: pan-y;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; }
   .scene-image { transform: scale(1.035) !important; }
+
+  /* Settle every ambient loop into a deliberate still composition. */
+  .ambient-light,
+  .ambient-stars i,
+  .globe-inner,
+  .globe-transit,
+  .subject-plane,
+  .subject-orb,
+  .subject-orb__glyph,
+  .projection-base::after { animation: none !important; }
+
+  .globe-transit { opacity: 0 !important; }
+  .ambient-stars i { opacity: 0.24; }
+  .subject-plane { z-index: 4; }
+  .subject-plane--foundations .subject-orb { offset-distance: 5%; }
+  .subject-plane--memory .subject-orb { offset-distance: 30%; }
+  .subject-plane--reasoning .subject-orb { offset-distance: 55%; }
+  .subject-plane--adaptive .subject-orb { offset-distance: 80%; }
+
+  .research-tablet,
+  .tablet-header,
+  .tablet-accent,
+  .tablet-scroll { transition-delay: 0ms !important; }
 }

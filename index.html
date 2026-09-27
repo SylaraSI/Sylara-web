@@ -7,8 +7,8 @@
     <meta name="description" content="Sylara — systems intelligence, architecture, and research." />
     <title>Sylara — Systems Intelligence</title>
     <link rel="preload" as="image" href="assets/redesign/home-network.png" />
-    <link rel="stylesheet" href="styles.css" />
-    <script src="app.js" defer></script>
+    <link rel="stylesheet" href="styles.css?v=research-accessibility-1" />
+    <script src="app.js?v=research-accessibility-1" defer></script>
   </head>
   <body data-view="home">
     <a class="skip-link" href="#home-map">Skip to the Sylara map</a>
@@ -93,7 +93,6 @@
         </header>
 
         <div class="research-content">
-          <p class="section-kicker">Signal 02 / Observatory</p>
           <h2 id="research-title">Research</h2>
           <div class="title-rule" aria-hidden="true"></div>
           <p class="research-intro">A space for questions that need to be mapped before they can be solved.</p>
@@ -102,17 +101,79 @@
         <div class="research-projection" aria-hidden="true">
           <span class="projection-beam"></span>
           <span class="projection-globe">
+            <span class="globe-inner"></span>
             <i class="globe-line globe-line--one"></i>
             <i class="globe-line globe-line--two"></i>
             <i class="globe-line globe-line--three"></i>
+            <i class="globe-transit globe-transit--one"></i>
+            <i class="globe-transit globe-transit--two"></i>
+            <i class="globe-transit globe-transit--three"></i>
           </span>
-          <span class="projection-orbit projection-orbit--one"></span>
-          <span class="projection-orbit projection-orbit--two"></span>
-          <span class="projection-satellite projection-satellite--one"></span>
-          <span class="projection-satellite projection-satellite--two"></span>
+          <!-- RESEARCH SUBJECT ORBS — data-subject matches each podium label below. -->
+          <span class="subject-plane subject-plane--foundations">
+            <i class="subject-plane__path"></i>
+            <i class="subject-orb" data-subject="foundations" data-subject-label="Foundations"><span class="subject-orb__glyph" aria-hidden="true"></span></i>
+          </span>
+          <span class="subject-plane subject-plane--memory">
+            <i class="subject-plane__path"></i>
+            <i class="subject-orb" data-subject="memory-context" data-subject-label="Memory &amp; Context"><span class="subject-orb__glyph" aria-hidden="true"></span></i>
+          </span>
+          <span class="subject-plane subject-plane--reasoning">
+            <i class="subject-plane__path"></i>
+            <i class="subject-orb" data-subject="reasoning-evidence" data-subject-label="Reasoning &amp; Evidence"><span class="subject-orb__glyph" aria-hidden="true"></span></i>
+          </span>
+          <span class="subject-plane subject-plane--adaptive">
+            <i class="subject-plane__path"></i>
+            <i class="subject-orb" data-subject="adaptive-systems" data-subject-label="Adaptive Systems"><span class="subject-orb__glyph" aria-hidden="true"></span></i>
+          </span>
           <span class="projection-base"></span>
         </div>
-        <p class="research-caption">Initial transition prototype</p>
+
+        <!--
+          PODIUM SUBJECT LABELS
+          Keep these subject values matched to the four projection orbs above.
+          Hover/focus previews a subject; click locks it into the active state.
+        -->
+        <nav class="subject-controls" aria-label="Research subjects">
+          <span class="subject-controls__label" aria-hidden="true">Subject index</span>
+          <button class="subject-control subject-control--foundations" type="button" data-subject="foundations" aria-controls="research-tablet" aria-expanded="false" aria-pressed="false">
+            <span>Foundations</span>
+          </button>
+          <button class="subject-control subject-control--memory" type="button" data-subject="memory-context" aria-controls="research-tablet" aria-expanded="false" aria-pressed="false">
+            <span>Memory &amp; Context</span>
+          </button>
+          <button class="subject-control subject-control--reasoning" type="button" data-subject="reasoning-evidence" aria-controls="research-tablet" aria-expanded="false" aria-pressed="false">
+            <span>Reasoning &amp; Evidence</span>
+          </button>
+          <button class="subject-control subject-control--adaptive" type="button" data-subject="adaptive-systems" aria-controls="research-tablet" aria-expanded="false" aria-pressed="false">
+            <span>Adaptive Systems</span>
+          </button>
+        </nav>
+
+        <!-- RESEARCH TABLET — content is populated from the selected subject in app.js. -->
+        <aside class="research-tablet" id="research-tablet" data-research-tablet aria-labelledby="tablet-title" aria-hidden="true" aria-keyshortcuts="ArrowLeft ArrowRight Escape" tabindex="-1" inert>
+          <header class="tablet-header">
+            <button class="tablet-control tablet-control--previous" type="button" data-tablet-prev aria-label="Previous research subject">←</button>
+
+            <div class="tablet-heading" aria-live="polite" aria-atomic="true">
+              <p class="tablet-kicker">Research subject</p>
+              <p class="tablet-index" data-tablet-index>01 / 04</p>
+              <h3 id="tablet-title" data-tablet-title>Foundations</h3>
+            </div>
+
+            <button class="tablet-control tablet-control--next" type="button" data-tablet-next aria-label="Next research subject">→</button>
+            <button class="tablet-control tablet-control--close" type="button" data-tablet-close aria-label="Collapse research subject panel">
+              <span class="tablet-collapse-mark" aria-hidden="true"></span>
+            </button>
+          </header>
+
+          <div class="tablet-accent" aria-hidden="true"></div>
+
+          <div class="tablet-scroll" data-tablet-scroll tabindex="0">
+            <p class="tablet-summary" data-tablet-summary></p>
+            <div class="tablet-sections" data-tablet-sections></div>
+          </div>
+        </aside>
       </section>
     </main>
 
