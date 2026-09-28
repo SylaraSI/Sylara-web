@@ -2188,6 +2188,7 @@ body.is-direct-transition[data-view="research"] .home-scene {
 .architecture-figure__paths--observation,
 .architecture-figure__paths--memory,
 .architecture-figure__paths--context,
+.architecture-figure__paths--reasoning,
 .observation-context,
 .architecture-flow-signal,
 .evidence-flow-signal { display: none; }
@@ -2461,7 +2462,11 @@ body.is-direct-transition[data-view="research"] .home-scene {
 [data-architecture-animation="context-compilation"][data-stage="0"] .architecture-figure__node--input,
 [data-architecture-animation="context-compilation"][data-stage="1"] .architecture-figure__node--core,
 [data-architecture-animation="context-compilation"][data-stage="2"] .architecture-figure__node--state,
-[data-architecture-animation="context-compilation"][data-stage="3"] .architecture-figure__node--output {
+[data-architecture-animation="context-compilation"][data-stage="3"] .architecture-figure__node--output,
+[data-architecture-animation="reasoning-flow"][data-stage="0"] .architecture-figure__node--input,
+[data-architecture-animation="reasoning-flow"][data-stage="1"] .architecture-figure__node--core,
+[data-architecture-animation="reasoning-flow"][data-stage="2"] .architecture-figure__node--state,
+[data-architecture-animation="reasoning-flow"][data-stage="3"] .architecture-figure__node--output {
   border-color: rgba(210, 168, 255, 0.72);
   background: rgba(30, 22, 42, 0.98);
   box-shadow: inset 0 0 20px rgba(157, 92, 255, 0.08), 0 0 22px rgba(157, 92, 255, 0.13);
@@ -2616,6 +2621,93 @@ body.is-direct-transition[data-view="research"] .home-scene {
 [data-architecture-animation="context-compilation"].is-in-view .architecture-figure__paths--context path {
   stroke-dasharray: 7 9;
   animation: architecture-line-travel 680ms linear infinite;
+}
+
+/*
+  REASONING FIGURE 01 — EVIDENCE TO BOUNDED RESULT
+  The four modules never move or dim. The packet advances behind them while
+  the result key keeps every legitimate evidence state visible at once.
+*/
+.architecture-domain-scroll[data-domain="reasoning-verification"] .architecture-figure__paths--generic,
+.architecture-domain-scroll[data-domain="reasoning-verification"] .architecture-figure__paths--observation,
+.architecture-domain-scroll[data-domain="reasoning-verification"] .architecture-figure__paths--memory,
+.architecture-domain-scroll[data-domain="reasoning-verification"] .architecture-figure__paths--context { display: none; }
+.architecture-domain-scroll[data-domain="reasoning-verification"] .architecture-figure__paths--reasoning { display: initial; }
+.architecture-domain-scroll[data-domain="reasoning-verification"] .architecture-figure__canvas--primary .architecture-figure__node--input { left: 14%; top: 50%; }
+.architecture-domain-scroll[data-domain="reasoning-verification"] .architecture-figure__canvas--primary .architecture-figure__node--core { left: 38%; top: 50%; }
+.architecture-domain-scroll[data-domain="reasoning-verification"] .architecture-figure__canvas--primary .architecture-figure__node--state { left: 64%; top: 50%; }
+.architecture-domain-scroll[data-domain="reasoning-verification"] .architecture-figure__canvas--primary .architecture-figure__node--output { left: 87%; top: 50%; }
+
+.architecture-domain-scroll[data-domain="reasoning-verification"] .architecture-figure__node--input,
+.architecture-domain-scroll[data-domain="reasoning-verification"] .architecture-figure__node--output {
+  border-style: dashed;
+  background: rgba(18, 16, 25, 0.9);
+}
+
+.architecture-domain-scroll[data-domain="reasoning-verification"] .architecture-flow-signal {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 14%;
+  display: block;
+  width: 0.48rem;
+  height: 0.48rem;
+  border: 1px solid rgba(244, 234, 255, 0.9);
+  border-radius: 50%;
+  background: rgba(224, 205, 251, 0.98);
+  box-shadow: 0 0 8px rgba(246, 237, 255, 0.98), 0 0 18px rgba(178, 117, 255, 0.96), 0 0 34px rgba(157, 92, 255, 0.34);
+  transform: translate(-50%, -50%);
+  transition: left 2400ms linear, opacity 420ms ease, box-shadow 420ms ease;
+}
+
+.architecture-domain-scroll[data-domain="reasoning-verification"] .architecture-flow-signal--two,
+.architecture-domain-scroll[data-domain="reasoning-verification"] .architecture-flow-signal--three { display: none; }
+
+[data-architecture-animation="reasoning-flow"][data-stage="0"] .architecture-flow-signal { left: 14%; }
+[data-architecture-animation="reasoning-flow"][data-stage="1"] .architecture-flow-signal { left: 38%; }
+[data-architecture-animation="reasoning-flow"][data-stage="2"] .architecture-flow-signal { left: 64%; }
+[data-architecture-animation="reasoning-flow"][data-stage="3"] .architecture-flow-signal { left: 87%; }
+[data-architecture-animation="reasoning-flow"][data-next-stage="1"] .architecture-flow-signal { left: 38%; }
+[data-architecture-animation="reasoning-flow"][data-next-stage="2"] .architecture-flow-signal { left: 64%; }
+[data-architecture-animation="reasoning-flow"][data-next-stage="3"] .architecture-flow-signal { left: 87%; }
+[data-architecture-animation="reasoning-flow"].is-travelling .architecture-flow-signal {
+  box-shadow: 0 0 10px rgba(250, 244, 255, 1), 0 0 22px rgba(194, 145, 255, 1), 0 0 42px rgba(157, 92, 255, 0.5);
+}
+[data-architecture-animation="reasoning-flow"].is-resetting .architecture-flow-signal {
+  opacity: 0;
+  transition: opacity 420ms ease, box-shadow 420ms ease;
+}
+
+[data-architecture-animation="reasoning-flow"].is-in-view .architecture-figure__paths--reasoning path {
+  stroke-dasharray: 7 9;
+  animation: architecture-line-travel 700ms linear infinite;
+}
+
+.reasoning-result-states { display: none; }
+
+.architecture-domain-scroll[data-domain="reasoning-verification"] .reasoning-result-states {
+  position: absolute;
+  z-index: 2;
+  left: 87%;
+  top: 76%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: min(13rem, 27%);
+  gap: 0.35rem 0.55rem;
+  transform: translateX(-50%);
+}
+
+.reasoning-result-states span {
+  padding: 0.46rem 0.36rem;
+  border-left: 1px solid rgba(194, 149, 247, 0.58);
+  color: rgba(235, 224, 248, 0.82);
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: clamp(0.52rem, 0.58vw, 0.62rem);
+  line-height: 1.3;
+  letter-spacing: 0.08em;
+  text-align: left;
+  text-shadow: 0 0 10px rgba(194, 149, 247, 0.18);
+  text-transform: uppercase;
 }
 
 .architecture-domain-copy {
@@ -2915,6 +3007,103 @@ body.is-direct-transition[data-view="research"] .home-scene {
 }
 
 .context-maturity article > p:last-child {
+  margin: 0;
+  color: rgba(213, 204, 224, 0.58);
+  font-size: 0.9rem;
+  line-height: 1.75;
+}
+
+/*
+  REASONING OUTCOMES — QUICK TUNING
+  These are explicit evidence states, not confidence badges. Equal treatment
+  prevents a supported result from visually erasing conflict or incompleteness.
+*/
+.reasoning-outcome-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin-top: clamp(3rem, 5vw, 5rem);
+  border: 1px solid rgba(190, 153, 239, 0.13);
+  background: rgba(190, 153, 239, 0.13);
+}
+
+.reasoning-outcome-grid article {
+  position: relative;
+  min-height: 15rem;
+  padding: clamp(1.5rem, 3vw, 2.7rem);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(118, 72, 177, 0.1), transparent 46%),
+    rgba(9, 8, 14, 0.97);
+}
+
+.reasoning-outcome-grid article::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: clamp(1.5rem, 3vw, 2.7rem);
+  width: 1px;
+  height: 2.6rem;
+  background: linear-gradient(rgba(198, 148, 255, 0.82), transparent);
+}
+
+.reasoning-outcome__label {
+  margin: 0 0 2.6rem;
+  color: rgba(192, 148, 247, 0.62);
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+}
+
+.reasoning-outcome-grid h4 {
+  margin: 0;
+  color: rgba(241, 235, 249, 0.9);
+  font-size: clamp(1.05rem, 1.65vw, 1.45rem);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+}
+
+.reasoning-outcome-grid article > p:last-child {
+  margin: 1.1rem 0 0;
+  color: rgba(215, 205, 226, 0.6);
+  font-size: clamp(0.86rem, 0.96vw, 0.98rem);
+  font-weight: 300;
+  line-height: 1.8;
+}
+
+.reasoning-outcome-rule {
+  margin: clamp(2.5rem, 5vw, 5rem) 0 0;
+  padding-left: clamp(1.3rem, 2.5vw, 2.2rem);
+  border-left: 1px solid rgba(195, 145, 255, 0.7);
+  color: rgba(235, 225, 247, 0.86);
+  font-size: clamp(1.3rem, 2.4vw, 2.2rem);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 1.4;
+}
+
+.reasoning-maturity {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 2rem);
+  margin-top: clamp(3rem, 5vw, 5rem);
+}
+
+.reasoning-maturity article {
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba(191, 145, 248, 0.24);
+}
+
+.reasoning-maturity article > p:first-child {
+  margin: 0 0 0.85rem;
+  color: rgba(196, 152, 249, 0.66);
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.reasoning-maturity article > p:last-child {
   margin: 0;
   color: rgba(213, 204, 224, 0.58);
   font-size: 0.9rem;
@@ -3325,6 +3514,129 @@ body.is-direct-transition[data-view="research"] .home-scene {
   color: rgba(250, 246, 255, 0.96);
 }
 
+/*
+  REASONING FIGURE 02 — PROOF AND AUTHORITY BOUNDARY
+  Five fixed modules show the handoff from a claim to an authorized decision.
+  The packet travels behind every card; no successful stage absorbs the next.
+*/
+.reasoning-boundary__instruction {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 17%;
+  width: 90%;
+  margin: 0;
+  color: rgba(221, 207, 238, 0.6);
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: clamp(0.44rem, 0.56vw, 0.54rem);
+  letter-spacing: 0.14em;
+  text-align: center;
+  text-transform: uppercase;
+  transform: translate(-50%, -50%);
+}
+
+.reasoning-boundary__instruction::before,
+.reasoning-boundary__instruction::after {
+  content: "";
+  display: inline-block;
+  width: clamp(1rem, 3vw, 2.5rem);
+  height: 1px;
+  margin: 0 0.7rem;
+  background: linear-gradient(90deg, transparent, rgba(194, 148, 249, 0.44));
+  vertical-align: 0.2rem;
+}
+
+.reasoning-boundary__instruction::after { transform: scaleX(-1); }
+
+.reasoning-boundary__node {
+  position: absolute;
+  z-index: 2;
+  top: 52%;
+  display: grid;
+  place-items: center;
+  width: clamp(4.9rem, 8.7vw, 7.4rem);
+  min-height: 5rem;
+  padding: 0.65rem 0.5rem;
+  border: 1px solid rgba(211, 180, 249, 0.4);
+  background: rgba(20, 16, 29, 0.95);
+  color: rgba(239, 232, 247, 0.86);
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: clamp(0.4rem, 0.54vw, 0.54rem);
+  letter-spacing: 0.09em;
+  line-height: 1.45;
+  text-align: center;
+  text-transform: uppercase;
+  transform: translate(-50%, -50%);
+  box-shadow: inset 0 0 18px rgba(157, 92, 255, 0.04);
+  transition: border-color 280ms ease, box-shadow 280ms ease, color 280ms ease, background 280ms ease;
+}
+
+.reasoning-boundary__node i {
+  display: block;
+  margin-bottom: 0.45rem;
+  color: rgba(192, 148, 247, 0.58);
+  font-size: 0.42rem;
+  font-style: normal;
+  letter-spacing: 0.15em;
+}
+
+.reasoning-boundary__node--claim { left: 10%; border-style: dashed; }
+.reasoning-boundary__node--evidence { left: 30%; }
+.reasoning-boundary__node--execution { left: 50%; }
+.reasoning-boundary__node--proof { left: 70%; }
+.reasoning-boundary__node--authority { left: 90%; border-style: dashed; }
+
+.reasoning-boundary__canvas path {
+  stroke-dasharray: 6 9;
+}
+
+[data-architecture-animation="reasoning-boundary"].is-in-view .reasoning-boundary__canvas path {
+  animation: architecture-line-travel 780ms linear infinite;
+}
+
+.reasoning-boundary-signal {
+  position: absolute;
+  z-index: 1;
+  left: 10%;
+  top: 52%;
+  width: 0.48rem;
+  height: 0.48rem;
+  border: 1px solid rgba(244, 234, 255, 0.9);
+  border-radius: 50%;
+  background: rgba(224, 205, 251, 0.98);
+  box-shadow: 0 0 8px rgba(246, 237, 255, 0.98), 0 0 18px rgba(178, 117, 255, 0.96), 0 0 34px rgba(157, 92, 255, 0.34);
+  transform: translate(-50%, -50%);
+  transition: left 2400ms linear, opacity 420ms ease, box-shadow 420ms ease;
+}
+
+[data-architecture-animation="reasoning-boundary"][data-stage="0"] .reasoning-boundary-signal { left: 10%; }
+[data-architecture-animation="reasoning-boundary"][data-stage="1"] .reasoning-boundary-signal { left: 30%; }
+[data-architecture-animation="reasoning-boundary"][data-stage="2"] .reasoning-boundary-signal { left: 50%; }
+[data-architecture-animation="reasoning-boundary"][data-stage="3"] .reasoning-boundary-signal { left: 70%; }
+[data-architecture-animation="reasoning-boundary"][data-stage="4"] .reasoning-boundary-signal { left: 90%; }
+[data-architecture-animation="reasoning-boundary"][data-next-stage="1"] .reasoning-boundary-signal { left: 30%; }
+[data-architecture-animation="reasoning-boundary"][data-next-stage="2"] .reasoning-boundary-signal { left: 50%; }
+[data-architecture-animation="reasoning-boundary"][data-next-stage="3"] .reasoning-boundary-signal { left: 70%; }
+[data-architecture-animation="reasoning-boundary"][data-next-stage="4"] .reasoning-boundary-signal { left: 90%; }
+[data-architecture-animation="reasoning-boundary"].is-travelling .reasoning-boundary-signal {
+  box-shadow: 0 0 10px rgba(250, 244, 255, 1), 0 0 22px rgba(194, 145, 255, 1), 0 0 42px rgba(157, 92, 255, 0.5);
+}
+[data-architecture-animation="reasoning-boundary"].is-resetting .reasoning-boundary-signal {
+  opacity: 0;
+  transition: opacity 420ms ease, box-shadow 420ms ease;
+}
+
+[data-architecture-animation="reasoning-boundary"][data-stage="0"] .reasoning-boundary__node--claim,
+[data-architecture-animation="reasoning-boundary"][data-stage="1"] .reasoning-boundary__node--evidence,
+[data-architecture-animation="reasoning-boundary"][data-stage="2"] .reasoning-boundary__node--execution,
+[data-architecture-animation="reasoning-boundary"][data-stage="3"] .reasoning-boundary__node--proof,
+[data-architecture-animation="reasoning-boundary"][data-stage="4"] .reasoning-boundary__node--authority {
+  border-color: rgba(210, 168, 255, 0.72);
+  background: rgba(30, 22, 42, 0.98);
+  box-shadow: inset 0 0 20px rgba(157, 92, 255, 0.08), 0 0 22px rgba(157, 92, 255, 0.13);
+  color: rgba(250, 246, 255, 0.96);
+}
+
 .architecture-domain-copy--turning-points {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1px;
@@ -3364,14 +3676,16 @@ body.is-direct-transition[data-view="research"] .home-scene {
 [data-architecture-animation][data-stage="static"] .architecture-flow-signal,
 [data-architecture-animation][data-stage="static"] .evidence-flow-signal,
 [data-architecture-animation][data-stage="static"] .memory-revision-signal,
-[data-architecture-animation][data-stage="static"] .context-expansion-signal { display: none; }
+[data-architecture-animation][data-stage="static"] .context-expansion-signal,
+[data-architecture-animation][data-stage="static"] .reasoning-boundary-signal { display: none; }
 
 [data-architecture-animation][data-stage="static"] .architecture-figure__node,
 [data-architecture-animation][data-stage="static"] .evidence-figure__node,
 [data-architecture-animation][data-stage="static"] .evidence-figure__projection,
 [data-architecture-animation][data-stage="static"] .memory-revision__node,
 [data-architecture-animation][data-stage="static"] .memory-revision__prior,
-[data-architecture-animation][data-stage="static"] .context-expansion__node {
+[data-architecture-animation][data-stage="static"] .context-expansion__node,
+[data-architecture-animation][data-stage="static"] .reasoning-boundary__node {
   border-color: rgba(211, 180, 249, 0.44);
   color: rgba(241, 234, 249, 0.9);
 }
@@ -4037,7 +4351,9 @@ body.is-direct-transition[data-view="research"] .home-scene {
   .memory-layer-stack,
   .memory-maturity,
   .context-preservation-grid,
-  .context-maturity {
+  .context-maturity,
+  .reasoning-outcome-grid,
+  .reasoning-maturity {
     grid-template-columns: 1fr;
   }
 
@@ -4054,6 +4370,8 @@ body.is-direct-transition[data-view="research"] .home-scene {
   .memory-view-strip > div { justify-content: flex-start; }
   .context-preservation-grid article { min-height: 0; }
   .context-preservation__label { margin-bottom: 2rem; }
+  .reasoning-outcome-grid article { min-height: 0; }
+  .reasoning-outcome__label { margin-bottom: 2rem; }
   .architecture-domain-scroll[data-domain="memory-continuity"] .architecture-figure__canvas--primary .architecture-figure__node {
     width: 5.05rem;
     padding: 0.45rem;
@@ -4072,6 +4390,24 @@ body.is-direct-transition[data-view="research"] .home-scene {
   .context-expansion__node { width: 4.1rem; min-height: 4.5rem; padding: 0.38rem 0.28rem; font-size: 0.34rem; letter-spacing: 0.05em; }
   .context-expansion__node i { margin-bottom: 0.3rem; font-size: 0.34rem; }
   .context-expansion__instruction { width: 82%; font-size: 0.36rem; letter-spacing: 0.08em; }
+  .architecture-domain-scroll[data-domain="reasoning-verification"] .architecture-figure__canvas--primary .architecture-figure__node {
+    width: 5.05rem;
+    padding: 0.42rem;
+    font-size: 0.38rem;
+    letter-spacing: 0.07em;
+  }
+  .architecture-domain-scroll[data-domain="reasoning-verification"] .reasoning-result-states {
+    right: 1.5%;
+    left: auto;
+    top: 75%;
+    width: 36%;
+    gap: 0.2rem 0.25rem;
+    transform: none;
+  }
+  .reasoning-result-states span { padding: 0.3rem 0.16rem; font-size: 0.38rem; letter-spacing: 0.03em; }
+  .reasoning-boundary__node { width: 4.05rem; min-height: 4.5rem; padding: 0.38rem 0.25rem; font-size: 0.33rem; letter-spacing: 0.04em; }
+  .reasoning-boundary__node i { margin-bottom: 0.3rem; font-size: 0.33rem; }
+  .reasoning-boundary__instruction { width: 86%; font-size: 0.35rem; letter-spacing: 0.07em; }
 
   .observation-boundary-stages,
   .architecture-domain-copy--turning-points { grid-template-columns: 1fr; }
@@ -4118,8 +4454,10 @@ body.is-direct-transition[data-view="research"] .home-scene {
   .evidence-figure__canvas path,
   .architecture-figure__paths--memory path,
   .architecture-figure__paths--context path,
+  .architecture-figure__paths--reasoning path,
   .memory-revision__canvas path,
-  .context-expansion__canvas path { animation: none !important; }
+  .context-expansion__canvas path,
+  .reasoning-boundary__canvas path { animation: none !important; }
 
   .architecture-playback { display: none; }
 

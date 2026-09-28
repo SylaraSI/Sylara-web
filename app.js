@@ -46,6 +46,14 @@ const architectureContextMaturity = document.querySelector("[data-context-maturi
 const architectureContextExpansionTitle = document.querySelector("[data-context-expansion-title]");
 const architectureContextExpansionIntro = document.querySelector("[data-context-expansion-intro]");
 const architectureContextExpansionComments = document.querySelector("[data-context-expansion-comments]");
+const architectureReasoningSections = [...document.querySelectorAll("[data-reasoning-only]")];
+const architectureReasoningOutcomesIntro = document.querySelector("[data-reasoning-outcomes-intro]");
+const architectureReasoningOutcomes = document.querySelector("[data-reasoning-outcomes]");
+const architectureReasoningOutcomeRule = document.querySelector("[data-reasoning-outcome-rule]");
+const architectureReasoningMaturity = document.querySelector("[data-reasoning-maturity]");
+const architectureReasoningBoundaryTitle = document.querySelector("[data-reasoning-boundary-title]");
+const architectureReasoningBoundaryIntro = document.querySelector("[data-reasoning-boundary-intro]");
+const architectureReasoningBoundaryComments = document.querySelector("[data-reasoning-boundary-comments]");
 const architectureAnimatedFigures = [...document.querySelectorAll("[data-architecture-animation]")];
 const architecturePlaybackControls = [...document.querySelectorAll("[data-architecture-playback]")];
 const architectureDomainPressures = document.querySelector("[data-domain-pressures]");
@@ -130,10 +138,21 @@ const contextDomainSections = [
   ["domain-related", "Related material"],
 ];
 
+/* Reasoning keeps result states visible and separates proof from authority. */
+const reasoningDomainSections = [
+  ["domain-overview", "Overview"],
+  ["domain-system-view", "From evidence to result"],
+  ["domain-reasoning-outcomes", "Outcomes without forced certainty"],
+  ["domain-reasoning-boundary", "Do not collapse the layers"],
+  ["domain-design-pressures", "Why verification is difficult"],
+  ["domain-related", "Related material"],
+];
+
 function getArchitectureDomainSections(domain = activeArchitectureDomain) {
   if (domain === "observation-provenance") return observationDomainSections;
   if (domain === "memory-continuity") return memoryDomainSections;
   if (domain === "context-compilation") return contextDomainSections;
+  if (domain === "reasoning-verification") return reasoningDomainSections;
   return architectureDomainSections;
 }
 
@@ -395,16 +414,90 @@ const architectureDomainContent = {
   "reasoning-verification": {
     index: "04",
     title: "Reasoning & Verification",
-    summary: "The architecture that keeps claims connected to evidence, separates readiness from proof, and makes missing or conflicting support visible.",
+    summary: "Reasoning & Verification turns a compiled evidence package into a bounded, inspectable conclusion. Claims remain connected to their support, counterevidence stays visible, and a successful check establishes only what its scope and authority allow.",
     figureTitle: "From evidence to bounded conclusion",
-    figureIntro: "This figure will carry the public reasoning loop from available evidence through challenge and verification to an inspectable outcome.",
-    nodes: { input: "Evidence", core: "Reasoning", state: "Verification", output: "Bounded result" },
-    comments: ["Form a supported claim", "Test against constraints", "Expose missing proof", "Preserve the verdict boundary"],
-    pressures: [
-      "A conclusion is useful only when its basis and limitations remain recoverable. The architecture therefore treats evidence, reasoning, execution, and proof as distinct states.",
-      "The final pass can introduce SSIR and public-safe verification flows without revealing exact algorithms, thresholds, or internal execution contracts.",
+    figureIntro: "A reasoning package supplies attributable support, opposition, and known limits. Sylara can then form a candidate claim, challenge it against the required boundary, and emit a result that says both what is established and what remains unresolved.",
+    nodes: {
+      input: "Evidence package",
+      core: "Candidate claim",
+      state: "Challenge & test",
+      output: "Bounded result",
+    },
+    comments: [
+      "Begin with attributable support, limits, and opposition",
+      "State exactly what the evidence appears to support",
+      "Test constraints, counterevidence, and required proof",
+      "Report what is established—and what remains unresolved",
     ],
-    relatedResearch: "Connect this domain to research on evidence sufficiency, competing hypotheses, verification, and reasoning under uncertainty.",
+    outcomes: {
+      intro: "Verification does not have to manufacture a binary answer. A trustworthy result preserves the evidence state it actually reached, including conflict and incompleteness.",
+      items: [
+        {
+          label: "01 / Established",
+          title: "Supported within scope",
+          body: "The available evidence satisfies the stated obligation inside the boundary that was actually examined.",
+        },
+        {
+          label: "02 / Not established",
+          title: "Unsupported",
+          body: "The required support was examined and was not established. The result remains tied to that evidence and scope.",
+        },
+        {
+          label: "03 / Opposed",
+          title: "Conflicting",
+          body: "Material evidence points in opposing directions, so the conflict remains visible instead of being averaged away.",
+        },
+        {
+          label: "04 / Open",
+          title: "Incomplete",
+          body: "Required evidence, execution, or authority is unavailable, so no substantive verdict is justified yet.",
+        },
+      ],
+      rule: "Unresolved is a valid result—not an invitation to invent certainty.",
+      maturity: [
+        {
+          label: "Present foundation",
+          body: "Attributable evidence, explicit test boundaries, human-readable verdicts, and the separation of review from authority already shape the system.",
+        },
+        {
+          label: "Architecture direction",
+          body: "Structured reasoning artifacts keep claims, opposition, execution results, and bounded conclusions reconstructable across the pipeline.",
+        },
+        {
+          label: "Research frontier",
+          body: "Evidence sufficiency, uncertainty calibration, competing hypotheses, and probabilistic verification remain active research questions.",
+        },
+      ],
+    },
+    boundaryFigureTitle: "Do not collapse the layers",
+    boundaryFigureIntro: "A claim, its evidence, a successful execution, the proof that execution supplies, and the authority to adopt a result are related—but they are not interchangeable. Each boundary limits what the next stage may honestly say.",
+    boundaryComments: [
+      "Define the exact statement under examination",
+      "Recover the support, opposition, and known gaps",
+      "Record what was actually run or observed",
+      "Bound the result to the obligation it satisfies",
+      "Keep adoption and action under explicit authority",
+    ],
+    pressureHeading: "Why verification is difficult",
+    pressures: [
+      {
+        title: "Green is not closure",
+        body: "A passing check establishes only the behavior and boundary that were actually tested. It does not silently prove every surrounding obligation.",
+      },
+      {
+        title: "Missing evidence is a state",
+        body: "Incomplete or unavailable proof must remain visible instead of being converted into success, failure, or evidence of absence.",
+      },
+      {
+        title: "Conflict must survive synthesis",
+        body: "A useful conclusion cannot hide material opposition merely because preserving it makes the answer less convenient.",
+      },
+      {
+        title: "Review does not grant authority",
+        body: "Verification can support a decision, but it does not silently become permission to adopt, persist, mutate, or act.",
+      },
+    ],
+    relatedResearch: "Research continues the unresolved questions: how evidence sufficiency should be measured, how competing hypotheses should evolve, and how probabilistic reasoning can remain useful without overstating certainty or determinism.",
   },
   "adaptive-systems": {
     index: "05",
@@ -987,6 +1080,8 @@ function startArchitectureFigureAnimation(figure) {
     "memory-revision": { arrivalHold: 780, destinationHold: 1750 },
     "context-compilation": { arrivalHold: 620, destinationHold: 1500 },
     "context-expansion": { arrivalHold: 720, destinationHold: 1800 },
+    "reasoning-flow": { arrivalHold: 680, destinationHold: 1650 },
+    "reasoning-boundary": { arrivalHold: 760, destinationHold: 1900 },
   }[figure.dataset.architectureAnimation] || { arrivalHold: 600, destinationHold: 1200 };
   const { arrivalHold, destinationHold } = figureTiming;
   const stageCount = Math.max(2, Number(figure.dataset.stageCount) || 4);
@@ -1109,7 +1204,9 @@ function renderArchitectureDomain(domain) {
     ? "observation-flow"
     : domain === "memory-continuity"
       ? "memory-continuity"
-      : domain === "context-compilation" ? "context-compilation" : "generic-flow";
+      : domain === "context-compilation"
+        ? "context-compilation"
+        : domain === "reasoning-verification" ? "reasoning-flow" : "generic-flow";
   architectureDomainKicker.textContent = `Architecture domain / ${domainData.index}`;
   architectureDomainTitle.textContent = domainData.title;
   architectureDomainSummary.textContent = domainData.summary;
@@ -1133,6 +1230,7 @@ function renderArchitectureDomain(domain) {
   const isObservationDomain = domain === "observation-provenance";
   const isMemoryDomain = domain === "memory-continuity";
   const isContextDomain = domain === "context-compilation";
+  const isReasoningDomain = domain === "reasoning-verification";
   architectureObservationSections.forEach((section) => {
     section.hidden = !isObservationDomain;
   });
@@ -1141,6 +1239,9 @@ function renderArchitectureDomain(domain) {
   });
   architectureContextSections.forEach((section) => {
     section.hidden = !isContextDomain;
+  });
+  architectureReasoningSections.forEach((section) => {
+    section.hidden = !isReasoningDomain;
   });
 
   if (isObservationDomain) {
@@ -1256,10 +1357,49 @@ function renderArchitectureDomain(domain) {
     );
   }
 
+  if (isReasoningDomain) {
+    architectureReasoningOutcomesIntro.textContent = domainData.outcomes.intro;
+    architectureReasoningOutcomes.replaceChildren(
+      ...domainData.outcomes.items.map((item) => {
+        const article = document.createElement("article");
+        const label = document.createElement("p");
+        const heading = document.createElement("h4");
+        const body = document.createElement("p");
+        label.className = "reasoning-outcome__label";
+        label.textContent = item.label;
+        heading.textContent = item.title;
+        body.textContent = item.body;
+        article.append(label, heading, body);
+        return article;
+      }),
+    );
+    architectureReasoningOutcomeRule.textContent = domainData.outcomes.rule;
+    architectureReasoningMaturity.replaceChildren(
+      ...domainData.outcomes.maturity.map((item) => {
+        const article = document.createElement("article");
+        const label = document.createElement("p");
+        const body = document.createElement("p");
+        label.textContent = item.label;
+        body.textContent = item.body;
+        article.append(label, body);
+        return article;
+      }),
+    );
+    architectureReasoningBoundaryTitle.textContent = domainData.boundaryFigureTitle;
+    architectureReasoningBoundaryIntro.textContent = domainData.boundaryFigureIntro;
+    architectureReasoningBoundaryComments.replaceChildren(
+      ...domainData.boundaryComments.map((comment) => {
+        const item = document.createElement("li");
+        item.textContent = comment;
+        return item;
+      }),
+    );
+  }
+
   architectureDomainPressureTitle.textContent = domainData.pressureHeading || "Why this part of the architecture exists";
   architectureDomainPressures.classList.toggle(
     "architecture-domain-copy--turning-points",
-    isObservationDomain || isMemoryDomain || isContextDomain,
+    isObservationDomain || isMemoryDomain || isContextDomain || isReasoningDomain,
   );
   architectureDomainPressures.replaceChildren(
     ...domainData.pressures.map((pressure, index) => {

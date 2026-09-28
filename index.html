@@ -7,8 +7,8 @@
     <meta name="description" content="Sylara — systems intelligence, architecture, and research." />
     <title>Sylara — Systems Intelligence</title>
     <link rel="preload" as="image" href="assets/redesign/home-network.png" />
-    <link rel="stylesheet" href="styles.css?v=context-domain-1" />
-    <script src="app.js?v=context-domain-1" defer></script>
+    <link rel="stylesheet" href="styles.css?v=reasoning-domain-3" />
+    <script src="app.js?v=reasoning-domain-3" defer></script>
   </head>
   <body data-view="home">
     <a class="skip-link" href="#home-map">Skip to the Sylara map</a>
@@ -285,10 +285,21 @@
                       <path d="M304 210 C390 210 424 210 510 210"></path>
                       <path d="M510 210 C590 210 622 210 700 210"></path>
                     </g>
+                    <g class="architecture-figure__paths architecture-figure__paths--reasoning">
+                      <path d="M112 210 C190 210 224 210 304 210"></path>
+                      <path d="M304 210 C390 210 424 210 510 210"></path>
+                      <path d="M510 210 C590 210 622 210 700 210"></path>
+                    </g>
                   </svg>
                   <span class="architecture-flow-signal architecture-flow-signal--one"></span>
                   <span class="architecture-flow-signal architecture-flow-signal--two"></span>
                   <span class="architecture-flow-signal architecture-flow-signal--three"></span>
+                  <div class="reasoning-result-states" aria-hidden="true">
+                    <span>Supported</span>
+                    <span>Unsupported</span>
+                    <span>Conflicting</span>
+                    <span>Incomplete</span>
+                  </div>
                 </div>
                 <button class="architecture-playback" type="button" data-architecture-playback aria-label="Pause animation" aria-pressed="false">
                   <span class="architecture-playback__pause" aria-hidden="true"></span>
@@ -470,6 +481,62 @@
               </figure>
 
               <ol class="architecture-quick-comments" data-context-expansion-comments aria-label="Progressive expansion figure notes"></ol>
+            </div>
+          </section>
+
+          <!--
+            REASONING & VERIFICATION — EXPLICIT RESULT STATES
+            Verification may establish support, non-support, conflict, or an
+            incomplete evidence state. None of these cards is a confidence score.
+          -->
+          <section class="architecture-domain-section reasoning-outcomes" id="domain-reasoning-outcomes" aria-labelledby="domain-reasoning-outcomes-title" data-reasoning-only hidden>
+            <header class="architecture-domain-section__header">
+              <p class="architecture-section-label">Evidence state</p>
+              <h3 id="domain-reasoning-outcomes-title">Outcomes without forced certainty</h3>
+              <p data-reasoning-outcomes-intro></p>
+            </header>
+            <div class="reasoning-outcome-grid" data-reasoning-outcomes></div>
+            <p class="reasoning-outcome-rule" data-reasoning-outcome-rule></p>
+            <div class="reasoning-maturity" data-reasoning-maturity></div>
+          </section>
+
+          <!--
+            REASONING & VERIFICATION — PROOF AND AUTHORITY BOUNDARY
+            Five fixed modules prevent a successful execution or favorable
+            review from visually collapsing into proof or adoption authority.
+          -->
+          <section class="architecture-domain-section architecture-domain-section--figure reasoning-boundary" id="domain-reasoning-boundary" aria-labelledby="domain-reasoning-boundary-title" data-reasoning-only hidden>
+            <header class="architecture-domain-section__header">
+              <p class="architecture-section-label">Verification boundary</p>
+              <h3 id="domain-reasoning-boundary-title" data-reasoning-boundary-title>Do not collapse the layers</h3>
+              <p data-reasoning-boundary-intro></p>
+            </header>
+
+            <div class="architecture-figure-layout" data-architecture-animation="reasoning-boundary" data-stage-count="5" data-stage="0">
+              <figure class="architecture-figure" aria-labelledby="reasoning-boundary-caption">
+                <div class="architecture-figure__canvas reasoning-boundary__canvas" aria-hidden="true">
+                  <p class="reasoning-boundary__instruction">A result carries only the authority it has earned</p>
+                  <span class="reasoning-boundary__node reasoning-boundary__node--claim"><i>01</i>Claim</span>
+                  <span class="reasoning-boundary__node reasoning-boundary__node--evidence"><i>02</i>Evidence basis</span>
+                  <span class="reasoning-boundary__node reasoning-boundary__node--execution"><i>03</i>Verification run</span>
+                  <span class="reasoning-boundary__node reasoning-boundary__node--proof"><i>04</i>Proof boundary</span>
+                  <span class="reasoning-boundary__node reasoning-boundary__node--authority"><i>05</i>Decision authority</span>
+                  <svg viewBox="0 0 800 420" preserveAspectRatio="none">
+                    <path d="M80 218 C148 218 172 218 240 218"></path>
+                    <path d="M240 218 C304 218 336 218 400 218"></path>
+                    <path d="M400 218 C464 218 496 218 560 218"></path>
+                    <path d="M560 218 C628 218 652 218 720 218"></path>
+                  </svg>
+                  <span class="reasoning-boundary-signal"></span>
+                </div>
+                <button class="architecture-playback" type="button" data-architecture-playback aria-label="Pause animation" aria-pressed="false">
+                  <span class="architecture-playback__pause" aria-hidden="true"></span>
+                  <span class="architecture-playback__play" aria-hidden="true"></span>
+                </button>
+                <figcaption id="reasoning-boundary-caption">Execution, proof, and adoption remain separate decisions</figcaption>
+              </figure>
+
+              <ol class="architecture-quick-comments" data-reasoning-boundary-comments aria-label="Verification boundary figure notes"></ol>
             </div>
           </section>
 
