@@ -38,6 +38,14 @@ const architectureMemoryMaturity = document.querySelector("[data-memory-maturity
 const architectureMemoryRevisionTitle = document.querySelector("[data-memory-revision-title]");
 const architectureMemoryRevisionIntro = document.querySelector("[data-memory-revision-intro]");
 const architectureMemoryRevisionComments = document.querySelector("[data-memory-revision-comments]");
+const architectureContextSections = [...document.querySelectorAll("[data-context-only]")];
+const architectureContextPreservationIntro = document.querySelector("[data-context-preservation-intro]");
+const architectureContextPreservationItems = document.querySelector("[data-context-preservation]");
+const architectureContextPreservationRule = document.querySelector("[data-context-preservation-rule]");
+const architectureContextMaturity = document.querySelector("[data-context-maturity]");
+const architectureContextExpansionTitle = document.querySelector("[data-context-expansion-title]");
+const architectureContextExpansionIntro = document.querySelector("[data-context-expansion-intro]");
+const architectureContextExpansionComments = document.querySelector("[data-context-expansion-comments]");
 const architectureAnimatedFigures = [...document.querySelectorAll("[data-architecture-animation]")];
 const architecturePlaybackControls = [...document.querySelectorAll("[data-architecture-playback]")];
 const architectureDomainPressures = document.querySelector("[data-domain-pressures]");
@@ -112,9 +120,20 @@ const memoryDomainSections = [
   ["domain-related", "Related material"],
 ];
 
+/* Context adds a preservation boundary and a five-level expansion sequence. */
+const contextDomainSections = [
+  ["domain-overview", "Overview"],
+  ["domain-system-view", "Compile for the task"],
+  ["domain-context-preservation", "What must survive"],
+  ["domain-context-expansion", "Progressive expansion"],
+  ["domain-design-pressures", "Why selection is difficult"],
+  ["domain-related", "Related material"],
+];
+
 function getArchitectureDomainSections(domain = activeArchitectureDomain) {
   if (domain === "observation-provenance") return observationDomainSections;
   if (domain === "memory-continuity") return memoryDomainSections;
+  if (domain === "context-compilation") return contextDomainSections;
   return architectureDomainSections;
 }
 
@@ -278,16 +297,100 @@ const architectureDomainContent = {
   "context-compilation": {
     index: "03",
     title: "Context Compilation",
-    summary: "The process of assembling the smallest sufficient working context for a task without flattening provenance, uncertainty, or competing interpretations.",
-    figureTitle: "Compiling task-relevant context",
-    figureIntro: "This figure is prepared for a bounded context flow: selecting relevant material, retaining its relationships, and producing a usable working view.",
-    nodes: { input: "Available memory", core: "Context compiler", state: "Task frame", output: "Working context" },
-    comments: ["Start from the task boundary", "Select relevant material", "Preserve relationships", "Emit sufficient context"],
-    pressures: [
-      "More context is not automatically better context. Unbounded accumulation can obscure the evidence and decisions most relevant to the work being performed.",
-      "The mature copy will describe minimum-sufficient context and provenance-aware compilation at a conceptual level, with deeper engineering lessons reserved for Journal.",
+    summary: "Context Compilation prepares a bounded, traceable working view for a particular task. The aim is not to give a reasoner everything Sylara knows, but to assemble the smallest context that remains sufficient while preserving the evidence, uncertainty, and relationships that could change the answer.",
+    figureTitle: "From task boundary to reasoning package",
+    figureIntro: "A task defines what the reasoner needs to accomplish. Candidate state is selected from governed memory, compiled with its required dependencies and opposing evidence, then emitted as an evidence-sufficient package—or marked insufficient when more detail is required.",
+    nodes: {
+      input: "Reasoning task",
+      core: "Candidate context",
+      state: "Context compiler",
+      output: "Reasoning package",
+    },
+    comments: [
+      "Define task, domain, scope, and authority",
+      "Select relevant state and dependencies",
+      "Preserve uncertainty, opposition, and source",
+      "Emit a sufficient package—or say insufficient",
     ],
-    relatedResearch: "Connect this domain to research on context selection, ambiguity preservation, and coherent work across extended investigations.",
+    preservation: {
+      intro: "Compilation may reduce what a reasoner sees, but it must not flatten the distinctions that make the selected material trustworthy. These dimensions travel with the package or remain available through exact expansion.",
+      items: [
+        {
+          label: "01 / Source",
+          title: "Provenance",
+          body: "Where the information came from and which evidence records can be recovered when the compact view is not enough.",
+        },
+        {
+          label: "02 / Control",
+          title: "Authority",
+          body: "What the selected material may establish, advise, challenge, or leave unresolved inside the current task.",
+        },
+        {
+          label: "03 / Time",
+          title: "Temporal state",
+          body: "What is current, historical, superseded, or valid only within a particular interval or occurrence.",
+        },
+        {
+          label: "04 / Challenge",
+          title: "Opposing evidence",
+          body: "Contradictory and disconfirming material remains visible instead of disappearing behind a convenient summary.",
+        },
+        {
+          label: "05 / Limits",
+          title: "Uncertainty",
+          body: "Known gaps, unresolved questions, and incomplete analysis stay explicit so absence is not mistaken for a negative result.",
+        },
+        {
+          label: "06 / Recovery",
+          title: "Exact expansion",
+          body: "Compact representations retain a path back to canonical excerpts, observations, code, measurements, or full source artifacts.",
+        },
+      ],
+      rule: "Minimum sufficient context—not minimum tokens.",
+      maturity: [
+        {
+          label: "Present foundation",
+          body: "Identity, time, provenance, authority, and explicit evidence state provide the boundaries that future compilation depends on.",
+        },
+        {
+          label: "Architecture direction",
+          body: "Task-specific packages preserve required relationships while preventing the reasoner from excavating the entire historical record.",
+        },
+        {
+          label: "Research frontier",
+          body: "Automatic sufficiency detection, expansion policy, dependency invalidation, and measurable efficiency gains remain open research.",
+        },
+      ],
+    },
+    expansionFigureTitle: "Progressive expansion",
+    expansionFigureIntro: "The compiler can begin with a stable compact reference and reveal more exact material only when the task, model, or verifier cannot establish sufficiency at the current level. Expansion adds evidence; it does not rewrite the layers already traversed.",
+    expansionComments: [
+      "Begin with a stable reference",
+      "Reveal the structured claim and its status",
+      "Assemble a task-specific reasoning brief",
+      "Expand to exact supporting material",
+      "Load the complete source only when required",
+    ],
+    pressureHeading: "Why selection is difficult",
+    pressures: [
+      {
+        title: "Volume is not sufficiency",
+        body: "Giving a reasoner more material can obscure the evidence and decisions that matter. Context must be bounded by the task rather than accumulated without limit.",
+      },
+      {
+        title: "Filtering can create false confidence",
+        body: "A compact package is defective when omitted information would change the correct result. Efficiency cannot excuse an incomplete reasoning boundary.",
+      },
+      {
+        title: "Incomplete is not absent",
+        body: "A search or analysis still in progress must remain visible as incomplete. It cannot silently appear to the reasoner as evidence that nothing relevant exists.",
+      },
+      {
+        title: "Compiled context can expire",
+        body: "When source state, authority, or dependencies change, affected packages must be invalidated or rebuilt without discarding unaffected context.",
+      },
+    ],
+    relatedResearch: "Research continues the unresolved questions: how sufficiency can be detected, how progressive expansion should be governed, and whether prepared context can reduce compute without changing the correct conclusion.",
   },
   "reasoning-verification": {
     index: "04",
@@ -882,14 +985,17 @@ function startArchitectureFigureAnimation(figure) {
     "evidence-boundary": { arrivalHold: 900, destinationHold: 2100 },
     "memory-continuity": { arrivalHold: 620, destinationHold: 1450 },
     "memory-revision": { arrivalHold: 780, destinationHold: 1750 },
+    "context-compilation": { arrivalHold: 620, destinationHold: 1500 },
+    "context-expansion": { arrivalHold: 720, destinationHold: 1800 },
   }[figure.dataset.architectureAnimation] || { arrivalHold: 600, destinationHold: 1200 };
   const { arrivalHold, destinationHold } = figureTiming;
+  const stageCount = Math.max(2, Number(figure.dataset.stageCount) || 4);
   const timers = { advance: null, travel: null, reveal: null };
 
   const scheduleTravel = () => {
     timers.advance = window.setTimeout(() => {
       const currentStage = Number(figure.dataset.stage);
-      const nextStage = (currentStage + 1) % 4;
+      const nextStage = (currentStage + 1) % stageCount;
       const isReset = nextStage === 0;
 
       figure.dataset.nextStage = String(nextStage);
@@ -915,7 +1021,7 @@ function startArchitectureFigureAnimation(figure) {
         figure.classList.remove("is-travelling");
         scheduleTravel();
       }, isReset ? 620 : 2400);
-    }, Number(figure.dataset.stage) === 3 ? destinationHold : arrivalHold);
+    }, Number(figure.dataset.stage) === stageCount - 1 ? destinationHold : arrivalHold);
   };
 
   architectureFigureTimers.set(figure, timers);
@@ -1001,7 +1107,9 @@ function renderArchitectureDomain(domain) {
   architectureDomainScroll.dataset.domain = domain;
   architecturePrimaryFigure.dataset.architectureAnimation = domain === "observation-provenance"
     ? "observation-flow"
-    : domain === "memory-continuity" ? "memory-continuity" : "generic-flow";
+    : domain === "memory-continuity"
+      ? "memory-continuity"
+      : domain === "context-compilation" ? "context-compilation" : "generic-flow";
   architectureDomainKicker.textContent = `Architecture domain / ${domainData.index}`;
   architectureDomainTitle.textContent = domainData.title;
   architectureDomainSummary.textContent = domainData.summary;
@@ -1024,11 +1132,15 @@ function renderArchitectureDomain(domain) {
 
   const isObservationDomain = domain === "observation-provenance";
   const isMemoryDomain = domain === "memory-continuity";
+  const isContextDomain = domain === "context-compilation";
   architectureObservationSections.forEach((section) => {
     section.hidden = !isObservationDomain;
   });
   architectureMemorySections.forEach((section) => {
     section.hidden = !isMemoryDomain;
+  });
+  architectureContextSections.forEach((section) => {
+    section.hidden = !isContextDomain;
   });
 
   if (isObservationDomain) {
@@ -1105,10 +1217,49 @@ function renderArchitectureDomain(domain) {
     );
   }
 
+  if (isContextDomain) {
+    architectureContextPreservationIntro.textContent = domainData.preservation.intro;
+    architectureContextPreservationItems.replaceChildren(
+      ...domainData.preservation.items.map((item) => {
+        const article = document.createElement("article");
+        const label = document.createElement("p");
+        const heading = document.createElement("h4");
+        const body = document.createElement("p");
+        label.className = "context-preservation__label";
+        label.textContent = item.label;
+        heading.textContent = item.title;
+        body.textContent = item.body;
+        article.append(label, heading, body);
+        return article;
+      }),
+    );
+    architectureContextPreservationRule.textContent = domainData.preservation.rule;
+    architectureContextMaturity.replaceChildren(
+      ...domainData.preservation.maturity.map((item) => {
+        const article = document.createElement("article");
+        const label = document.createElement("p");
+        const body = document.createElement("p");
+        label.textContent = item.label;
+        body.textContent = item.body;
+        article.append(label, body);
+        return article;
+      }),
+    );
+    architectureContextExpansionTitle.textContent = domainData.expansionFigureTitle;
+    architectureContextExpansionIntro.textContent = domainData.expansionFigureIntro;
+    architectureContextExpansionComments.replaceChildren(
+      ...domainData.expansionComments.map((comment) => {
+        const item = document.createElement("li");
+        item.textContent = comment;
+        return item;
+      }),
+    );
+  }
+
   architectureDomainPressureTitle.textContent = domainData.pressureHeading || "Why this part of the architecture exists";
   architectureDomainPressures.classList.toggle(
     "architecture-domain-copy--turning-points",
-    isObservationDomain || isMemoryDomain,
+    isObservationDomain || isMemoryDomain || isContextDomain,
   );
   architectureDomainPressures.replaceChildren(
     ...domainData.pressures.map((pressure, index) => {

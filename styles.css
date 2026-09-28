@@ -2187,6 +2187,7 @@ body.is-direct-transition[data-view="research"] .home-scene {
 
 .architecture-figure__paths--observation,
 .architecture-figure__paths--memory,
+.architecture-figure__paths--context,
 .observation-context,
 .architecture-flow-signal,
 .evidence-flow-signal { display: none; }
@@ -2427,7 +2428,8 @@ body.is-direct-transition[data-view="research"] .home-scene {
 [data-architecture-animation][data-stage="0"] .architecture-quick-comments li:nth-child(1),
 [data-architecture-animation][data-stage="1"] .architecture-quick-comments li:nth-child(2),
 [data-architecture-animation][data-stage="2"] .architecture-quick-comments li:nth-child(3),
-[data-architecture-animation][data-stage="3"] .architecture-quick-comments li:nth-child(4) {
+[data-architecture-animation][data-stage="3"] .architecture-quick-comments li:nth-child(4),
+[data-architecture-animation][data-stage="4"] .architecture-quick-comments li:nth-child(5) {
   border-left-color: rgba(190, 132, 255, 0.82);
   color: rgba(235, 226, 245, 0.82);
   background: none;
@@ -2436,7 +2438,8 @@ body.is-direct-transition[data-view="research"] .home-scene {
 [data-architecture-animation][data-stage="0"] .architecture-quick-comments li:nth-child(1)::before,
 [data-architecture-animation][data-stage="1"] .architecture-quick-comments li:nth-child(2)::before,
 [data-architecture-animation][data-stage="2"] .architecture-quick-comments li:nth-child(3)::before,
-[data-architecture-animation][data-stage="3"] .architecture-quick-comments li:nth-child(4)::before {
+[data-architecture-animation][data-stage="3"] .architecture-quick-comments li:nth-child(4)::before,
+[data-architecture-animation][data-stage="4"] .architecture-quick-comments li:nth-child(5)::before {
   opacity: 1;
   transform: translateY(-50%) scale(1);
 }
@@ -2454,7 +2457,11 @@ body.is-direct-transition[data-view="research"] .home-scene {
 [data-architecture-animation="memory-continuity"][data-stage="0"] .architecture-figure__node--input,
 [data-architecture-animation="memory-continuity"][data-stage="1"] .architecture-figure__node--core,
 [data-architecture-animation="memory-continuity"][data-stage="2"] .architecture-figure__node--state,
-[data-architecture-animation="memory-continuity"][data-stage="3"] .architecture-figure__node--output {
+[data-architecture-animation="memory-continuity"][data-stage="3"] .architecture-figure__node--output,
+[data-architecture-animation="context-compilation"][data-stage="0"] .architecture-figure__node--input,
+[data-architecture-animation="context-compilation"][data-stage="1"] .architecture-figure__node--core,
+[data-architecture-animation="context-compilation"][data-stage="2"] .architecture-figure__node--state,
+[data-architecture-animation="context-compilation"][data-stage="3"] .architecture-figure__node--output {
   border-color: rgba(210, 168, 255, 0.72);
   background: rgba(30, 22, 42, 0.98);
   box-shadow: inset 0 0 20px rgba(157, 92, 255, 0.08), 0 0 22px rgba(157, 92, 255, 0.13);
@@ -2550,6 +2557,65 @@ body.is-direct-transition[data-view="research"] .home-scene {
 [data-architecture-animation="memory-continuity"].is-in-view .architecture-figure__paths--memory path {
   stroke-dasharray: 7 9;
   animation: architecture-line-travel 720ms linear infinite;
+}
+
+/*
+  CONTEXT FIGURE 01 — TASK TO REASONING PACKAGE
+  Keep the route linear: task boundary, candidate selection, compilation, and
+  the resulting package. The signal never branches or moves a module card.
+*/
+.architecture-domain-scroll[data-domain="context-compilation"] .architecture-figure__paths--generic,
+.architecture-domain-scroll[data-domain="context-compilation"] .architecture-figure__paths--observation,
+.architecture-domain-scroll[data-domain="context-compilation"] .architecture-figure__paths--memory { display: none; }
+.architecture-domain-scroll[data-domain="context-compilation"] .architecture-figure__paths--context { display: initial; }
+.architecture-domain-scroll[data-domain="context-compilation"] .architecture-figure__canvas--primary .architecture-figure__node--input { left: 14%; top: 50%; }
+.architecture-domain-scroll[data-domain="context-compilation"] .architecture-figure__canvas--primary .architecture-figure__node--core { left: 38%; top: 50%; }
+.architecture-domain-scroll[data-domain="context-compilation"] .architecture-figure__canvas--primary .architecture-figure__node--state { left: 64%; top: 50%; }
+.architecture-domain-scroll[data-domain="context-compilation"] .architecture-figure__canvas--primary .architecture-figure__node--output { left: 87%; top: 50%; }
+
+.architecture-domain-scroll[data-domain="context-compilation"] .architecture-figure__node--input,
+.architecture-domain-scroll[data-domain="context-compilation"] .architecture-figure__node--output {
+  border-style: dashed;
+  background: rgba(18, 16, 25, 0.9);
+}
+
+.architecture-domain-scroll[data-domain="context-compilation"] .architecture-flow-signal {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 14%;
+  display: block;
+  width: 0.48rem;
+  height: 0.48rem;
+  border: 1px solid rgba(244, 234, 255, 0.9);
+  border-radius: 50%;
+  background: rgba(224, 205, 251, 0.98);
+  box-shadow: 0 0 8px rgba(246, 237, 255, 0.98), 0 0 18px rgba(178, 117, 255, 0.96), 0 0 34px rgba(157, 92, 255, 0.34);
+  transform: translate(-50%, -50%);
+  transition: left 2400ms linear, opacity 420ms ease, box-shadow 420ms ease;
+}
+
+.architecture-domain-scroll[data-domain="context-compilation"] .architecture-flow-signal--two,
+.architecture-domain-scroll[data-domain="context-compilation"] .architecture-flow-signal--three { display: none; }
+
+[data-architecture-animation="context-compilation"][data-stage="0"] .architecture-flow-signal { left: 14%; }
+[data-architecture-animation="context-compilation"][data-stage="1"] .architecture-flow-signal { left: 38%; }
+[data-architecture-animation="context-compilation"][data-stage="2"] .architecture-flow-signal { left: 64%; }
+[data-architecture-animation="context-compilation"][data-stage="3"] .architecture-flow-signal { left: 87%; }
+[data-architecture-animation="context-compilation"][data-next-stage="1"] .architecture-flow-signal { left: 38%; }
+[data-architecture-animation="context-compilation"][data-next-stage="2"] .architecture-flow-signal { left: 64%; }
+[data-architecture-animation="context-compilation"][data-next-stage="3"] .architecture-flow-signal { left: 87%; }
+[data-architecture-animation="context-compilation"].is-travelling .architecture-flow-signal {
+  box-shadow: 0 0 10px rgba(250, 244, 255, 1), 0 0 22px rgba(194, 145, 255, 1), 0 0 42px rgba(157, 92, 255, 0.5);
+}
+[data-architecture-animation="context-compilation"].is-resetting .architecture-flow-signal {
+  opacity: 0;
+  transition: opacity 420ms ease, box-shadow 420ms ease;
+}
+
+[data-architecture-animation="context-compilation"].is-in-view .architecture-figure__paths--context path {
+  stroke-dasharray: 7 9;
+  animation: architecture-line-travel 680ms linear infinite;
 }
 
 .architecture-domain-copy {
@@ -2752,6 +2818,103 @@ body.is-direct-transition[data-view="research"] .home-scene {
 }
 
 .memory-maturity article > p:last-child {
+  margin: 0;
+  color: rgba(213, 204, 224, 0.58);
+  font-size: 0.9rem;
+  line-height: 1.75;
+}
+
+/*
+  CONTEXT PRESERVATION — QUICK TUNING
+  Six responsibilities stay visible as peers. They describe what compilation
+  must retain, not the private mechanism used to select or rank information.
+*/
+.context-preservation-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin-top: clamp(3rem, 5vw, 5rem);
+  border: 1px solid rgba(190, 153, 239, 0.13);
+  background: rgba(190, 153, 239, 0.13);
+}
+
+.context-preservation-grid article {
+  position: relative;
+  min-height: 16rem;
+  padding: clamp(1.35rem, 2.5vw, 2.25rem);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(119, 69, 184, 0.1), transparent 46%),
+    rgba(9, 8, 14, 0.97);
+}
+
+.context-preservation-grid article::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(rgba(199, 151, 255, 0.68), transparent 68%);
+}
+
+.context-preservation__label {
+  margin: 0 0 2.5rem;
+  color: rgba(192, 148, 247, 0.58);
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+}
+
+.context-preservation-grid h4 {
+  margin: 0;
+  color: rgba(241, 235, 249, 0.9);
+  font-size: clamp(1rem, 1.55vw, 1.35rem);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+}
+
+.context-preservation-grid article > p:last-child {
+  margin: 1.1rem 0 0;
+  color: rgba(215, 205, 226, 0.58);
+  font-size: clamp(0.82rem, 0.9vw, 0.94rem);
+  font-weight: 300;
+  line-height: 1.8;
+}
+
+.context-preservation-rule {
+  margin: clamp(2.5rem, 5vw, 5rem) 0 0;
+  padding-left: clamp(1.3rem, 2.5vw, 2.2rem);
+  border-left: 1px solid rgba(195, 145, 255, 0.7);
+  color: rgba(235, 225, 247, 0.86);
+  font-size: clamp(1.3rem, 2.4vw, 2.2rem);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 1.4;
+}
+
+.context-maturity {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 2rem);
+  margin-top: clamp(3rem, 5vw, 5rem);
+}
+
+.context-maturity article {
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba(191, 145, 248, 0.24);
+}
+
+.context-maturity article > p:first-child {
+  margin: 0 0 0.85rem;
+  color: rgba(196, 152, 249, 0.66);
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.context-maturity article > p:last-child {
   margin: 0;
   color: rgba(213, 204, 224, 0.58);
   font-size: 0.9rem;
@@ -3040,6 +3203,128 @@ body.is-direct-transition[data-view="research"] .home-scene {
   box-shadow: inset 0 0 18px rgba(157, 92, 255, 0.06), 0 0 18px rgba(157, 92, 255, 0.1);
 }
 
+/*
+  CONTEXT FIGURE 02 — PROGRESSIVE EXPANSION
+  Five fixed levels make the research direction legible. The packet moves only
+  toward greater detail and disappears before resetting to the compact handle.
+*/
+.context-expansion__instruction {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 17%;
+  margin: 0;
+  color: rgba(221, 207, 238, 0.58);
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: clamp(0.44rem, 0.56vw, 0.54rem);
+  letter-spacing: 0.14em;
+  text-align: center;
+  text-transform: uppercase;
+  transform: translate(-50%, -50%);
+}
+
+.context-expansion__instruction::before,
+.context-expansion__instruction::after {
+  content: "";
+  display: inline-block;
+  width: clamp(1rem, 3vw, 2.5rem);
+  height: 1px;
+  margin: 0 0.7rem;
+  background: linear-gradient(90deg, transparent, rgba(194, 148, 249, 0.44));
+  vertical-align: 0.2rem;
+}
+
+.context-expansion__instruction::after { transform: scaleX(-1); }
+
+.context-expansion__node {
+  position: absolute;
+  z-index: 2;
+  top: 52%;
+  display: grid;
+  place-items: center;
+  width: clamp(4.9rem, 8.6vw, 7.3rem);
+  min-height: 5rem;
+  padding: 0.65rem 0.5rem;
+  border: 1px solid rgba(211, 180, 249, 0.4);
+  background: rgba(20, 16, 29, 0.95);
+  color: rgba(239, 232, 247, 0.86);
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: clamp(0.4rem, 0.54vw, 0.54rem);
+  letter-spacing: 0.1em;
+  line-height: 1.45;
+  text-align: center;
+  text-transform: uppercase;
+  transform: translate(-50%, -50%);
+  box-shadow: inset 0 0 18px rgba(157, 92, 255, 0.04);
+  transition: border-color 280ms ease, box-shadow 280ms ease, color 280ms ease, background 280ms ease;
+}
+
+.context-expansion__node i {
+  display: block;
+  margin-bottom: 0.45rem;
+  color: rgba(192, 148, 247, 0.58);
+  font-size: 0.42rem;
+  font-style: normal;
+  letter-spacing: 0.15em;
+}
+
+.context-expansion__node--handle { left: 11%; border-style: dashed; }
+.context-expansion__node--atom { left: 30%; }
+.context-expansion__node--brief { left: 50%; }
+.context-expansion__node--support { left: 70%; }
+.context-expansion__node--source { left: 89%; border-style: dashed; }
+
+.context-expansion__canvas path {
+  stroke-dasharray: 6 9;
+}
+
+[data-architecture-animation="context-expansion"].is-in-view .context-expansion__canvas path {
+  animation: architecture-line-travel 760ms linear infinite;
+}
+
+.context-expansion-signal {
+  position: absolute;
+  z-index: 1;
+  left: 11%;
+  top: 52%;
+  width: 0.48rem;
+  height: 0.48rem;
+  border: 1px solid rgba(244, 234, 255, 0.9);
+  border-radius: 50%;
+  background: rgba(224, 205, 251, 0.98);
+  box-shadow: 0 0 8px rgba(246, 237, 255, 0.98), 0 0 18px rgba(178, 117, 255, 0.96), 0 0 34px rgba(157, 92, 255, 0.34);
+  transform: translate(-50%, -50%);
+  transition: left 2400ms linear, opacity 420ms ease, box-shadow 420ms ease;
+}
+
+[data-architecture-animation="context-expansion"][data-stage="0"] .context-expansion-signal { left: 11%; }
+[data-architecture-animation="context-expansion"][data-stage="1"] .context-expansion-signal { left: 30%; }
+[data-architecture-animation="context-expansion"][data-stage="2"] .context-expansion-signal { left: 50%; }
+[data-architecture-animation="context-expansion"][data-stage="3"] .context-expansion-signal { left: 70%; }
+[data-architecture-animation="context-expansion"][data-stage="4"] .context-expansion-signal { left: 89%; }
+[data-architecture-animation="context-expansion"][data-next-stage="1"] .context-expansion-signal { left: 30%; }
+[data-architecture-animation="context-expansion"][data-next-stage="2"] .context-expansion-signal { left: 50%; }
+[data-architecture-animation="context-expansion"][data-next-stage="3"] .context-expansion-signal { left: 70%; }
+[data-architecture-animation="context-expansion"][data-next-stage="4"] .context-expansion-signal { left: 89%; }
+[data-architecture-animation="context-expansion"].is-travelling .context-expansion-signal {
+  box-shadow: 0 0 10px rgba(250, 244, 255, 1), 0 0 22px rgba(194, 145, 255, 1), 0 0 42px rgba(157, 92, 255, 0.5);
+}
+[data-architecture-animation="context-expansion"].is-resetting .context-expansion-signal {
+  opacity: 0;
+  transition: opacity 420ms ease, box-shadow 420ms ease;
+}
+
+[data-architecture-animation="context-expansion"][data-stage="0"] .context-expansion__node--handle,
+[data-architecture-animation="context-expansion"][data-stage="1"] .context-expansion__node--atom,
+[data-architecture-animation="context-expansion"][data-stage="2"] .context-expansion__node--brief,
+[data-architecture-animation="context-expansion"][data-stage="3"] .context-expansion__node--support,
+[data-architecture-animation="context-expansion"][data-stage="4"] .context-expansion__node--source {
+  border-color: rgba(210, 168, 255, 0.72);
+  background: rgba(30, 22, 42, 0.98);
+  box-shadow: inset 0 0 20px rgba(157, 92, 255, 0.08), 0 0 22px rgba(157, 92, 255, 0.13);
+  color: rgba(250, 246, 255, 0.96);
+}
+
 .architecture-domain-copy--turning-points {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1px;
@@ -3078,13 +3363,15 @@ body.is-direct-transition[data-view="research"] .home-scene {
 [data-architecture-animation][data-stage="static"] .architecture-quick-comments li::before,
 [data-architecture-animation][data-stage="static"] .architecture-flow-signal,
 [data-architecture-animation][data-stage="static"] .evidence-flow-signal,
-[data-architecture-animation][data-stage="static"] .memory-revision-signal { display: none; }
+[data-architecture-animation][data-stage="static"] .memory-revision-signal,
+[data-architecture-animation][data-stage="static"] .context-expansion-signal { display: none; }
 
 [data-architecture-animation][data-stage="static"] .architecture-figure__node,
 [data-architecture-animation][data-stage="static"] .evidence-figure__node,
 [data-architecture-animation][data-stage="static"] .evidence-figure__projection,
 [data-architecture-animation][data-stage="static"] .memory-revision__node,
-[data-architecture-animation][data-stage="static"] .memory-revision__prior {
+[data-architecture-animation][data-stage="static"] .memory-revision__prior,
+[data-architecture-animation][data-stage="static"] .context-expansion__node {
   border-color: rgba(211, 180, 249, 0.44);
   color: rgba(241, 234, 249, 0.9);
 }
@@ -3748,7 +4035,9 @@ body.is-direct-transition[data-view="research"] .home-scene {
   .architecture-domain-copy,
   .architecture-related-grid,
   .memory-layer-stack,
-  .memory-maturity {
+  .memory-maturity,
+  .context-preservation-grid,
+  .context-maturity {
     grid-template-columns: 1fr;
   }
 
@@ -3763,6 +4052,8 @@ body.is-direct-transition[data-view="research"] .home-scene {
   .memory-layer__label { margin-bottom: 2rem; }
   .memory-view-strip { align-items: flex-start; flex-direction: column; }
   .memory-view-strip > div { justify-content: flex-start; }
+  .context-preservation-grid article { min-height: 0; }
+  .context-preservation__label { margin-bottom: 2rem; }
   .architecture-domain-scroll[data-domain="memory-continuity"] .architecture-figure__canvas--primary .architecture-figure__node {
     width: 5.05rem;
     padding: 0.45rem;
@@ -3772,6 +4063,15 @@ body.is-direct-transition[data-view="research"] .home-scene {
   .memory-revision__node { width: 5.05rem; min-height: 4.3rem; padding: 0.42rem; font-size: 0.38rem; letter-spacing: 0.07em; }
   .memory-revision__prior { width: 5.3rem; min-height: 3.1rem; padding: 0.4rem; font-size: 0.38rem; }
   .memory-revision__context { font-size: 0.38rem; letter-spacing: 0.08em; }
+  .architecture-domain-scroll[data-domain="context-compilation"] .architecture-figure__canvas--primary .architecture-figure__node {
+    width: 5.05rem;
+    padding: 0.42rem;
+    font-size: 0.38rem;
+    letter-spacing: 0.07em;
+  }
+  .context-expansion__node { width: 4.1rem; min-height: 4.5rem; padding: 0.38rem 0.28rem; font-size: 0.34rem; letter-spacing: 0.05em; }
+  .context-expansion__node i { margin-bottom: 0.3rem; font-size: 0.34rem; }
+  .context-expansion__instruction { width: 82%; font-size: 0.36rem; letter-spacing: 0.08em; }
 
   .observation-boundary-stages,
   .architecture-domain-copy--turning-points { grid-template-columns: 1fr; }
@@ -3817,7 +4117,9 @@ body.is-direct-transition[data-view="research"] .home-scene {
   .architecture-flow-signal,
   .evidence-figure__canvas path,
   .architecture-figure__paths--memory path,
-  .memory-revision__canvas path { animation: none !important; }
+  .architecture-figure__paths--context path,
+  .memory-revision__canvas path,
+  .context-expansion__canvas path { animation: none !important; }
 
   .architecture-playback { display: none; }
 

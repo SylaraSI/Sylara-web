@@ -7,8 +7,8 @@
     <meta name="description" content="Sylara — systems intelligence, architecture, and research." />
     <title>Sylara — Systems Intelligence</title>
     <link rel="preload" as="image" href="assets/redesign/home-network.png" />
-    <link rel="stylesheet" href="styles.css?v=memory-domain-2" />
-    <script src="app.js?v=memory-domain-2" defer></script>
+    <link rel="stylesheet" href="styles.css?v=context-domain-1" />
+    <script src="app.js?v=context-domain-1" defer></script>
   </head>
   <body data-view="home">
     <a class="skip-link" href="#home-map">Skip to the Sylara map</a>
@@ -280,6 +280,11 @@
                       <path d="M304 210 C390 210 424 210 510 210"></path>
                       <path d="M510 210 C590 210 622 210 700 210"></path>
                     </g>
+                    <g class="architecture-figure__paths architecture-figure__paths--context">
+                      <path d="M112 210 C190 210 224 210 304 210"></path>
+                      <path d="M304 210 C390 210 424 210 510 210"></path>
+                      <path d="M510 210 C590 210 622 210 700 210"></path>
+                    </g>
                   </svg>
                   <span class="architecture-flow-signal architecture-flow-signal--one"></span>
                   <span class="architecture-flow-signal architecture-flow-signal--two"></span>
@@ -409,6 +414,62 @@
               </figure>
 
               <ol class="architecture-quick-comments" data-memory-revision-comments aria-label="Revision figure notes"></ol>
+            </div>
+          </section>
+
+          <!--
+            CONTEXT COMPILATION — PRESERVATION BOUNDARY
+            These cards explain what a compact reasoning package must retain.
+            They are public responsibilities, not internal schemas or policies.
+          -->
+          <section class="architecture-domain-section context-preservation" id="domain-context-preservation" aria-labelledby="domain-context-preservation-title" data-context-only hidden>
+            <header class="architecture-domain-section__header">
+              <p class="architecture-section-label">Preservation boundary</p>
+              <h3 id="domain-context-preservation-title">What must survive compilation</h3>
+              <p data-context-preservation-intro></p>
+            </header>
+            <div class="context-preservation-grid" data-context-preservation></div>
+            <p class="context-preservation-rule" data-context-preservation-rule></p>
+            <div class="context-maturity" data-context-maturity></div>
+          </section>
+
+          <!--
+            CONTEXT COMPILATION — PROGRESSIVE EXPANSION
+            Five explicit levels move from a stable handle to the complete
+            source. The route only moves forward; reset happens while hidden.
+          -->
+          <section class="architecture-domain-section architecture-domain-section--figure context-expansion" id="domain-context-expansion" aria-labelledby="domain-context-expansion-title" data-context-only hidden>
+            <header class="architecture-domain-section__header">
+              <p class="architecture-section-label">Sufficiency boundary</p>
+              <h3 id="domain-context-expansion-title" data-context-expansion-title>Progressive expansion</h3>
+              <p data-context-expansion-intro></p>
+            </header>
+
+            <div class="architecture-figure-layout" data-architecture-animation="context-expansion" data-stage-count="5" data-stage="0">
+              <figure class="architecture-figure" aria-labelledby="context-expansion-caption">
+                <div class="architecture-figure__canvas context-expansion__canvas" aria-hidden="true">
+                  <p class="context-expansion__instruction">Expand only when the current view is insufficient</p>
+                  <span class="context-expansion__node context-expansion__node--handle"><i>L0</i>Handle</span>
+                  <span class="context-expansion__node context-expansion__node--atom"><i>L1</i>Semantic atom</span>
+                  <span class="context-expansion__node context-expansion__node--brief"><i>L2</i>Reasoning brief</span>
+                  <span class="context-expansion__node context-expansion__node--support"><i>L3</i>Exact support</span>
+                  <span class="context-expansion__node context-expansion__node--source"><i>L4</i>Complete source</span>
+                  <svg viewBox="0 0 800 420" preserveAspectRatio="none">
+                    <path d="M88 218 C150 218 178 218 240 218"></path>
+                    <path d="M240 218 C304 218 336 218 400 218"></path>
+                    <path d="M400 218 C464 218 496 218 560 218"></path>
+                    <path d="M560 218 C622 218 650 218 712 218"></path>
+                  </svg>
+                  <span class="context-expansion-signal"></span>
+                </div>
+                <button class="architecture-playback" type="button" data-architecture-playback aria-label="Pause animation" aria-pressed="false">
+                  <span class="architecture-playback__pause" aria-hidden="true"></span>
+                  <span class="architecture-playback__play" aria-hidden="true"></span>
+                </button>
+                <figcaption id="context-expansion-caption">Compression remains reversible to governed source material</figcaption>
+              </figure>
+
+              <ol class="architecture-quick-comments" data-context-expansion-comments aria-label="Progressive expansion figure notes"></ol>
             </div>
           </section>
 
