@@ -54,6 +54,14 @@ const architectureReasoningMaturity = document.querySelector("[data-reasoning-ma
 const architectureReasoningBoundaryTitle = document.querySelector("[data-reasoning-boundary-title]");
 const architectureReasoningBoundaryIntro = document.querySelector("[data-reasoning-boundary-intro]");
 const architectureReasoningBoundaryComments = document.querySelector("[data-reasoning-boundary-comments]");
+const architectureAdaptiveSections = [...document.querySelectorAll("[data-adaptive-only]")];
+const architectureAdaptiveDecisionsIntro = document.querySelector("[data-adaptive-decisions-intro]");
+const architectureAdaptiveDecisions = document.querySelector("[data-adaptive-decisions]");
+const architectureAdaptiveDecisionRule = document.querySelector("[data-adaptive-decision-rule]");
+const architectureAdaptiveMaturity = document.querySelector("[data-adaptive-maturity]");
+const architectureAdaptiveLineageTitle = document.querySelector("[data-adaptive-lineage-title]");
+const architectureAdaptiveLineageIntro = document.querySelector("[data-adaptive-lineage-intro]");
+const architectureAdaptiveLineageComments = document.querySelector("[data-adaptive-lineage-comments]");
 const architectureAnimatedFigures = [...document.querySelectorAll("[data-architecture-animation]")];
 const architecturePlaybackControls = [...document.querySelectorAll("[data-architecture-playback]")];
 const architectureDomainPressures = document.querySelector("[data-domain-pressures]");
@@ -148,11 +156,22 @@ const reasoningDomainSections = [
   ["domain-related", "Related material"],
 ];
 
+/* Adaptive Systems closes the public loop without collapsing learning into authority. */
+const adaptiveDomainSections = [
+  ["domain-overview", "Overview"],
+  ["domain-system-view", "Learning without uncontrolled change"],
+  ["domain-adaptive-decisions", "Explicit change outcomes"],
+  ["domain-adaptive-lineage", "Lineage and recovery"],
+  ["domain-design-pressures", "Why adaptation is difficult"],
+  ["domain-related", "Related material"],
+];
+
 function getArchitectureDomainSections(domain = activeArchitectureDomain) {
   if (domain === "observation-provenance") return observationDomainSections;
   if (domain === "memory-continuity") return memoryDomainSections;
   if (domain === "context-compilation") return contextDomainSections;
   if (domain === "reasoning-verification") return reasoningDomainSections;
+  if (domain === "adaptive-systems") return adaptiveDomainSections;
   return architectureDomainSections;
 }
 
@@ -502,16 +521,92 @@ const architectureDomainContent = {
   "adaptive-systems": {
     index: "05",
     title: "Adaptive Systems",
-    summary: "The bounded feedback structures that allow Sylara to learn and reorganize without silently broadening authority or losing accountability.",
-    figureTitle: "Adaptation with preserved control",
-    figureIntro: "This figure is ready for the public improvement loop: observe behavior, evaluate change, verify the proposal, and adopt or reject it explicitly.",
-    nodes: { input: "Observed behavior", core: "Feedback loop", state: "Verified change", output: "Governed adaptation" },
-    comments: ["Observe system behavior", "Propose a bounded change", "Verify before adoption", "Retain rollback and lineage"],
-    pressures: [
-      "Adaptation cannot be allowed to erase the conditions that made the system trustworthy. Change must remain observable, attributable, and reversible where the risk requires it.",
-      "The mature domain can explain the Observe → Preserve → Compile → Reason → Test → Learn loop while keeping sensitive mechanisms behind the public boundary.",
+    summary: "Adaptive Systems closes Sylara's public intelligence loop without turning learning into unrestricted mutation. Observed behavior can inform a bounded proposal, but change remains versioned, testable, explicitly authorized, and recoverable.",
+    figureTitle: "Learning without uncontrolled change",
+    figureIntro: "The intelligence loop observes what happened, preserves the evidence, compiles the relevant boundary, reasons about a proposal, tests it, and learns from the result. Learning closes the loop; it does not bypass the adoption gate.",
+    nodes: {
+      input: "Observed behavior",
+      core: "Bounded proposal",
+      state: "Evaluation gate",
+      output: "Versioned outcome",
+    },
+    comments: [
+      "Observe behavior, outcomes, and operating conditions",
+      "Preserve the evidence and the boundary it came from",
+      "Compile only what the proposed change requires",
+      "Form a bounded improvement claim",
+      "Test against the baseline and required constraints",
+      "Learn from adoption, rejection, and unresolved results",
     ],
-    relatedResearch: "Connect this domain to research on feedback, bounded self-improvement, graceful recovery, and model-independent system identity.",
+    decisions: {
+      intro: "Evaluation can end honestly in more than one state. Adoption is only one possible result, and every result remains attached to the proposal, evidence, baseline, and authority that produced it.",
+      items: [
+        {
+          label: "01 / Authorized",
+          title: "Adopted",
+          body: "The candidate satisfied its stated evaluation boundary and received explicit authority to become a new version.",
+        },
+        {
+          label: "02 / Declined",
+          title: "Rejected",
+          body: "The proposal failed a requirement, introduced unacceptable regression, or did not justify replacing the baseline.",
+        },
+        {
+          label: "03 / Open",
+          title: "Deferred",
+          body: "Evidence, evaluation, resources, or decision authority remain incomplete, so the active system does not change.",
+        },
+        {
+          label: "04 / Recovered",
+          title: "Rolled back",
+          body: "A version is withdrawn and a known-good state is restored while the failed revision and its evidence remain traceable.",
+        },
+      ],
+      rule: "A system can learn from a proposal without adopting it.",
+      maturity: [
+        {
+          label: "Present foundation",
+          body: "Evidence, test scope, authority, auditability, and recovery are treated as separate responsibilities rather than one automatic decision.",
+        },
+        {
+          label: "Architecture direction",
+          body: "Those foundations converge into versioned change proposals evaluated in isolation, with explicit adoption and recovery paths.",
+        },
+        {
+          label: "Research frontier",
+          body: "Long-horizon adaptation must remain useful across changing tasks, environments, and models without identity drift or quiet policy erosion.",
+        },
+      ],
+    },
+    lineageFigureTitle: "Every change carries lineage",
+    lineageFigureIntro: "A candidate remains separate from the known-good baseline while it is evaluated. Adoption creates a new attributable version; rejection, deferral, or rollback preserves the decision record without rewriting the history that led there.",
+    lineageComments: [
+      "Keep the known-good baseline active and recoverable",
+      "Record the candidate as a separate revision",
+      "Evaluate in isolation against explicit measures",
+      "Adopt, reject, or defer through a visible gate",
+      "Preserve the version, decision record, and recovery path",
+    ],
+    pressureHeading: "Why adaptation is difficult",
+    pressures: [
+      {
+        title: "A proposal is not authority",
+        body: "A system may generate, inspect, or evaluate a change without gaining permission to adopt it, persist it, or expand its own capabilities.",
+      },
+      {
+        title: "Improvement is multidimensional",
+        body: "A gain in one measure cannot silently excuse regression in accuracy, traceability, resource use, recovery, or policy boundaries.",
+      },
+      {
+        title: "Failure must remain recoverable",
+        body: "A rejected, interrupted, or harmful transition should leave the active system consistent and able to return to a known-good state.",
+      },
+      {
+        title: "Lineage must survive change",
+        body: "Each revision must retain what changed, why it was considered, what evidence was used, and which authority accepted or declined it.",
+      },
+    ],
+    relatedResearch: "Research continues the unresolved questions: how improvement should be measured across competing objectives, how feedback remains safe over long horizons, and how identity and control survive revision across changing models and environments.",
   },
 };
 
@@ -1082,6 +1177,8 @@ function startArchitectureFigureAnimation(figure) {
     "context-expansion": { arrivalHold: 720, destinationHold: 1800 },
     "reasoning-flow": { arrivalHold: 680, destinationHold: 1650 },
     "reasoning-boundary": { arrivalHold: 760, destinationHold: 1900 },
+    "adaptive-loop": { arrivalHold: 680, destinationHold: 1500 },
+    "adaptive-lineage": { arrivalHold: 760, destinationHold: 1900 },
   }[figure.dataset.architectureAnimation] || { arrivalHold: 600, destinationHold: 1200 };
   const { arrivalHold, destinationHold } = figureTiming;
   const stageCount = Math.max(2, Number(figure.dataset.stageCount) || 4);
@@ -1091,7 +1188,8 @@ function startArchitectureFigureAnimation(figure) {
     timers.advance = window.setTimeout(() => {
       const currentStage = Number(figure.dataset.stage);
       const nextStage = (currentStage + 1) % stageCount;
-      const isReset = nextStage === 0;
+      /* The adaptive loop visibly closes; linear diagrams reset while hidden. */
+      const isReset = nextStage === 0 && figure.dataset.architectureAnimation !== "adaptive-loop";
 
       figure.dataset.nextStage = String(nextStage);
       figure.classList.add(isReset ? "is-resetting" : "is-travelling");
@@ -1206,7 +1304,10 @@ function renderArchitectureDomain(domain) {
       ? "memory-continuity"
       : domain === "context-compilation"
         ? "context-compilation"
-        : domain === "reasoning-verification" ? "reasoning-flow" : "generic-flow";
+        : domain === "reasoning-verification"
+          ? "reasoning-flow"
+          : domain === "adaptive-systems" ? "adaptive-loop" : "generic-flow";
+  architecturePrimaryFigure.dataset.stageCount = domain === "adaptive-systems" ? "6" : "4";
   architectureDomainKicker.textContent = `Architecture domain / ${domainData.index}`;
   architectureDomainTitle.textContent = domainData.title;
   architectureDomainSummary.textContent = domainData.summary;
@@ -1231,6 +1332,7 @@ function renderArchitectureDomain(domain) {
   const isMemoryDomain = domain === "memory-continuity";
   const isContextDomain = domain === "context-compilation";
   const isReasoningDomain = domain === "reasoning-verification";
+  const isAdaptiveDomain = domain === "adaptive-systems";
   architectureObservationSections.forEach((section) => {
     section.hidden = !isObservationDomain;
   });
@@ -1242,6 +1344,9 @@ function renderArchitectureDomain(domain) {
   });
   architectureReasoningSections.forEach((section) => {
     section.hidden = !isReasoningDomain;
+  });
+  architectureAdaptiveSections.forEach((section) => {
+    section.hidden = !isAdaptiveDomain;
   });
 
   if (isObservationDomain) {
@@ -1396,10 +1501,49 @@ function renderArchitectureDomain(domain) {
     );
   }
 
+  if (isAdaptiveDomain) {
+    architectureAdaptiveDecisionsIntro.textContent = domainData.decisions.intro;
+    architectureAdaptiveDecisions.replaceChildren(
+      ...domainData.decisions.items.map((item) => {
+        const article = document.createElement("article");
+        const label = document.createElement("p");
+        const heading = document.createElement("h4");
+        const body = document.createElement("p");
+        label.className = "adaptive-decision__label";
+        label.textContent = item.label;
+        heading.textContent = item.title;
+        body.textContent = item.body;
+        article.append(label, heading, body);
+        return article;
+      }),
+    );
+    architectureAdaptiveDecisionRule.textContent = domainData.decisions.rule;
+    architectureAdaptiveMaturity.replaceChildren(
+      ...domainData.decisions.maturity.map((item) => {
+        const article = document.createElement("article");
+        const label = document.createElement("p");
+        const body = document.createElement("p");
+        label.textContent = item.label;
+        body.textContent = item.body;
+        article.append(label, body);
+        return article;
+      }),
+    );
+    architectureAdaptiveLineageTitle.textContent = domainData.lineageFigureTitle;
+    architectureAdaptiveLineageIntro.textContent = domainData.lineageFigureIntro;
+    architectureAdaptiveLineageComments.replaceChildren(
+      ...domainData.lineageComments.map((comment) => {
+        const item = document.createElement("li");
+        item.textContent = comment;
+        return item;
+      }),
+    );
+  }
+
   architectureDomainPressureTitle.textContent = domainData.pressureHeading || "Why this part of the architecture exists";
   architectureDomainPressures.classList.toggle(
     "architecture-domain-copy--turning-points",
-    isObservationDomain || isMemoryDomain || isContextDomain || isReasoningDomain,
+    isObservationDomain || isMemoryDomain || isContextDomain || isReasoningDomain || isAdaptiveDomain,
   );
   architectureDomainPressures.replaceChildren(
     ...domainData.pressures.map((pressure, index) => {

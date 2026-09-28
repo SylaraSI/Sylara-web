@@ -2189,6 +2189,7 @@ body.is-direct-transition[data-view="research"] .home-scene {
 .architecture-figure__paths--memory,
 .architecture-figure__paths--context,
 .architecture-figure__paths--reasoning,
+.adaptive-loop,
 .observation-context,
 .architecture-flow-signal,
 .evidence-flow-signal { display: none; }
@@ -2430,7 +2431,8 @@ body.is-direct-transition[data-view="research"] .home-scene {
 [data-architecture-animation][data-stage="1"] .architecture-quick-comments li:nth-child(2),
 [data-architecture-animation][data-stage="2"] .architecture-quick-comments li:nth-child(3),
 [data-architecture-animation][data-stage="3"] .architecture-quick-comments li:nth-child(4),
-[data-architecture-animation][data-stage="4"] .architecture-quick-comments li:nth-child(5) {
+[data-architecture-animation][data-stage="4"] .architecture-quick-comments li:nth-child(5),
+[data-architecture-animation][data-stage="5"] .architecture-quick-comments li:nth-child(6) {
   border-left-color: rgba(190, 132, 255, 0.82);
   color: rgba(235, 226, 245, 0.82);
   background: none;
@@ -2440,7 +2442,8 @@ body.is-direct-transition[data-view="research"] .home-scene {
 [data-architecture-animation][data-stage="1"] .architecture-quick-comments li:nth-child(2)::before,
 [data-architecture-animation][data-stage="2"] .architecture-quick-comments li:nth-child(3)::before,
 [data-architecture-animation][data-stage="3"] .architecture-quick-comments li:nth-child(4)::before,
-[data-architecture-animation][data-stage="4"] .architecture-quick-comments li:nth-child(5)::before {
+[data-architecture-animation][data-stage="4"] .architecture-quick-comments li:nth-child(5)::before,
+[data-architecture-animation][data-stage="5"] .architecture-quick-comments li:nth-child(6)::before {
   opacity: 1;
   transform: translateY(-50%) scale(1);
 }
@@ -2681,6 +2684,164 @@ body.is-direct-transition[data-view="research"] .home-scene {
 [data-architecture-animation="reasoning-flow"].is-in-view .architecture-figure__paths--reasoning path {
   stroke-dasharray: 7 9;
   animation: architecture-line-travel 700ms linear infinite;
+}
+
+/*
+  ADAPTIVE FIGURE 01 — CLOSED PUBLIC INTELLIGENCE LOOP
+  The packet travels through six fixed responsibilities and visibly closes the
+  loop. The centered gate stays separate so learning never implies authority.
+*/
+.architecture-domain-scroll[data-domain="adaptive-systems"] .architecture-figure__canvas--primary > .architecture-figure__node,
+.architecture-domain-scroll[data-domain="adaptive-systems"] .architecture-figure__canvas--primary > svg,
+.architecture-domain-scroll[data-domain="adaptive-systems"] .architecture-figure__canvas--primary > .architecture-flow-signal,
+.architecture-domain-scroll[data-domain="adaptive-systems"] .reasoning-result-states { display: none; }
+
+.architecture-domain-scroll[data-domain="adaptive-systems"] .adaptive-loop {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.adaptive-loop__instruction {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 8%;
+  width: 90%;
+  margin: 0;
+  color: rgba(221, 207, 238, 0.62);
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: clamp(0.44rem, 0.56vw, 0.54rem);
+  letter-spacing: 0.14em;
+  text-align: center;
+  text-transform: uppercase;
+  transform: translate(-50%, -50%);
+}
+
+.adaptive-loop__node {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: clamp(5.1rem, 8.8vw, 7.4rem);
+  min-height: 4.35rem;
+  padding: 0.58rem 0.48rem;
+  border: 1px solid rgba(211, 180, 249, 0.4);
+  background: rgba(20, 16, 29, 0.95);
+  color: rgba(239, 232, 247, 0.86);
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: clamp(0.4rem, 0.54vw, 0.54rem);
+  letter-spacing: 0.1em;
+  line-height: 1.4;
+  text-align: center;
+  text-transform: uppercase;
+  transform: translate(-50%, -50%);
+  box-shadow: inset 0 0 18px rgba(157, 92, 255, 0.04);
+  transition: border-color 280ms ease, box-shadow 280ms ease, color 280ms ease, background 280ms ease;
+}
+
+.adaptive-loop__node i {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: rgba(192, 148, 247, 0.58);
+  font-size: 0.4rem;
+  font-style: normal;
+  letter-spacing: 0.15em;
+}
+
+.adaptive-loop__node--observe { left: 14%; top: 34%; border-style: dashed; }
+.adaptive-loop__node--preserve { left: 37%; top: 21%; }
+.adaptive-loop__node--compile { left: 68%; top: 30%; }
+.adaptive-loop__node--reason { left: 84%; top: 62%; }
+.adaptive-loop__node--test { left: 58%; top: 78%; }
+.adaptive-loop__node--learn { left: 24%; top: 70%; border-style: dashed; }
+
+.adaptive-loop__gate {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 51%;
+  display: grid;
+  place-items: center;
+  width: clamp(7rem, 14vw, 10.5rem);
+  min-height: 5.2rem;
+  padding: 0.7rem;
+  border: 1px solid rgba(194, 149, 247, 0.3);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(40, 26, 58, 0.92), rgba(14, 11, 20, 0.86) 68%, transparent 70%);
+  color: rgba(232, 218, 247, 0.72);
+  font-family: "DM Mono", ui-monospace, monospace;
+  text-align: center;
+  text-transform: uppercase;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 34px rgba(143, 78, 230, 0.09);
+}
+
+.adaptive-loop__gate span {
+  font-size: clamp(0.4rem, 0.5vw, 0.5rem);
+  letter-spacing: 0.16em;
+}
+
+.adaptive-loop__gate b {
+  color: rgba(244, 237, 251, 0.88);
+  font-size: clamp(0.46rem, 0.58vw, 0.58rem);
+  font-weight: 400;
+  letter-spacing: 0.09em;
+}
+
+.adaptive-loop path {
+  stroke-dasharray: 7 9;
+}
+
+[data-architecture-animation="adaptive-loop"].is-in-view .adaptive-loop path {
+  animation: architecture-line-travel 760ms linear infinite;
+}
+
+.adaptive-loop-signal {
+  position: absolute;
+  z-index: 1;
+  left: 14%;
+  top: 34%;
+  width: 0.52rem;
+  height: 0.52rem;
+  border: 1px solid rgba(244, 234, 255, 0.92);
+  border-radius: 50%;
+  background: rgba(224, 205, 251, 0.98);
+  box-shadow: 0 0 8px rgba(246, 237, 255, 0.98), 0 0 18px rgba(178, 117, 255, 0.96), 0 0 34px rgba(157, 92, 255, 0.34);
+  transform: translate(-50%, -50%);
+  transition: left 2400ms linear, top 2400ms linear, opacity 420ms ease, box-shadow 420ms ease;
+}
+
+[data-architecture-animation="adaptive-loop"][data-stage="0"] .adaptive-loop-signal { left: 14%; top: 34%; }
+[data-architecture-animation="adaptive-loop"][data-stage="1"] .adaptive-loop-signal { left: 37%; top: 21%; }
+[data-architecture-animation="adaptive-loop"][data-stage="2"] .adaptive-loop-signal { left: 68%; top: 30%; }
+[data-architecture-animation="adaptive-loop"][data-stage="3"] .adaptive-loop-signal { left: 84%; top: 62%; }
+[data-architecture-animation="adaptive-loop"][data-stage="4"] .adaptive-loop-signal { left: 58%; top: 78%; }
+[data-architecture-animation="adaptive-loop"][data-stage="5"] .adaptive-loop-signal { left: 24%; top: 70%; }
+
+/* Keep the travel target after the settled positions so the closing
+   Learn → Observe leg follows its rail instead of waiting and snapping. */
+[data-architecture-animation="adaptive-loop"][data-next-stage="0"] .adaptive-loop-signal { left: 14%; top: 34%; }
+[data-architecture-animation="adaptive-loop"][data-next-stage="1"] .adaptive-loop-signal { left: 37%; top: 21%; }
+[data-architecture-animation="adaptive-loop"][data-next-stage="2"] .adaptive-loop-signal { left: 68%; top: 30%; }
+[data-architecture-animation="adaptive-loop"][data-next-stage="3"] .adaptive-loop-signal { left: 84%; top: 62%; }
+[data-architecture-animation="adaptive-loop"][data-next-stage="4"] .adaptive-loop-signal { left: 58%; top: 78%; }
+[data-architecture-animation="adaptive-loop"][data-next-stage="5"] .adaptive-loop-signal { left: 24%; top: 70%; }
+
+[data-architecture-animation="adaptive-loop"].is-travelling .adaptive-loop-signal {
+  box-shadow: 0 0 10px rgba(250, 244, 255, 1), 0 0 22px rgba(194, 145, 255, 1), 0 0 42px rgba(157, 92, 255, 0.5);
+}
+
+[data-architecture-animation="adaptive-loop"][data-stage="0"] .adaptive-loop__node--observe,
+[data-architecture-animation="adaptive-loop"][data-stage="1"] .adaptive-loop__node--preserve,
+[data-architecture-animation="adaptive-loop"][data-stage="2"] .adaptive-loop__node--compile,
+[data-architecture-animation="adaptive-loop"][data-stage="3"] .adaptive-loop__node--reason,
+[data-architecture-animation="adaptive-loop"][data-stage="4"] .adaptive-loop__node--test,
+[data-architecture-animation="adaptive-loop"][data-stage="5"] .adaptive-loop__node--learn {
+  border-color: rgba(210, 168, 255, 0.72);
+  background: rgba(30, 22, 42, 0.98);
+  box-shadow: inset 0 0 20px rgba(157, 92, 255, 0.08), 0 0 22px rgba(157, 92, 255, 0.13);
+  color: rgba(250, 246, 255, 0.96);
 }
 
 .reasoning-result-states { display: none; }
@@ -3018,7 +3179,8 @@ body.is-direct-transition[data-view="research"] .home-scene {
   These are explicit evidence states, not confidence badges. Equal treatment
   prevents a supported result from visually erasing conflict or incompleteness.
 */
-.reasoning-outcome-grid {
+.reasoning-outcome-grid,
+.adaptive-decision-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1px;
@@ -3027,7 +3189,8 @@ body.is-direct-transition[data-view="research"] .home-scene {
   background: rgba(190, 153, 239, 0.13);
 }
 
-.reasoning-outcome-grid article {
+.reasoning-outcome-grid article,
+.adaptive-decision-grid article {
   position: relative;
   min-height: 15rem;
   padding: clamp(1.5rem, 3vw, 2.7rem);
@@ -3036,7 +3199,8 @@ body.is-direct-transition[data-view="research"] .home-scene {
     rgba(9, 8, 14, 0.97);
 }
 
-.reasoning-outcome-grid article::before {
+.reasoning-outcome-grid article::before,
+.adaptive-decision-grid article::before {
   content: "";
   position: absolute;
   left: 0;
@@ -3046,7 +3210,8 @@ body.is-direct-transition[data-view="research"] .home-scene {
   background: linear-gradient(rgba(198, 148, 255, 0.82), transparent);
 }
 
-.reasoning-outcome__label {
+.reasoning-outcome__label,
+.adaptive-decision__label {
   margin: 0 0 2.6rem;
   color: rgba(192, 148, 247, 0.62);
   font-family: "DM Mono", ui-monospace, monospace;
@@ -3055,7 +3220,8 @@ body.is-direct-transition[data-view="research"] .home-scene {
   text-transform: uppercase;
 }
 
-.reasoning-outcome-grid h4 {
+.reasoning-outcome-grid h4,
+.adaptive-decision-grid h4 {
   margin: 0;
   color: rgba(241, 235, 249, 0.9);
   font-size: clamp(1.05rem, 1.65vw, 1.45rem);
@@ -3063,7 +3229,8 @@ body.is-direct-transition[data-view="research"] .home-scene {
   letter-spacing: -0.025em;
 }
 
-.reasoning-outcome-grid article > p:last-child {
+.reasoning-outcome-grid article > p:last-child,
+.adaptive-decision-grid article > p:last-child {
   margin: 1.1rem 0 0;
   color: rgba(215, 205, 226, 0.6);
   font-size: clamp(0.86rem, 0.96vw, 0.98rem);
@@ -3071,7 +3238,8 @@ body.is-direct-transition[data-view="research"] .home-scene {
   line-height: 1.8;
 }
 
-.reasoning-outcome-rule {
+.reasoning-outcome-rule,
+.adaptive-decision-rule {
   margin: clamp(2.5rem, 5vw, 5rem) 0 0;
   padding-left: clamp(1.3rem, 2.5vw, 2.2rem);
   border-left: 1px solid rgba(195, 145, 255, 0.7);
@@ -3082,19 +3250,22 @@ body.is-direct-transition[data-view="research"] .home-scene {
   line-height: 1.4;
 }
 
-.reasoning-maturity {
+.reasoning-maturity,
+.adaptive-maturity {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(1rem, 2vw, 2rem);
   margin-top: clamp(3rem, 5vw, 5rem);
 }
 
-.reasoning-maturity article {
+.reasoning-maturity article,
+.adaptive-maturity article {
   padding-top: 1.2rem;
   border-top: 1px solid rgba(191, 145, 248, 0.24);
 }
 
-.reasoning-maturity article > p:first-child {
+.reasoning-maturity article > p:first-child,
+.adaptive-maturity article > p:first-child {
   margin: 0 0 0.85rem;
   color: rgba(196, 152, 249, 0.66);
   font-family: "DM Mono", ui-monospace, monospace;
@@ -3103,7 +3274,8 @@ body.is-direct-transition[data-view="research"] .home-scene {
   text-transform: uppercase;
 }
 
-.reasoning-maturity article > p:last-child {
+.reasoning-maturity article > p:last-child,
+.adaptive-maturity article > p:last-child {
   margin: 0;
   color: rgba(213, 204, 224, 0.58);
   font-size: 0.9rem;
@@ -3637,6 +3809,168 @@ body.is-direct-transition[data-view="research"] .home-scene {
   color: rgba(250, 246, 255, 0.96);
 }
 
+/*
+  ADAPTIVE FIGURE 02 — VERSION LINEAGE AND RECOVERY
+  A candidate advances along the upper rail. The lower return rail keeps the
+  unchanged baseline and recovery path visible without implying automatic use.
+*/
+.adaptive-lineage__instruction {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 15%;
+  width: 90%;
+  margin: 0;
+  color: rgba(221, 207, 238, 0.6);
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: clamp(0.44rem, 0.56vw, 0.54rem);
+  letter-spacing: 0.14em;
+  text-align: center;
+  text-transform: uppercase;
+  transform: translate(-50%, -50%);
+}
+
+.adaptive-lineage__instruction::before,
+.adaptive-lineage__instruction::after {
+  content: "";
+  display: inline-block;
+  width: clamp(1rem, 3vw, 2.5rem);
+  height: 1px;
+  margin: 0 0.7rem;
+  background: linear-gradient(90deg, transparent, rgba(194, 148, 249, 0.44));
+  vertical-align: 0.2rem;
+}
+
+.adaptive-lineage__instruction::after { transform: scaleX(-1); }
+
+.adaptive-lineage__node {
+  position: absolute;
+  z-index: 2;
+  top: 48%;
+  display: grid;
+  place-items: center;
+  width: clamp(4.9rem, 8.7vw, 7.4rem);
+  min-height: 5rem;
+  padding: 0.65rem 0.5rem;
+  border: 1px solid rgba(211, 180, 249, 0.4);
+  background: rgba(20, 16, 29, 0.95);
+  color: rgba(239, 232, 247, 0.86);
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: clamp(0.4rem, 0.54vw, 0.54rem);
+  letter-spacing: 0.08em;
+  line-height: 1.45;
+  text-align: center;
+  text-transform: uppercase;
+  transform: translate(-50%, -50%);
+  box-shadow: inset 0 0 18px rgba(157, 92, 255, 0.04);
+  transition: border-color 280ms ease, box-shadow 280ms ease, color 280ms ease, background 280ms ease;
+}
+
+.adaptive-lineage__node i {
+  display: block;
+  margin-bottom: 0.45rem;
+  color: rgba(192, 148, 247, 0.58);
+  font-size: 0.42rem;
+  font-style: normal;
+  letter-spacing: 0.15em;
+}
+
+.adaptive-lineage__node--baseline { left: 10%; border-style: dashed; }
+.adaptive-lineage__node--candidate { left: 30%; }
+.adaptive-lineage__node--evaluation { left: 50%; }
+.adaptive-lineage__node--gate { left: 70%; }
+.adaptive-lineage__node--outcome { left: 90%; border-style: dashed; }
+
+.adaptive-lineage__canvas path {
+  stroke-dasharray: 6 9;
+}
+
+.adaptive-lineage__canvas .adaptive-lineage__recovery-path {
+  stroke: rgba(173, 128, 228, 0.28);
+  stroke-dasharray: 2 10;
+}
+
+[data-architecture-animation="adaptive-lineage"].is-in-view .adaptive-lineage__canvas path {
+  animation: architecture-line-travel 780ms linear infinite;
+}
+
+[data-architecture-animation="adaptive-lineage"].is-in-view .adaptive-lineage__canvas .adaptive-lineage__recovery-path {
+  animation-duration: 1150ms;
+}
+
+.adaptive-lineage__return {
+  position: absolute;
+  z-index: 2;
+  top: 80%;
+  padding: 0.4rem 0.55rem;
+  border-left: 1px solid rgba(194, 149, 247, 0.28);
+  background: rgba(10, 8, 15, 0.82);
+  color: rgba(226, 214, 239, 0.64);
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: clamp(0.46rem, 0.58vw, 0.58rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transform: translate(-50%, -50%);
+  transition: border-color 280ms ease, color 280ms ease, box-shadow 280ms ease;
+}
+
+.adaptive-lineage__return--hold { left: 28%; }
+.adaptive-lineage__return--rollback { left: 72%; }
+
+.adaptive-lineage-signal {
+  position: absolute;
+  z-index: 1;
+  left: 10%;
+  top: 48%;
+  width: 0.48rem;
+  height: 0.48rem;
+  border: 1px solid rgba(244, 234, 255, 0.9);
+  border-radius: 50%;
+  background: rgba(224, 205, 251, 0.98);
+  box-shadow: 0 0 8px rgba(246, 237, 255, 0.98), 0 0 18px rgba(178, 117, 255, 0.96), 0 0 34px rgba(157, 92, 255, 0.34);
+  transform: translate(-50%, -50%);
+  transition: left 2400ms linear, opacity 420ms ease, box-shadow 420ms ease;
+}
+
+[data-architecture-animation="adaptive-lineage"][data-stage="0"] .adaptive-lineage-signal { left: 10%; }
+[data-architecture-animation="adaptive-lineage"][data-stage="1"] .adaptive-lineage-signal { left: 30%; }
+[data-architecture-animation="adaptive-lineage"][data-stage="2"] .adaptive-lineage-signal { left: 50%; }
+[data-architecture-animation="adaptive-lineage"][data-stage="3"] .adaptive-lineage-signal { left: 70%; }
+[data-architecture-animation="adaptive-lineage"][data-stage="4"] .adaptive-lineage-signal { left: 90%; }
+[data-architecture-animation="adaptive-lineage"][data-next-stage="1"] .adaptive-lineage-signal { left: 30%; }
+[data-architecture-animation="adaptive-lineage"][data-next-stage="2"] .adaptive-lineage-signal { left: 50%; }
+[data-architecture-animation="adaptive-lineage"][data-next-stage="3"] .adaptive-lineage-signal { left: 70%; }
+[data-architecture-animation="adaptive-lineage"][data-next-stage="4"] .adaptive-lineage-signal { left: 90%; }
+[data-architecture-animation="adaptive-lineage"].is-travelling .adaptive-lineage-signal {
+  box-shadow: 0 0 10px rgba(250, 244, 255, 1), 0 0 22px rgba(194, 145, 255, 1), 0 0 42px rgba(157, 92, 255, 0.5);
+}
+[data-architecture-animation="adaptive-lineage"].is-resetting .adaptive-lineage-signal {
+  opacity: 0;
+  transition: opacity 420ms ease, box-shadow 420ms ease;
+}
+
+[data-architecture-animation="adaptive-lineage"][data-stage="0"] .adaptive-lineage__node--baseline,
+[data-architecture-animation="adaptive-lineage"][data-stage="1"] .adaptive-lineage__node--candidate,
+[data-architecture-animation="adaptive-lineage"][data-stage="2"] .adaptive-lineage__node--evaluation,
+[data-architecture-animation="adaptive-lineage"][data-stage="3"] .adaptive-lineage__node--gate,
+[data-architecture-animation="adaptive-lineage"][data-stage="4"] .adaptive-lineage__node--outcome {
+  border-color: rgba(210, 168, 255, 0.72);
+  background: rgba(30, 22, 42, 0.98);
+  box-shadow: inset 0 0 20px rgba(157, 92, 255, 0.08), 0 0 22px rgba(157, 92, 255, 0.13);
+  color: rgba(250, 246, 255, 0.96);
+}
+
+[data-architecture-animation="adaptive-lineage"][data-stage="3"] .adaptive-lineage__return--hold,
+[data-architecture-animation="adaptive-lineage"][data-stage="4"] .adaptive-lineage__return--rollback {
+  border-left-color: rgba(203, 157, 255, 0.72);
+  color: rgba(239, 230, 249, 0.82);
+  box-shadow: -8px 0 22px rgba(157, 92, 255, 0.07);
+}
+
+[data-architecture-animation="adaptive-lineage"][data-stage="4"] .adaptive-lineage__recovery-path {
+  stroke: rgba(194, 148, 249, 0.54);
+}
+
 .architecture-domain-copy--turning-points {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1px;
@@ -3677,7 +4011,9 @@ body.is-direct-transition[data-view="research"] .home-scene {
 [data-architecture-animation][data-stage="static"] .evidence-flow-signal,
 [data-architecture-animation][data-stage="static"] .memory-revision-signal,
 [data-architecture-animation][data-stage="static"] .context-expansion-signal,
-[data-architecture-animation][data-stage="static"] .reasoning-boundary-signal { display: none; }
+[data-architecture-animation][data-stage="static"] .reasoning-boundary-signal,
+[data-architecture-animation][data-stage="static"] .adaptive-loop-signal,
+[data-architecture-animation][data-stage="static"] .adaptive-lineage-signal { display: none; }
 
 [data-architecture-animation][data-stage="static"] .architecture-figure__node,
 [data-architecture-animation][data-stage="static"] .evidence-figure__node,
@@ -3685,7 +4021,9 @@ body.is-direct-transition[data-view="research"] .home-scene {
 [data-architecture-animation][data-stage="static"] .memory-revision__node,
 [data-architecture-animation][data-stage="static"] .memory-revision__prior,
 [data-architecture-animation][data-stage="static"] .context-expansion__node,
-[data-architecture-animation][data-stage="static"] .reasoning-boundary__node {
+[data-architecture-animation][data-stage="static"] .reasoning-boundary__node,
+[data-architecture-animation][data-stage="static"] .adaptive-loop__node,
+[data-architecture-animation][data-stage="static"] .adaptive-lineage__node {
   border-color: rgba(211, 180, 249, 0.44);
   color: rgba(241, 234, 249, 0.9);
 }
@@ -4353,7 +4691,9 @@ body.is-direct-transition[data-view="research"] .home-scene {
   .context-preservation-grid,
   .context-maturity,
   .reasoning-outcome-grid,
-  .reasoning-maturity {
+  .reasoning-maturity,
+  .adaptive-decision-grid,
+  .adaptive-maturity {
     grid-template-columns: 1fr;
   }
 
@@ -4372,6 +4712,8 @@ body.is-direct-transition[data-view="research"] .home-scene {
   .context-preservation__label { margin-bottom: 2rem; }
   .reasoning-outcome-grid article { min-height: 0; }
   .reasoning-outcome__label { margin-bottom: 2rem; }
+  .adaptive-decision-grid article { min-height: 0; }
+  .adaptive-decision__label { margin-bottom: 2rem; }
   .architecture-domain-scroll[data-domain="memory-continuity"] .architecture-figure__canvas--primary .architecture-figure__node {
     width: 5.05rem;
     padding: 0.45rem;
@@ -4408,6 +4750,16 @@ body.is-direct-transition[data-view="research"] .home-scene {
   .reasoning-boundary__node { width: 4.05rem; min-height: 4.5rem; padding: 0.38rem 0.25rem; font-size: 0.33rem; letter-spacing: 0.04em; }
   .reasoning-boundary__node i { margin-bottom: 0.3rem; font-size: 0.33rem; }
   .reasoning-boundary__instruction { width: 86%; font-size: 0.35rem; letter-spacing: 0.07em; }
+  .adaptive-loop__instruction { top: 7%; font-size: 0.34rem; letter-spacing: 0.07em; }
+  .adaptive-loop__node { width: 4.25rem; min-height: 3.6rem; padding: 0.34rem 0.25rem; font-size: 0.32rem; letter-spacing: 0.04em; }
+  .adaptive-loop__node i { margin-bottom: 0.22rem; font-size: 0.3rem; }
+  .adaptive-loop__gate { width: 5.6rem; min-height: 4.2rem; padding: 0.4rem; }
+  .adaptive-loop__gate span { font-size: 0.3rem; letter-spacing: 0.08em; }
+  .adaptive-loop__gate b { font-size: 0.34rem; letter-spacing: 0.04em; }
+  .adaptive-lineage__node { width: 4.05rem; min-height: 4.5rem; padding: 0.38rem 0.22rem; font-size: 0.3rem; letter-spacing: 0.03em; }
+  .adaptive-lineage__node i { margin-bottom: 0.3rem; font-size: 0.31rem; }
+  .adaptive-lineage__instruction { width: 86%; font-size: 0.34rem; letter-spacing: 0.06em; }
+  .adaptive-lineage__return { top: 81%; max-width: 45%; padding: 0.3rem 0.35rem; font-size: 0.36rem; letter-spacing: 0.03em; line-height: 1.35; }
 
   .observation-boundary-stages,
   .architecture-domain-copy--turning-points { grid-template-columns: 1fr; }
@@ -4457,7 +4809,9 @@ body.is-direct-transition[data-view="research"] .home-scene {
   .architecture-figure__paths--reasoning path,
   .memory-revision__canvas path,
   .context-expansion__canvas path,
-  .reasoning-boundary__canvas path { animation: none !important; }
+  .reasoning-boundary__canvas path,
+  .adaptive-loop path,
+  .adaptive-lineage__canvas path { animation: none !important; }
 
   .architecture-playback { display: none; }
 

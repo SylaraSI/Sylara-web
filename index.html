@@ -7,8 +7,8 @@
     <meta name="description" content="Sylara — systems intelligence, architecture, and research." />
     <title>Sylara — Systems Intelligence</title>
     <link rel="preload" as="image" href="assets/redesign/home-network.png" />
-    <link rel="stylesheet" href="styles.css?v=reasoning-domain-3" />
-    <script src="app.js?v=reasoning-domain-3" defer></script>
+    <link rel="stylesheet" href="styles.css?v=adaptive-domain-3" />
+    <script src="app.js?v=adaptive-domain-3" defer></script>
   </head>
   <body data-view="home">
     <a class="skip-link" href="#home-map">Skip to the Sylara map</a>
@@ -300,6 +300,33 @@
                     <span>Conflicting</span>
                     <span>Incomplete</span>
                   </div>
+                  <!--
+                    ADAPTIVE SYSTEMS — PUBLIC INTELLIGENCE LOOP
+                    Six fixed modules close the loop around an explicit gate.
+                    Learning can inform another cycle but cannot authorize change.
+                  -->
+                  <div class="adaptive-loop" aria-hidden="true">
+                    <p class="adaptive-loop__instruction">Learning informs change · authority still decides</p>
+                    <span class="adaptive-loop__node adaptive-loop__node--observe"><i>01</i>Observe</span>
+                    <span class="adaptive-loop__node adaptive-loop__node--preserve"><i>02</i>Preserve</span>
+                    <span class="adaptive-loop__node adaptive-loop__node--compile"><i>03</i>Compile</span>
+                    <span class="adaptive-loop__node adaptive-loop__node--reason"><i>04</i>Reason</span>
+                    <span class="adaptive-loop__node adaptive-loop__node--test"><i>05</i>Test</span>
+                    <span class="adaptive-loop__node adaptive-loop__node--learn"><i>06</i>Learn</span>
+                    <div class="adaptive-loop__gate">
+                      <span>Explicit gate</span>
+                      <b>Adopt · Reject · Hold</b>
+                    </div>
+                    <svg viewBox="0 0 800 420" preserveAspectRatio="none">
+                      <path d="M112 143 L296 88"></path>
+                      <path d="M296 88 L544 126"></path>
+                      <path d="M544 126 L672 260"></path>
+                      <path d="M672 260 L464 328"></path>
+                      <path d="M464 328 L192 294"></path>
+                      <path d="M192 294 L112 143"></path>
+                    </svg>
+                    <span class="adaptive-loop-signal"></span>
+                  </div>
                 </div>
                 <button class="architecture-playback" type="button" data-architecture-playback aria-label="Pause animation" aria-pressed="false">
                   <span class="architecture-playback__pause" aria-hidden="true"></span>
@@ -537,6 +564,65 @@
               </figure>
 
               <ol class="architecture-quick-comments" data-reasoning-boundary-comments aria-label="Verification boundary figure notes"></ol>
+            </div>
+          </section>
+
+          <!--
+            ADAPTIVE SYSTEMS — EXPLICIT CHANGE OUTCOMES
+            Adoption is only one honest result. Rejection, deferral, and
+            rollback remain attributable parts of the learning process.
+          -->
+          <section class="architecture-domain-section adaptive-decisions" id="domain-adaptive-decisions" aria-labelledby="domain-adaptive-decisions-title" data-adaptive-only hidden>
+            <header class="architecture-domain-section__header">
+              <p class="architecture-section-label">Change state</p>
+              <h3 id="domain-adaptive-decisions-title">Explicit outcomes, not automatic mutation</h3>
+              <p data-adaptive-decisions-intro></p>
+            </header>
+            <div class="adaptive-decision-grid" data-adaptive-decisions></div>
+            <p class="adaptive-decision-rule" data-adaptive-decision-rule></p>
+            <div class="adaptive-maturity" data-adaptive-maturity></div>
+          </section>
+
+          <!--
+            ADAPTIVE SYSTEMS — VERSION LINEAGE AND RECOVERY
+            The primary packet follows the candidate toward a governed outcome.
+            The lower rail keeps rejection, rollback, and baseline recovery visible.
+          -->
+          <section class="architecture-domain-section architecture-domain-section--figure adaptive-lineage" id="domain-adaptive-lineage" aria-labelledby="domain-adaptive-lineage-title" data-adaptive-only hidden>
+            <header class="architecture-domain-section__header">
+              <p class="architecture-section-label">Revision boundary</p>
+              <h3 id="domain-adaptive-lineage-title" data-adaptive-lineage-title>Every change carries lineage</h3>
+              <p data-adaptive-lineage-intro></p>
+            </header>
+
+            <div class="architecture-figure-layout" data-architecture-animation="adaptive-lineage" data-stage-count="5" data-stage="0">
+              <figure class="architecture-figure" aria-labelledby="adaptive-lineage-caption">
+                <div class="architecture-figure__canvas adaptive-lineage__canvas" aria-hidden="true">
+                  <p class="adaptive-lineage__instruction">The baseline remains recoverable while a candidate is evaluated</p>
+                  <span class="adaptive-lineage__node adaptive-lineage__node--baseline"><i>01</i>Known-good state</span>
+                  <span class="adaptive-lineage__node adaptive-lineage__node--candidate"><i>02</i>Candidate revision</span>
+                  <span class="adaptive-lineage__node adaptive-lineage__node--evaluation"><i>03</i>Isolated evaluation</span>
+                  <span class="adaptive-lineage__node adaptive-lineage__node--gate"><i>04</i>Adoption gate</span>
+                  <span class="adaptive-lineage__node adaptive-lineage__node--outcome"><i>05</i>Versioned outcome</span>
+                  <svg viewBox="0 0 800 420" preserveAspectRatio="none">
+                    <path d="M80 201.6 L240 201.6"></path>
+                    <path d="M240 201.6 L400 201.6"></path>
+                    <path d="M400 201.6 L560 201.6"></path>
+                    <path d="M560 201.6 L720 201.6"></path>
+                    <path class="adaptive-lineage__recovery-path" d="M720 201.6 C720 330 174 330 80 201.6"></path>
+                  </svg>
+                  <span class="adaptive-lineage__return adaptive-lineage__return--hold">Reject or defer · baseline remains active</span>
+                  <span class="adaptive-lineage__return adaptive-lineage__return--rollback">Rollback · restore known-good state</span>
+                  <span class="adaptive-lineage-signal"></span>
+                </div>
+                <button class="architecture-playback" type="button" data-architecture-playback aria-label="Pause animation" aria-pressed="false">
+                  <span class="architecture-playback__pause" aria-hidden="true"></span>
+                  <span class="architecture-playback__play" aria-hidden="true"></span>
+                </button>
+                <figcaption id="adaptive-lineage-caption">Adoption, rejection, and recovery all leave an attributable decision record</figcaption>
+              </figure>
+
+              <ol class="architecture-quick-comments" data-adaptive-lineage-comments aria-label="Version lineage figure notes"></ol>
             </div>
           </section>
 
