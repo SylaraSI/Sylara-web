@@ -21,7 +21,16 @@ const architectureDomainFigureTitle = document.querySelector("[data-domain-figur
 const architectureDomainFigureIntro = document.querySelector("[data-domain-figure-intro]");
 const architectureDomainFigureNodes = [...document.querySelectorAll("[data-domain-figure-node]")];
 const architectureDomainComments = document.querySelector("[data-domain-comments]");
+const architectureObservationSections = [...document.querySelectorAll("[data-observation-only]")];
+const architectureObservationBoundaryIntro = document.querySelector("[data-observation-boundary-intro]");
+const architectureObservationBoundaryStages = document.querySelector("[data-observation-boundary-stages]");
+const architectureObservationBoundaryRule = document.querySelector("[data-observation-boundary-rule]");
+const architectureEvidenceFigureTitle = document.querySelector("[data-evidence-figure-title]");
+const architectureEvidenceFigureIntro = document.querySelector("[data-evidence-figure-intro]");
+const architectureEvidenceComments = document.querySelector("[data-evidence-comments]");
+const architectureAnimatedFigures = [...document.querySelectorAll("[data-architecture-animation]")];
 const architectureDomainPressures = document.querySelector("[data-domain-pressures]");
+const architectureDomainPressureTitle = document.querySelector("[data-domain-pressures-title]");
 const architectureDomainRelatedResearch = document.querySelector("[data-domain-related-research]");
 const architectureDomainFooter = document.querySelector("[data-domain-footer]");
 const architectureIndexToggle = document.querySelector("[data-architecture-index-toggle]");
@@ -72,20 +81,88 @@ const architectureDomainSections = [
   ["domain-related", "Related material"],
 ];
 
+/* Observation has a deeper first pass; the other domains keep the shared skeleton. */
+const observationDomainSections = [
+  ["domain-overview", "Overview"],
+  ["domain-system-view", "Attributable evidence"],
+  ["domain-observation-boundary", "Technical boundary"],
+  ["domain-evidence-truth", "Evidence is not truth"],
+  ["domain-design-pressures", "Why the boundary exists"],
+  ["domain-related", "Related material"],
+];
+
+function getArchitectureDomainSections(domain = activeArchitectureDomain) {
+  return domain === "observation-provenance" ? observationDomainSections : architectureDomainSections;
+}
+
 const architectureDomainContent = {
   "observation-provenance": {
     index: "01",
     title: "Observation & Provenance",
-    summary: "The public boundary where information enters the system and retains a recoverable account of where it came from, what it represents, and how it may be used.",
-    figureTitle: "From observation to attributable record",
-    figureIntro: "This figure is reserved for the public-safe flow that turns incoming information into evidence with origin, scope, and authority still attached.",
-    nodes: { input: "Observation", core: "Attribution", state: "Evidence state", output: "Governed use" },
-    comments: ["Identify the source", "Preserve origin and scope", "Keep uncertainty visible", "Bound downstream use"],
-    pressures: [
-      "Information cannot become trustworthy merely by entering memory. Its origin, transformation history, and authority must remain inspectable as it moves through the system.",
-      "The final content pass will explain how Sylara separates observation from interpretation without exposing exact internal contracts or implementation structures.",
+    summary: "Observation & Provenance defines the boundary where information enters Sylara. The architecture is designed to preserve the identity, source, time, and scope of an observation so later reasoning can trace evidence back to what was actually recorded.",
+    figureTitle: "From observation to attributable evidence",
+    figureIntro: "Information becomes usable evidence only when the event it informed and the context in which it was received remain attached. This public-safe flow shows that boundary without exposing Sylara's internal contracts.",
+    nodes: {
+      input: "Source or event",
+      core: "Admitted observation",
+      state: "Occurrence association",
+      output: "Attributable evidence",
+    },
+    comments: [
+      "Capture the observation as received",
+      "Preserve source and temporal context",
+      "Bind support to the occurrence it informed",
+      "Keep resulting evidence recoverable",
     ],
-    relatedResearch: "Connect this domain to research on evidence, attribution, uncertainty, and the boundary between observation and conclusion.",
+    technical: {
+      intro: "Sylara keeps the record of what arrived separate from the state the system can presently rely on and from the explanations it may later form. Each layer can evolve according to its own authority without silently changing the layers beneath it.",
+      stages: [
+        {
+          label: "01 / Recorded",
+          title: "Recorded observation",
+          body: "What arrived, where it came from, when it was received, and the scope in which it was observed.",
+        },
+        {
+          label: "02 / Governed",
+          title: "Authoritative working state",
+          body: "What the system may presently treat as operationally established, including explicit gaps, conflicts, and limits.",
+        },
+        {
+          label: "03 / Revisable",
+          title: "Beliefs and interpretations",
+          body: "Models and explanations may be revised as evidence changes. They do not rewrite the observations beneath them.",
+        },
+      ],
+      rule: "Current understanding can change without rewriting history.",
+    },
+    evidenceFigureTitle: "Evidence is not truth",
+    evidenceFigureIntro: "Provenance makes a claim traceable; it does not make the source correct. Supporting, contradictory, unresolved, and unavailable evidence remain visible while working state and interpretations develop.",
+    evidenceComments: [
+      "Record evidence without declaring it true",
+      "Preserve contradictory and unresolved evidence",
+      "Revise working state without rewriting history",
+      "Keep interpretations and derived views downstream",
+    ],
+    pressureHeading: "Why this boundary exists",
+    pressures: [
+      {
+        title: "Capture before transformation",
+        body: "When information is transformed or replaced before attribution is secured, later reconstruction becomes too fragile. Capture belongs at admission, not as a downstream repair.",
+      },
+      {
+        title: "Scope identity to the occurrence",
+        body: "A familiar condition can recur in different moments. Evidence must remain attached to the exact occurrence and context it informed, not merely to a matching label.",
+      },
+      {
+        title: "Keep incompleteness explicit",
+        body: "Unavailable, unresolved, and known-empty are different states. Preserving that difference prevents missing evidence from quietly becoming a negative conclusion.",
+      },
+      {
+        title: "Separate capacity from meaning",
+        body: "Operational pressure can limit whether work proceeds, but it must not alter what the evidence means. The system may refuse work without rewriting semantic truth.",
+      },
+    ],
+    relatedResearch: "Questions of evidence quality, attribution, uncertainty, and the boundary between an observation and a conclusion continue in Research.",
   },
   "memory-continuity": {
     index: "02",
@@ -312,6 +389,8 @@ let activeArchitectureDomain = null;
 let activeArchitectureSection = "domain-overview";
 let expandedArchitectureIndexDomain = null;
 let architectureIndexReturnFocus = null;
+const architectureFigureTimers = new Map();
+let architectureFigureObserver;
 
 function buildAmbientStars() {
   const layer = document.querySelector("[data-stars]");
@@ -658,6 +737,101 @@ function setArchitectureMapState(domain = null) {
   });
 }
 
+/*
+  ARCHITECTURE FIGURE SEQUENCING
+  Each diagram advances one conceptual stage at a time. Content stays fully
+  readable while the traveling packet and matching comment marker move.
+  Offscreen figures pause.
+*/
+function stopArchitectureFigureAnimation(figure) {
+  const timers = architectureFigureTimers.get(figure);
+  if (timers?.advance) window.clearTimeout(timers.advance);
+  if (timers?.travel) window.clearTimeout(timers.travel);
+  if (timers?.reveal) window.clearTimeout(timers.reveal);
+  architectureFigureTimers.delete(figure);
+  figure.classList.remove("is-in-view", "is-travelling", "is-resetting");
+  delete figure.dataset.nextStage;
+}
+
+function startArchitectureFigureAnimation(figure) {
+  if (prefersReducedMotion.matches || architectureFigureTimers.has(figure)) return;
+
+  figure.classList.add("is-in-view");
+  if (!/^\d$/.test(figure.dataset.stage || "")) figure.dataset.stage = "0";
+
+  /*
+    FIGURE TIMING — QUICK TUNING
+    Figure 02 needs a longer settled beat so its purple comment marker remains
+    synchronized and readable. Figure 01 keeps the quicker continuous rhythm.
+  */
+  const isEvidenceFigure = figure.dataset.architectureAnimation === "evidence-boundary";
+  const arrivalHold = isEvidenceFigure ? 900 : 320;
+  const destinationHold = isEvidenceFigure ? 2100 : 900;
+  const timers = { advance: null, travel: null, reveal: null };
+
+  const scheduleTravel = () => {
+    timers.advance = window.setTimeout(() => {
+      const currentStage = Number(figure.dataset.stage);
+      const nextStage = (currentStage + 1) % 4;
+      const isReset = nextStage === 0;
+
+      figure.dataset.nextStage = String(nextStage);
+      figure.classList.add(isReset ? "is-resetting" : "is-travelling");
+
+      timers.travel = window.setTimeout(() => {
+        figure.dataset.stage = String(nextStage);
+        delete figure.dataset.nextStage;
+
+        if (isReset) {
+          /*
+            Keep the packet hidden while it snaps from the destination back to
+            the source. Revealing it on a later frame prevents a visible
+            reverse trip and makes each cycle read as a new forward packet.
+          */
+          timers.reveal = window.setTimeout(() => {
+            figure.classList.remove("is-resetting");
+            scheduleTravel();
+          }, 50);
+          return;
+        }
+
+        figure.classList.remove("is-travelling");
+        scheduleTravel();
+      }, isReset ? 620 : 2400);
+    }, Number(figure.dataset.stage) === 3 ? destinationHold : arrivalHold);
+  };
+
+  architectureFigureTimers.set(figure, timers);
+  scheduleTravel();
+}
+
+function setupArchitectureFigureAnimations() {
+  architectureAnimatedFigures.forEach((figure) => {
+    figure.dataset.stage = prefersReducedMotion.matches ? "static" : "0";
+  });
+
+  architectureFigureObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.24) {
+        startArchitectureFigureAnimation(entry.target);
+      } else {
+        stopArchitectureFigureAnimation(entry.target);
+      }
+    });
+  }, { root: architectureDomainScroll, threshold: [0, 0.24, 0.55] });
+
+  architectureAnimatedFigures.forEach((figure) => architectureFigureObserver.observe(figure));
+}
+
+prefersReducedMotion.addEventListener("change", () => {
+  architectureAnimatedFigures.forEach((figure) => {
+    stopArchitectureFigureAnimation(figure);
+    figure.dataset.stage = prefersReducedMotion.matches ? "static" : "0";
+    architectureFigureObserver?.unobserve(figure);
+    architectureFigureObserver?.observe(figure);
+  });
+});
+
 function getArchitectureHashDomain() {
   const match = location.hash.match(/^#architecture\/([^/]+)$/);
   return match && architectureDomainContent[match[1]] ? match[1] : null;
@@ -669,6 +843,7 @@ function renderArchitectureDomain(domain) {
 
   activeArchitectureDomain = domain;
   activeArchitectureSection = "domain-overview";
+  architectureDomainScroll.dataset.domain = domain;
   architectureDomainKicker.textContent = `Architecture domain / ${domainData.index}`;
   architectureDomainTitle.textContent = domainData.title;
   architectureDomainSummary.textContent = domainData.summary;
@@ -689,11 +864,59 @@ function renderArchitectureDomain(domain) {
     }),
   );
 
+  const isObservationDomain = domain === "observation-provenance";
+  architectureObservationSections.forEach((section) => {
+    section.hidden = !isObservationDomain;
+  });
+
+  if (isObservationDomain) {
+    architectureObservationBoundaryIntro.textContent = domainData.technical.intro;
+    architectureObservationBoundaryRule.textContent = domainData.technical.rule;
+    architectureObservationBoundaryStages.replaceChildren(
+      ...domainData.technical.stages.map((stage) => {
+        const article = document.createElement("article");
+        const label = document.createElement("p");
+        const heading = document.createElement("h4");
+        const body = document.createElement("p");
+        label.className = "observation-boundary-stage__label";
+        label.textContent = stage.label;
+        heading.textContent = stage.title;
+        body.textContent = stage.body;
+        article.append(label, heading, body);
+        return article;
+      }),
+    );
+    architectureEvidenceFigureTitle.textContent = domainData.evidenceFigureTitle;
+    architectureEvidenceFigureIntro.textContent = domainData.evidenceFigureIntro;
+    architectureEvidenceComments.replaceChildren(
+      ...domainData.evidenceComments.map((comment) => {
+        const item = document.createElement("li");
+        item.textContent = comment;
+        return item;
+      }),
+    );
+  }
+
+  architectureDomainPressureTitle.textContent = domainData.pressureHeading || "Why this part of the architecture exists";
+  architectureDomainPressures.classList.toggle("architecture-domain-copy--turning-points", isObservationDomain);
   architectureDomainPressures.replaceChildren(
-    ...domainData.pressures.map((paragraphText) => {
-      const paragraph = document.createElement("p");
-      paragraph.textContent = paragraphText;
-      return paragraph;
+    ...domainData.pressures.map((pressure, index) => {
+      if (typeof pressure === "string") {
+        const paragraph = document.createElement("p");
+        paragraph.textContent = pressure;
+        return paragraph;
+      }
+
+      const article = document.createElement("article");
+      const marker = document.createElement("p");
+      const heading = document.createElement("h4");
+      const body = document.createElement("p");
+      marker.className = "architecture-turning-point__marker";
+      marker.textContent = String(index + 1).padStart(2, "0");
+      heading.textContent = pressure.title;
+      body.textContent = pressure.body;
+      article.append(marker, heading, body);
+      return article;
     }),
   );
 
@@ -725,6 +948,7 @@ function showArchitectureDomain(domain, {
 
   window.requestAnimationFrame(() => {
     architectureDomainScroll.scrollTop = Math.max(0, Number(scrollTop) || 0);
+    updateArchitectureWordmark();
     updateActiveArchitectureSection();
     if (keepIndexOpen) {
       architectureIndexList.querySelector(`[data-index-domain="${domain}"]`)?.focus({ preventScroll: true });
@@ -788,6 +1012,7 @@ function showArchitectureLanding({ updateHistory = true, scrollTop = 0, focusMap
   architectureDomainScroll.setAttribute("aria-hidden", "true");
   architectureDomainScroll.setAttribute("inert", "");
   architectureScroll.scrollTop = Math.max(0, Number(scrollTop) || 0);
+  updateArchitectureWordmark();
 
   if (updateHistory) {
     history.pushState(
@@ -824,7 +1049,7 @@ function renderArchitectureIndex() {
       const sectionList = document.createElement("div");
       sectionList.className = "architecture-index-sections";
 
-      architectureDomainSections.forEach(([sectionId, sectionLabel]) => {
+      getArchitectureDomainSections(domain).forEach(([sectionId, sectionLabel]) => {
         const sectionRow = document.createElement("button");
         sectionRow.type = "button";
         sectionRow.className = "architecture-index-section-row";
@@ -851,9 +1076,10 @@ function updateActiveArchitectureSection() {
   if (!activeArchitectureDomain) return;
 
   const threshold = architectureDomainScroll.getBoundingClientRect().top + window.innerHeight * 0.36;
-  let nextSection = architectureDomainSections[0][0];
+  const domainSections = getArchitectureDomainSections();
+  let nextSection = domainSections[0][0];
 
-  architectureDomainSections.forEach(([sectionId]) => {
+  domainSections.forEach(([sectionId]) => {
     const section = document.getElementById(sectionId);
     if (section && section.getBoundingClientRect().top <= threshold) nextSection = sectionId;
   });
@@ -1237,8 +1463,22 @@ tabletScroll.addEventListener("scroll", () => {
   updateTabletScrollCue();
   scheduleResearchHistorySync();
 }, { passive: true });
-architectureScroll.addEventListener("scroll", scheduleArchitectureHistorySync, { passive: true });
-architectureDomainScroll.addEventListener("scroll", scheduleArchitectureHistorySync, { passive: true });
+
+function updateArchitectureWordmark() {
+  const activeScroll = architectureScene.dataset.architectureView === "domain"
+    ? architectureDomainScroll
+    : architectureScroll;
+  architectureScene.classList.toggle("is-wordmark-scrolled", activeScroll.scrollTop > 48);
+}
+
+architectureScroll.addEventListener("scroll", () => {
+  updateArchitectureWordmark();
+  scheduleArchitectureHistorySync();
+}, { passive: true });
+architectureDomainScroll.addEventListener("scroll", () => {
+  updateArchitectureWordmark();
+  scheduleArchitectureHistorySync();
+}, { passive: true });
 window.addEventListener("resize", updateTabletScrollCue);
 
 window.addEventListener("keydown", (event) => {
@@ -1317,3 +1557,5 @@ if (history.state?.view === initialView) {
 
   if (initialView === "architecture") restoreArchitectureHistoryState(initialArchitectureState);
 }
+
+setupArchitectureFigureAnimations();

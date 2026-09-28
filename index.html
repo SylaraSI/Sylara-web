@@ -7,8 +7,8 @@
     <meta name="description" content="Sylara — systems intelligence, architecture, and research." />
     <title>Sylara — Systems Intelligence</title>
     <link rel="preload" as="image" href="assets/redesign/home-network.png" />
-    <link rel="stylesheet" href="styles.css?v=architecture-index-4" />
-    <script src="app.js?v=architecture-index-4" defer></script>
+    <link rel="stylesheet" href="styles.css?v=observation-domain-11" />
+    <script src="app.js?v=observation-domain-11" defer></script>
   </head>
   <body data-view="home">
     <a class="skip-link" href="#home-map">Skip to the Sylara map</a>
@@ -249,31 +249,99 @@
               <p data-domain-figure-intro></p>
             </header>
 
-            <div class="architecture-figure-layout">
+            <div class="architecture-figure-layout" data-architecture-animation="observation-flow" data-stage="0">
               <figure class="architecture-figure" aria-labelledby="domain-figure-caption">
-                <div class="architecture-figure__canvas" data-domain-figure aria-hidden="true">
+                <div class="architecture-figure__canvas architecture-figure__canvas--primary" data-domain-figure aria-hidden="true">
+                  <!-- Observation context labels are only shown for domain 01. -->
+                  <span class="observation-context observation-context--origin">Origin</span>
+                  <span class="observation-context observation-context--time">Time</span>
+                  <span class="observation-context observation-context--identity">Identity</span>
+                  <span class="observation-context observation-context--scope">Scope</span>
                   <span class="architecture-figure__node architecture-figure__node--input" data-domain-figure-node="input">Source</span>
                   <span class="architecture-figure__node architecture-figure__node--core" data-domain-figure-node="core">Domain</span>
                   <span class="architecture-figure__node architecture-figure__node--state" data-domain-figure-node="state">State</span>
                   <span class="architecture-figure__node architecture-figure__node--output" data-domain-figure-node="output">Boundary</span>
                   <svg viewBox="0 0 800 420" preserveAspectRatio="none">
-                    <path d="M155 210 C245 210 255 126 350 126"></path>
-                    <path d="M350 126 C458 126 446 298 558 298"></path>
-                    <path d="M350 126 C458 126 455 210 650 210"></path>
-                    <path d="M558 298 C620 298 618 238 650 210"></path>
+                    <g class="architecture-figure__paths architecture-figure__paths--generic">
+                      <path d="M155 210 C245 210 255 126 350 126"></path>
+                      <path d="M350 126 C458 126 446 298 558 298"></path>
+                      <path d="M350 126 C458 126 455 210 650 210"></path>
+                      <path d="M558 298 C620 298 618 238 650 210"></path>
+                    </g>
+                    <g class="architecture-figure__paths architecture-figure__paths--observation">
+                      <path d="M112 210 C202 210 220 210 304 210"></path>
+                      <path d="M304 210 C397 210 420 210 510 210"></path>
+                      <path d="M510 210 C602 210 620 210 700 210"></path>
+                      <path class="observation-context-path" d="M304 82 C304 120 304 150 304 174"></path>
+                      <path class="observation-context-path" d="M304 338 C304 302 304 270 304 246"></path>
+                    </g>
                   </svg>
+                  <span class="architecture-flow-signal architecture-flow-signal--one"></span>
+                  <span class="architecture-flow-signal architecture-flow-signal--two"></span>
+                  <span class="architecture-flow-signal architecture-flow-signal--three"></span>
                 </div>
-                <figcaption id="domain-figure-caption">Animation-ready architecture figure</figcaption>
+                <figcaption id="domain-figure-caption">Conceptual public architecture — implementation details intentionally abstracted</figcaption>
               </figure>
 
               <ol class="architecture-quick-comments" data-domain-comments aria-label="Figure notes"></ol>
             </div>
           </section>
 
+          <!--
+            OBSERVATION & PROVENANCE — TECHNICAL BOUNDARY
+            This deeper content is shown only for domain 01. Copy lives in the
+            observation-provenance entry in app.js so it is easy to refine.
+          -->
+          <section class="architecture-domain-section observation-boundary" id="domain-observation-boundary" aria-labelledby="domain-observation-boundary-title" data-observation-only hidden>
+            <header class="architecture-domain-section__header">
+              <p class="architecture-section-label">Technical boundary</p>
+              <h3 id="domain-observation-boundary-title">Observation is not interpretation</h3>
+              <p data-observation-boundary-intro></p>
+            </header>
+            <div class="observation-boundary-stages" data-observation-boundary-stages></div>
+            <p class="observation-boundary-rule" data-observation-boundary-rule></p>
+          </section>
+
+          <section class="architecture-domain-section architecture-domain-section--figure evidence-truth" id="domain-evidence-truth" aria-labelledby="domain-evidence-truth-title" data-observation-only hidden>
+            <header class="architecture-domain-section__header">
+              <p class="architecture-section-label">Evidence boundary</p>
+              <h3 id="domain-evidence-truth-title" data-evidence-figure-title>Evidence is not truth</h3>
+              <p data-evidence-figure-intro></p>
+            </header>
+
+            <div class="architecture-figure-layout" data-architecture-animation="evidence-boundary" data-stage="0">
+              <figure class="architecture-figure" aria-labelledby="evidence-figure-caption">
+                <div class="architecture-figure__canvas evidence-figure__canvas" aria-hidden="true">
+                  <div class="evidence-input-stack">
+                    <span>Supporting</span>
+                    <span>Contradictory</span>
+                    <span>Unresolved</span>
+                  </div>
+                  <span class="evidence-figure__node evidence-figure__node--ledger">Observation ledger</span>
+                  <span class="evidence-figure__node evidence-figure__node--state">Authoritative working state</span>
+                  <span class="evidence-figure__node evidence-figure__node--belief">Beliefs &amp; interpretations</span>
+                  <span class="evidence-figure__projection">Derived views <i>remain projections</i></span>
+                  <svg viewBox="0 0 800 420" preserveAspectRatio="none">
+                    <path d="M130 126 C168 126 174 184 220 198"></path>
+                    <path d="M130 210 C172 210 176 210 220 210"></path>
+                    <path d="M130 294 C168 294 174 236 220 222"></path>
+                    <path d="M330 210 C392 210 405 210 458 210"></path>
+                    <path d="M568 210 C622 210 634 210 684 210"></path>
+                    <path class="evidence-projection-path" d="M513 246 C513 278 513 300 513 326"></path>
+                  </svg>
+                  <span class="evidence-flow-signal"></span>
+                </div>
+                <figcaption id="evidence-figure-caption">Traceability supports judgment; it does not replace it</figcaption>
+              </figure>
+
+              <ol class="architecture-quick-comments" data-evidence-comments aria-label="Evidence figure notes"></ol>
+            </div>
+          </section>
+
           <section class="architecture-domain-section" id="domain-design-pressures" aria-labelledby="domain-design-pressures-title">
             <header class="architecture-domain-section__header">
               <p class="architecture-section-label">Design pressures</p>
-              <h3 id="domain-design-pressures-title">Why this part of the architecture exists</h3>
+              <h3 id="domain-design-pressures-title" data-domain-pressures-title>Why this part of the architecture exists</h3>
             </header>
             <div class="architecture-domain-copy" data-domain-pressures></div>
           </section>

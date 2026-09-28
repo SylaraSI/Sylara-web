@@ -1584,7 +1584,25 @@ body.is-direct-transition[data-view="research"] .home-scene {
 }
 
 .architecture-header > * { pointer-events: auto; }
-.architecture-header .wordmark--small { width: clamp(9.5rem, 15vw, 14rem); }
+.architecture-header .interior-route-index { grid-column: 2; }
+.architecture-header .map-return { grid-column: 3; }
+
+/* Bright above the header wash, then moves away once the page begins scrolling. */
+.architecture-header .wordmark--small {
+  width: clamp(9.5rem, 15vw, 14rem);
+  opacity: 1;
+  filter: brightness(1.16) saturate(1.04) drop-shadow(0 0 18px rgba(157, 92, 255, 0.48));
+  transform: translateY(0);
+  visibility: visible;
+  transition: opacity 220ms ease, transform 260ms ease, visibility 220ms;
+}
+
+.architecture-scene.is-wordmark-scrolled .architecture-header .wordmark--small {
+  opacity: 0;
+  transform: translateY(-1.5rem);
+  visibility: hidden;
+  pointer-events: none;
+}
 
 .interior-route-index {
   min-width: 0;
@@ -2160,10 +2178,77 @@ body.is-direct-transition[data-view="research"] .home-scene {
 
 .architecture-figure__canvas path {
   fill: none;
-  stroke: rgba(190, 151, 241, 0.32);
-  stroke-width: 1.2;
+  stroke: rgba(207, 176, 246, 0.52);
+  stroke-width: 1.35;
   vector-effect: non-scaling-stroke;
+  transition: stroke 650ms ease, stroke-width 650ms ease, filter 650ms ease, opacity 650ms ease;
 }
+
+.architecture-figure__paths--observation,
+.observation-context,
+.architecture-flow-signal,
+.evidence-flow-signal { display: none; }
+
+/*
+  OBSERVATION FIGURE 01 — QUICK TUNING
+  Node positions below control the four admission stages. Context labels and
+  signal speeds are grouped here so small visual adjustments stay localized.
+*/
+.architecture-domain-scroll[data-domain="observation-provenance"] .architecture-figure__paths--generic { display: none; }
+.architecture-domain-scroll[data-domain="observation-provenance"] .architecture-figure__paths--observation { display: initial; }
+.architecture-domain-scroll[data-domain="observation-provenance"] .architecture-figure__canvas--primary .architecture-figure__node--input { left: 14%; top: 50%; }
+.architecture-domain-scroll[data-domain="observation-provenance"] .architecture-figure__canvas--primary .architecture-figure__node--core { left: 38%; top: 50%; }
+.architecture-domain-scroll[data-domain="observation-provenance"] .architecture-figure__canvas--primary .architecture-figure__node--state { left: 64%; top: 50%; }
+.architecture-domain-scroll[data-domain="observation-provenance"] .architecture-figure__canvas--primary .architecture-figure__node--output { left: 87%; top: 50%; }
+
+.architecture-domain-scroll[data-domain="observation-provenance"] .observation-context {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  color: rgba(229, 213, 248, 0.72);
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: clamp(0.48rem, 0.6vw, 0.58rem);
+  letter-spacing: 0.17em;
+  text-shadow: 0 0 10px rgba(157, 92, 255, 0.22);
+  text-transform: uppercase;
+  transform: translate(-50%, -50%);
+}
+
+.observation-context::before {
+  content: "";
+  display: inline-block;
+  width: 0.34rem;
+  height: 0.34rem;
+  margin-right: 0.45rem;
+  border: 1px solid rgba(216, 183, 255, 0.78);
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(168, 100, 255, 0.34);
+  vertical-align: 0.06rem;
+}
+
+.observation-context--origin { left: 31%; top: 18%; }
+.observation-context--time { left: 45%; top: 18%; }
+.observation-context--identity { left: 31%; top: 82%; }
+.observation-context--scope { left: 45%; top: 82%; }
+
+.architecture-domain-scroll[data-domain="observation-provenance"] .architecture-flow-signal {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 13%;
+  display: block;
+  width: 0.48rem;
+  height: 0.48rem;
+  border: 1px solid rgba(244, 234, 255, 0.9);
+  border-radius: 50%;
+  background: rgba(224, 205, 251, 0.95);
+  box-shadow: 0 0 8px rgba(246, 237, 255, 0.98), 0 0 18px rgba(178, 117, 255, 0.96), 0 0 34px rgba(157, 92, 255, 0.34);
+  transform: translate(-50%, -50%);
+  transition: left 2400ms linear, opacity 420ms ease, box-shadow 420ms ease;
+}
+
+.architecture-domain-scroll[data-domain="observation-provenance"] .architecture-flow-signal--two,
+.architecture-domain-scroll[data-domain="observation-provenance"] .architecture-flow-signal--three { display: none; }
 
 .architecture-figure__node {
   position: absolute;
@@ -2173,9 +2258,9 @@ body.is-direct-transition[data-view="research"] .home-scene {
   width: clamp(6rem, 10vw, 8.5rem);
   min-height: 3.7rem;
   padding: 0.65rem;
-  border: 1px solid rgba(199, 164, 244, 0.22);
-  background: rgba(19, 15, 27, 0.9);
-  color: rgba(229, 220, 239, 0.72);
+  border: 1px solid rgba(211, 180, 249, 0.44);
+  background: rgba(22, 17, 31, 0.94);
+  color: rgba(241, 234, 249, 0.9);
   font-family: "DM Mono", ui-monospace, monospace;
   font-size: clamp(0.48rem, 0.62vw, 0.6rem);
   letter-spacing: 0.14em;
@@ -2183,10 +2268,11 @@ body.is-direct-transition[data-view="research"] .home-scene {
   text-align: center;
   text-transform: uppercase;
   transform: translate(-50%, -50%);
+  box-shadow: inset 0 0 18px rgba(157, 92, 255, 0.045);
 }
 
 .architecture-figure__node--input { left: 19%; top: 50%; }
-.architecture-figure__node--core { left: 44%; top: 30%; border-color: rgba(207, 170, 255, 0.48); color: white; box-shadow: 0 0 24px rgba(145, 80, 226, 0.14); }
+.architecture-figure__node--core { left: 44%; top: 30%; }
 .architecture-figure__node--state { left: 70%; top: 71%; }
 .architecture-figure__node--output { left: 82%; top: 50%; }
 
@@ -2238,6 +2324,84 @@ body.is-direct-transition[data-view="research"] .home-scene {
   transform: translateY(-50%);
 }
 
+/*
+  ANIMATED FIGURE NOTES
+  data-stage is advanced in app.js. All note text stays readable; only the
+  matching purple rail and dot illuminate as the packet crosses the diagram.
+*/
+[data-architecture-animation] .architecture-quick-comments li,
+[data-architecture-animation] .architecture-quick-comments li:first-child {
+  border-left-color: rgba(188, 142, 249, 0.3);
+  color: rgba(235, 226, 245, 0.82);
+  transition: border-color 240ms ease;
+}
+
+[data-architecture-animation] .architecture-quick-comments li::before,
+[data-architecture-animation] .architecture-quick-comments li:first-child::before {
+  content: "";
+  position: absolute;
+  left: -0.23rem;
+  top: 50%;
+  width: 0.38rem;
+  height: 0.38rem;
+  border-radius: 50%;
+  background: var(--violet-bright);
+  box-shadow: 0 0 10px rgba(168, 100, 255, 0.75);
+  opacity: 0;
+  transform: translateY(-50%) scale(0.65);
+  transition: opacity 240ms ease, transform 240ms ease, box-shadow 240ms ease;
+}
+
+[data-architecture-animation][data-stage="0"] .architecture-quick-comments li:nth-child(1),
+[data-architecture-animation][data-stage="1"] .architecture-quick-comments li:nth-child(2),
+[data-architecture-animation][data-stage="2"] .architecture-quick-comments li:nth-child(3),
+[data-architecture-animation][data-stage="3"] .architecture-quick-comments li:nth-child(4) {
+  border-left-color: rgba(190, 132, 255, 0.82);
+  color: rgba(235, 226, 245, 0.82);
+  background: none;
+}
+
+[data-architecture-animation][data-stage="0"] .architecture-quick-comments li:nth-child(1)::before,
+[data-architecture-animation][data-stage="1"] .architecture-quick-comments li:nth-child(2)::before,
+[data-architecture-animation][data-stage="2"] .architecture-quick-comments li:nth-child(3)::before,
+[data-architecture-animation][data-stage="3"] .architecture-quick-comments li:nth-child(4)::before {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+}
+
+/* Figure 01 stages move the packet and comment marker; modules stay legible. */
+
+[data-architecture-animation="observation-flow"][data-stage="0"] .architecture-flow-signal { left: 14%; }
+[data-architecture-animation="observation-flow"][data-stage="1"] .architecture-flow-signal { left: 38%; }
+[data-architecture-animation="observation-flow"][data-stage="2"] .architecture-flow-signal { left: 64%; }
+[data-architecture-animation="observation-flow"][data-stage="3"] .architecture-flow-signal { left: 87%; }
+
+/* During transit the light packet moves first; module and note shift on arrival. */
+[data-architecture-animation="observation-flow"][data-next-stage="1"] .architecture-flow-signal { left: 38%; }
+[data-architecture-animation="observation-flow"][data-next-stage="2"] .architecture-flow-signal { left: 64%; }
+[data-architecture-animation="observation-flow"][data-next-stage="3"] .architecture-flow-signal { left: 87%; }
+[data-architecture-animation="observation-flow"].is-travelling .architecture-flow-signal {
+  box-shadow: 0 0 10px rgba(250, 244, 255, 1), 0 0 22px rgba(194, 145, 255, 1), 0 0 42px rgba(157, 92, 255, 0.5);
+}
+[data-architecture-animation="observation-flow"].is-resetting .architecture-flow-signal {
+  opacity: 0;
+  /* Reset position instantly while hidden; never animate back toward source. */
+  transition: opacity 420ms ease, box-shadow 420ms ease;
+}
+
+/* All connectors keep moving; the brighter segment carries the active signal. */
+[data-architecture-animation="observation-flow"].is-in-view .architecture-figure__paths--observation path:not(.observation-context-path) {
+  stroke-dasharray: 7 9;
+  animation: architecture-line-travel 620ms linear infinite;
+}
+
+[data-architecture-animation="observation-flow"].is-in-view .architecture-figure__paths--observation .observation-context-path {
+  stroke-dasharray: 2 8;
+  animation: architecture-line-travel 960ms linear infinite;
+}
+
+[data-architecture-animation="observation-flow"] .observation-context { transition: none; }
+
 .architecture-domain-copy {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2251,6 +2415,238 @@ body.is-direct-transition[data-view="research"] .home-scene {
   font-size: clamp(0.98rem, 1.2vw, 1.12rem);
   font-weight: 300;
   line-height: 1.9;
+}
+
+/* OBSERVATION TECHNICAL BOUNDARY — three authorities, kept visibly distinct. */
+.observation-boundary-stages {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin-top: clamp(3rem, 5vw, 5rem);
+  border: 1px solid rgba(190, 153, 239, 0.13);
+  background: rgba(190, 153, 239, 0.13);
+}
+
+.observation-boundary-stages article {
+  min-height: 18rem;
+  padding: clamp(1.5rem, 3vw, 2.6rem);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(137, 77, 207, 0.09), transparent 48%),
+    rgba(9, 8, 14, 0.96);
+}
+
+.observation-boundary-stage__label,
+.architecture-turning-point__marker {
+  margin: 0 0 3rem !important;
+  color: rgba(192, 148, 247, 0.58) !important;
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: 0.52rem !important;
+  letter-spacing: 0.17em;
+  line-height: 1 !important;
+  text-transform: uppercase;
+}
+
+.observation-boundary-stages h4,
+.architecture-domain-copy--turning-points h4 {
+  margin: 0;
+  color: rgba(241, 235, 249, 0.9);
+  font-size: clamp(1.15rem, 1.8vw, 1.55rem);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+}
+
+.observation-boundary-stages article > p:last-child {
+  margin: 1.1rem 0 0;
+  color: rgba(215, 205, 226, 0.58);
+  font-size: clamp(0.88rem, 1vw, 1rem);
+  font-weight: 300;
+  line-height: 1.8;
+}
+
+.observation-boundary-rule {
+  margin: clamp(2.5rem, 5vw, 5rem) 0 0;
+  padding-left: clamp(1.3rem, 2.5vw, 2.2rem);
+  border-left: 1px solid rgba(195, 145, 255, 0.7);
+  color: rgba(235, 225, 247, 0.82);
+  font-size: clamp(1.3rem, 2.4vw, 2.2rem);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 1.4;
+}
+
+/* OBSERVATION FIGURE 02 — evidence can inform state without becoming truth. */
+.evidence-figure__node,
+.evidence-figure__projection {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: clamp(7.4rem, 13vw, 10.8rem);
+  min-height: 5.2rem;
+  padding: 0.8rem;
+  border: 1px solid rgba(211, 180, 249, 0.44);
+  background: rgba(22, 17, 31, 0.95);
+  color: rgba(241, 234, 249, 0.9);
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: clamp(0.48rem, 0.62vw, 0.61rem);
+  letter-spacing: 0.12em;
+  line-height: 1.5;
+  text-align: center;
+  text-transform: uppercase;
+  transform: translate(-50%, -50%);
+  box-shadow: inset 0 0 18px rgba(157, 92, 255, 0.045);
+}
+
+.evidence-figure__node--ledger { left: 34%; top: 50%; }
+.evidence-figure__node--state { left: 64%; top: 50%; }
+.evidence-figure__node--belief { left: 87%; top: 50%; }
+
+.evidence-input-stack {
+  position: absolute;
+  z-index: 2;
+  left: 4%;
+  top: 50%;
+  display: grid;
+  gap: 1.25rem;
+  width: 18%;
+  transform: translateY(-50%);
+}
+
+.evidence-input-stack span {
+  color: rgba(231, 219, 243, 0.8);
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: clamp(0.42rem, 0.52vw, 0.5rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-shadow: 0 0 8px rgba(157, 92, 255, 0.12);
+}
+
+.evidence-input-stack span::before {
+  content: "";
+  display: inline-block;
+  width: 0.28rem;
+  height: 0.28rem;
+  margin-right: 0.45rem;
+  border-radius: 50%;
+  background: rgba(191, 146, 247, 0.66);
+  box-shadow: 0 0 7px rgba(157, 92, 255, 0.4);
+  vertical-align: 0.08rem;
+}
+
+.evidence-input-stack span:nth-child(2)::before { background: rgba(141, 178, 236, 0.65); }
+.evidence-input-stack span:nth-child(3)::before { background: rgba(181, 174, 192, 0.44); box-shadow: none; }
+
+.evidence-flow-signal {
+  position: absolute;
+  /* Match Figure 01: the packet passes behind each module card. */
+  z-index: 1;
+  display: block;
+  width: 0.48rem;
+  height: 0.48rem;
+  border: 1px solid rgba(244, 234, 255, 0.9);
+  border-radius: 50%;
+  background: rgba(224, 205, 251, 0.98);
+  box-shadow: 0 0 8px rgba(246, 237, 255, 0.98), 0 0 18px rgba(178, 117, 255, 0.96), 0 0 34px rgba(157, 92, 255, 0.34);
+  transform: translate(-50%, -50%);
+  transition: left 2400ms linear, top 2400ms linear, opacity 420ms ease, box-shadow 420ms ease;
+}
+
+/* Keep the evidence packet on one horizontal route through all four stages. */
+[data-architecture-animation="evidence-boundary"][data-stage="0"] .evidence-flow-signal { left: 14%; top: 50%; }
+[data-architecture-animation="evidence-boundary"][data-stage="1"] .evidence-flow-signal { left: 34%; top: 50%; }
+[data-architecture-animation="evidence-boundary"][data-stage="2"] .evidence-flow-signal { left: 64%; top: 50%; }
+[data-architecture-animation="evidence-boundary"][data-stage="3"] .evidence-flow-signal { left: 87%; top: 50%; }
+[data-architecture-animation="evidence-boundary"][data-next-stage="1"] .evidence-flow-signal { left: 34%; top: 50%; }
+[data-architecture-animation="evidence-boundary"][data-next-stage="2"] .evidence-flow-signal { left: 64%; top: 50%; }
+[data-architecture-animation="evidence-boundary"][data-next-stage="3"] .evidence-flow-signal { left: 87%; top: 50%; }
+[data-architecture-animation="evidence-boundary"].is-travelling .evidence-flow-signal {
+  box-shadow: 0 0 10px rgba(250, 244, 255, 1), 0 0 22px rgba(194, 145, 255, 1), 0 0 42px rgba(157, 92, 255, 0.5);
+}
+[data-architecture-animation="evidence-boundary"].is-resetting .evidence-flow-signal {
+  opacity: 0;
+  /* Reset position instantly while hidden; never animate back toward source. */
+  transition: opacity 420ms ease, box-shadow 420ms ease;
+}
+
+.evidence-figure__projection {
+  left: 64%;
+  top: 82%;
+  min-height: 3.6rem;
+  border-style: dashed;
+  color: rgba(235, 224, 247, 0.82);
+}
+
+.evidence-figure__projection i {
+  display: block;
+  color: rgba(213, 198, 229, 0.68);
+  font-size: 0.44rem;
+  font-style: normal;
+}
+
+.evidence-figure__canvas path {
+  stroke-dasharray: 5 8;
+}
+
+[data-architecture-animation="evidence-boundary"].is-in-view .evidence-figure__canvas path {
+  animation: architecture-line-travel 620ms linear infinite;
+}
+
+.evidence-figure__canvas .evidence-projection-path {
+  stroke: rgba(198, 163, 240, 0.46);
+  stroke-dasharray: 2 7;
+}
+
+/* Figure 02 stages move the packet and comment marker; modules stay legible. */
+
+.architecture-domain-copy--turning-points {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  border: 1px solid rgba(190, 153, 239, 0.13);
+  background: rgba(190, 153, 239, 0.13);
+}
+
+.architecture-domain-copy--turning-points article {
+  position: relative;
+  min-height: 18rem;
+  padding: clamp(1.5rem, 3vw, 2.7rem);
+  background: rgba(9, 8, 14, 0.97);
+}
+
+.architecture-domain-copy--turning-points article::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: clamp(1.5rem, 3vw, 2.7rem);
+  width: 1px;
+  height: 2.4rem;
+  background: linear-gradient(rgba(194, 143, 255, 0.8), transparent);
+}
+
+.architecture-domain-copy--turning-points article > p:last-child {
+  margin-top: 1.2rem;
+  font-size: clamp(0.88rem, 1vw, 1rem);
+  line-height: 1.8;
+}
+
+[data-architecture-animation][data-stage="static"] .architecture-quick-comments li {
+  border-left-color: rgba(188, 142, 249, 0.3);
+  color: rgba(235, 226, 245, 0.82);
+}
+
+[data-architecture-animation][data-stage="static"] .architecture-quick-comments li::before,
+[data-architecture-animation][data-stage="static"] .architecture-flow-signal,
+[data-architecture-animation][data-stage="static"] .evidence-flow-signal { display: none; }
+
+[data-architecture-animation][data-stage="static"] .architecture-figure__node,
+[data-architecture-animation][data-stage="static"] .evidence-figure__node,
+[data-architecture-animation][data-stage="static"] .evidence-figure__projection {
+  border-color: rgba(211, 180, 249, 0.44);
+  color: rgba(241, 234, 249, 0.9);
+}
+
+@keyframes architecture-line-travel {
+  /* Advance the dash texture along each source-to-destination SVG path. */
+  to { stroke-dashoffset: -32; }
 }
 
 .architecture-related-grid {
@@ -2758,7 +3154,9 @@ body.is-direct-transition[data-view="research"] .home-scene {
     padding: max(0.9rem, env(safe-area-inset-top)) max(0.9rem, env(safe-area-inset-right)) 1.6rem max(0.9rem, env(safe-area-inset-left));
   }
 
-  .architecture-header .wordmark--small { width: min(9rem, 40vw); }
+  .architecture-header .wordmark--small {
+    width: min(9rem, 40vw);
+  }
   .architecture-header > .map-return,
   .research-header > .map-return {
     grid-column: 2;
@@ -2783,6 +3181,11 @@ body.is-direct-transition[data-view="research"] .home-scene {
     overscroll-behavior-x: contain;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
+  }
+
+  .architecture-header .interior-route-index {
+    grid-column: 1 / -1;
+    grid-row: 2;
   }
 
   .research-header .interior-route-index { transform: none; }
@@ -2909,6 +3312,27 @@ body.is-direct-transition[data-view="research"] .home-scene {
   .architecture-domain-copy { gap: 1.5rem; }
   .architecture-related-grid p { min-height: 0; }
 
+  .observation-boundary-stages,
+  .architecture-domain-copy--turning-points { grid-template-columns: 1fr; }
+  .observation-boundary-stages article,
+  .architecture-domain-copy--turning-points article { min-height: 0; }
+  .observation-boundary-stage__label,
+  .architecture-turning-point__marker { margin-bottom: 2rem !important; }
+
+  /* Mobile diagrams keep the same meaning while shortening their labels. */
+  .architecture-domain-scroll[data-domain="observation-provenance"] .architecture-figure__canvas--primary .architecture-figure__node { width: 5.1rem; padding: 0.48rem; font-size: 0.4rem; }
+  .observation-context--origin { left: 28%; }
+  .observation-context--time { left: 48%; }
+  .observation-context--identity { left: 28%; }
+  .observation-context--scope { left: 48%; }
+  .evidence-input-stack { left: 3%; width: 21%; gap: 1rem; }
+  .evidence-input-stack span { font-size: 0.36rem; letter-spacing: 0.08em; }
+  .evidence-figure__node { width: 5.4rem; min-height: 4.6rem; padding: 0.45rem; font-size: 0.4rem; letter-spacing: 0.08em; }
+  .evidence-figure__node--ledger { left: 35%; }
+  .evidence-figure__node--state { left: 63%; }
+  .evidence-figure__node--belief { left: 88%; }
+  .evidence-figure__projection { left: 63%; width: 5.6rem; min-height: 3.2rem; font-size: 0.4rem; }
+
   .architecture-index-panel {
     width: 100%;
     padding: max(1.3rem, env(safe-area-inset-top)) max(1.1rem, env(safe-area-inset-right)) max(1.5rem, env(safe-area-inset-bottom)) max(1.1rem, env(safe-area-inset-left));
@@ -2928,7 +3352,9 @@ body.is-direct-transition[data-view="research"] .home-scene {
   .subject-plane,
   .subject-orb,
   .subject-orb__glyph,
-  .projection-base::after { animation: none !important; }
+  .projection-base::after,
+  .architecture-flow-signal,
+  .evidence-figure__canvas path { animation: none !important; }
 
   .globe-transit { opacity: 0 !important; }
   .ambient-stars i { opacity: 0.24; }
