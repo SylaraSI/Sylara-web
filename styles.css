@@ -5607,7 +5607,8 @@ body.is-direct-transition[data-view="contact"] .home-scene {
 .contact-channel.is-active::after { opacity: 0.72; transform: scaleX(1); }
 
 .contact-detail {
-  min-height: 14.5rem;
+  /* Reserve the tallest channel-copy footprint so pathway selection never reflows the array. */
+  min-height: 18.5rem;
   margin-top: clamp(2.2rem, 4vw, 3.2rem);
   padding: 1.35rem 0 0 clamp(1.25rem, 2.5vw, 2rem);
   border-left: 1px solid rgba(113, 221, 201, 0.28);
@@ -6446,7 +6447,7 @@ body.is-direct-transition[data-view="contact"] .home-scene {
   }
   .contact-channel { min-height: 5rem; }
   .contact-channel strong { font-size: 1rem; }
-  .contact-detail { min-height: 17rem; padding-left: 1.15rem; }
+  .contact-detail { min-height: 19.5rem; padding-left: 1.15rem; }
   .contact-follow { padding: 5.5rem 0; text-align: left; }
   .contact-follow h3 { margin-left: 0; font-size: clamp(2.55rem, 12vw, 4rem); }
   .contact-follow__links { align-items: flex-start; flex-direction: column; gap: 0.25rem; }
