@@ -7,8 +7,8 @@
     <meta name="description" content="Sylara — systems intelligence, architecture, and research." />
     <title>Sylara — Systems Intelligence</title>
     <link rel="preload" as="image" href="assets/redesign/home-network.png" />
-    <link rel="stylesheet" href="styles.css?v=about-avatar-2" />
-    <script src="app.js?v=about-skeleton-2" defer></script>
+    <link rel="stylesheet" href="styles.css?v=contact-skeleton-1" />
+    <script src="app.js?v=contact-skeleton-1" defer></script>
   </head>
   <body data-view="home">
     <a class="skip-link" href="#home-map">Skip to the Sylara map</a>
@@ -32,7 +32,7 @@
             <button type="button" data-route="research" data-route-mode="direct">Research</button>
             <button type="button" data-route="journal" data-route-mode="direct">Journal</button>
             <button type="button" data-route="about" data-route-mode="direct">About</button>
-            <button type="button" data-pending="Contact">Contact</button>
+            <button type="button" data-route="contact" data-route-mode="direct">Contact</button>
           </nav>
         </header>
 
@@ -75,10 +75,11 @@
               <span class="node-action">Enter</span>
             </button>
 
-            <button class="map-node map-node--contact" type="button" data-pending="Contact">
+            <button class="map-node map-node--contact" type="button" data-route="contact" data-route-mode="spatial" aria-label="Enter Contact">
               <span class="node-orbit" aria-hidden="true"></span>
               <span class="node-core" aria-hidden="true"></span>
               <span class="node-label">Contact</span>
+              <span class="node-action">Enter</span>
             </button>
           </nav>
         </div>
@@ -101,7 +102,7 @@
             <button type="button" data-route="research" data-route-mode="direct">Research</button>
             <button type="button" data-route="journal" data-route-mode="direct">Journal</button>
             <button type="button" data-route="about" data-route-mode="direct">About</button>
-            <button type="button" data-pending="Contact">Contact</button>
+            <button type="button" data-route="contact" data-route-mode="direct">Contact</button>
           </nav>
 
           <button class="map-return" type="button" data-route="home" data-route-mode="direct"><span aria-hidden="true">←</span> Return to map</button>
@@ -688,7 +689,7 @@
             <button type="button" data-route="research" data-route-mode="direct" aria-current="page">Research</button>
             <button type="button" data-route="journal" data-route-mode="direct">Journal</button>
             <button type="button" data-route="about" data-route-mode="direct">About</button>
-            <button type="button" data-pending="Contact">Contact</button>
+            <button type="button" data-route="contact" data-route-mode="direct">Contact</button>
           </nav>
 
           <button class="map-return" type="button" data-route="home" data-route-mode="direct"><span aria-hidden="true">←</span> Return to map</button>
@@ -796,7 +797,7 @@
             <button type="button" data-route="research" data-route-mode="direct">Research</button>
             <button type="button" data-route="journal" data-route-mode="direct" aria-current="page">Journal</button>
             <button type="button" data-route="about" data-route-mode="direct">About</button>
-            <button type="button" data-pending="Contact">Contact</button>
+            <button type="button" data-route="contact" data-route-mode="direct">Contact</button>
           </nav>
 
           <button class="map-return" type="button" data-route="home" data-route-mode="direct"><span aria-hidden="true">←</span> Return to map</button>
@@ -909,7 +910,7 @@
             <button type="button" data-route="research" data-route-mode="direct">Research</button>
             <button type="button" data-route="journal" data-route-mode="direct">Journal</button>
             <button type="button" data-route="about" data-route-mode="direct" aria-current="page">About</button>
-            <button type="button" data-pending="Contact">Contact</button>
+            <button type="button" data-route="contact" data-route-mode="direct">Contact</button>
           </nav>
 
           <button class="map-return" type="button" data-route="home" data-route-mode="direct"><span aria-hidden="true">←</span> Return to map</button>
@@ -1030,13 +1031,108 @@
             <div class="about-handoff__links">
               <button type="button" data-route="research" data-route-mode="direct">Enter Research <span aria-hidden="true">→</span></button>
               <button type="button" data-route="journal" data-route-mode="direct">Open the Journal <span aria-hidden="true">→</span></button>
-              <button type="button" data-pending="Contact">Contact <span aria-hidden="true">→</span></button>
+              <button type="button" data-route="contact" data-route-mode="direct">Contact <span aria-hidden="true">→</span></button>
             </div>
           </section>
 
           <footer class="about-footer">
             <span>Sylara Technologies</span>
             <span>About / research direction</span>
+          </footer>
+        </div>
+      </section>
+
+      <section class="scene contact-scene" id="contact" aria-labelledby="contact-title" aria-hidden="true" inert>
+        <div class="contact-field" aria-hidden="true">
+          <span class="contact-field__grid"></span>
+          <span class="contact-field__axis"></span>
+          <span class="contact-field__halo contact-field__halo--one"></span>
+          <span class="contact-field__halo contact-field__halo--two"></span>
+        </div>
+
+        <header class="contact-header">
+          <img class="wordmark wordmark--small" src="assets/redesign/sylara-wordmark.png" width="4317" height="486" alt="Sylara" />
+
+          <nav class="route-index interior-route-index" aria-label="Primary navigation">
+            <button type="button" data-route="architecture" data-route-mode="direct">Architecture</button>
+            <button type="button" data-route="research" data-route-mode="direct">Research</button>
+            <button type="button" data-route="journal" data-route-mode="direct">Journal</button>
+            <button type="button" data-route="about" data-route-mode="direct">About</button>
+            <button type="button" data-route="contact" data-route-mode="direct" aria-current="page">Contact</button>
+          </nav>
+
+          <button class="map-return" type="button" data-route="home" data-route-mode="direct"><span aria-hidden="true">←</span> Return to map</button>
+        </header>
+
+        <p class="route-status contact-route-status" data-route-status aria-live="polite"></p>
+
+        <div class="contact-scroll" data-contact-scroll tabindex="-1">
+          <section class="contact-hero" aria-describedby="contact-intro">
+            <div class="contact-hero__copy">
+              <p class="contact-eyebrow">Contact / Open channel</p>
+              <h2 id="contact-title">Begin with the question.</h2>
+              <p id="contact-intro">Sylara welcomes thoughtful conversations around sustained research, persistent intelligence, technical collaboration, and the systems required to carry difficult work forward.</p>
+
+              <!-- ACTIVE CONTACT ROUTES — replace these addresses when dedicated channels are created. -->
+              <div class="contact-development" aria-label="Current contact addresses">
+                <span>Active development</span>
+                <p>Dedicated research and collaboration channels are being established. Until then, these addresses are the clearest way to reach Sylara.</p>
+                <div class="contact-addresses">
+                  <a href="mailto:hello@sylaratech.com">hello@sylaratech.com <small>Primary channel</small></a>
+                  <a href="mailto:scott@sylaratech.com">scott@sylaratech.com <small>Direct correspondence</small></a>
+                </div>
+              </div>
+            </div>
+
+            <!-- CONTACT CHANNEL ARRAY — selection changes light and copy only; the composition never moves. -->
+            <div class="contact-array">
+              <div class="contact-array__heading">
+                <span>Available pathways</span>
+                <strong>03 active channels</strong>
+              </div>
+
+              <div class="contact-channels" role="group" aria-label="Choose a contact pathway">
+                <button class="contact-channel is-active" type="button" data-contact-channel="research" aria-pressed="true" aria-controls="contact-detail">
+                  <span class="contact-channel__index">01</span>
+                  <strong>Research &amp; collaboration</strong>
+                  <i aria-hidden="true"></i>
+                </button>
+                <button class="contact-channel" type="button" data-contact-channel="platform" aria-pressed="false" aria-controls="contact-detail">
+                  <span class="contact-channel__index">02</span>
+                  <strong>Platform interest</strong>
+                  <i aria-hidden="true"></i>
+                </button>
+                <button class="contact-channel" type="button" data-contact-channel="general" aria-pressed="false" aria-controls="contact-detail">
+                  <span class="contact-channel__index">03</span>
+                  <strong>General correspondence</strong>
+                  <i aria-hidden="true"></i>
+                </button>
+              </div>
+
+              <article class="contact-detail" id="contact-detail" aria-live="polite">
+                <p class="contact-detail__kicker" data-contact-detail-kicker>Channel 01 / Research</p>
+                <h3 data-contact-detail-title>Research &amp; collaboration</h3>
+                <p data-contact-detail-copy>For aligned technical or scientific inquiry, research partnerships, and exploratory collaboration around sustained intelligent systems.</p>
+                <a data-contact-detail-email href="mailto:hello@sylaratech.com?subject=Research%20and%20collaboration%20inquiry">
+                  <span data-contact-detail-address>Write to hello@sylaratech.com</span> <span aria-hidden="true">→</span>
+                </a>
+              </article>
+            </div>
+          </section>
+
+          <section class="contact-follow" aria-labelledby="contact-follow-title">
+            <p class="contact-eyebrow">Follow the work</p>
+            <h3 id="contact-follow-title">The public record remains open while the channels mature.</h3>
+            <div class="contact-follow__links">
+              <button type="button" data-route="journal" data-route-mode="direct">Open the Journal <span aria-hidden="true">→</span></button>
+              <button type="button" data-route="research" data-route-mode="direct">Enter Research <span aria-hidden="true">→</span></button>
+              <button type="button" data-route="about" data-route-mode="direct">About Sylara <span aria-hidden="true">→</span></button>
+            </div>
+          </section>
+
+          <footer class="contact-footer">
+            <span>Sylara Technologies</span>
+            <span>Contact / open channel</span>
           </footer>
         </div>
       </section>

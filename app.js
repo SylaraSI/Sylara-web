@@ -4,6 +4,7 @@ const architectureScene = document.querySelector(".architecture-scene");
 const researchScene = document.querySelector(".research-scene");
 const journalScene = document.querySelector(".journal-scene");
 const aboutScene = document.querySelector(".about-scene");
+const contactScene = document.querySelector(".contact-scene");
 const architectureHeader = document.querySelector(".architecture-header");
 const researchHeader = document.querySelector(".research-header");
 const skipLink = document.querySelector(".skip-link");
@@ -108,6 +109,13 @@ const journalReaderBody = document.querySelector("[data-journal-reader-body]");
 const aboutScroll = document.querySelector("[data-about-scroll]");
 const aboutScrollTarget = document.querySelector("[data-about-scroll-target]");
 const aboutSteps = [...document.querySelectorAll("[data-about-step]")];
+const contactScroll = document.querySelector("[data-contact-scroll]");
+const contactChannels = [...document.querySelectorAll("[data-contact-channel]")];
+const contactDetailKicker = document.querySelector("[data-contact-detail-kicker]");
+const contactDetailTitle = document.querySelector("[data-contact-detail-title]");
+const contactDetailCopy = document.querySelector("[data-contact-detail-copy]");
+const contactDetailEmail = document.querySelector("[data-contact-detail-email]");
+const contactDetailAddress = document.querySelector("[data-contact-detail-address]");
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 const starField = [
@@ -115,6 +123,37 @@ const starField = [
   [51, 69, 1, 9.9, -4.8], [66, 58, 1, 8.6, -2.3], [81, 73, 1, 9.4, -3.6],
   [93, 58, 1, 9.2, -1.5], [18, 88, 1, 10.7, -6.8],
 ];
+
+/*
+  CONTACT CHANNEL COPY
+  Replace these working descriptions as the public contact policy matures.
+  The reserved detail panel keeps every selection from moving the composition.
+*/
+const contactChannelContent = {
+  research: {
+    kicker: "Channel 01 / Research",
+    title: "Research & collaboration",
+    copy: "For aligned technical or scientific inquiry, research partnerships, and exploratory collaboration around sustained intelligent systems.",
+    email: "hello@sylaratech.com",
+    subject: "Research and collaboration inquiry",
+  },
+  platform: {
+    kicker: "Channel 02 / Platform",
+    title: "Platform interest",
+    copy: "For conversations about persistent intelligence, long-duration research workflows, and the future direction of the Sylara platform.",
+    email: "hello@sylaratech.com",
+    subject: "Sylara platform interest",
+  },
+  general: {
+    kicker: "Channel 03 / General",
+    title: "General correspondence",
+    copy: "For thoughtful questions, introductions, and messages that do not belong to a specific research or platform pathway.",
+    email: "hello@sylaratech.com",
+    subject: "General Sylara inquiry",
+  },
+};
+
+let activeContactChannel = "research";
 
 const subjectOrder = ["foundations", "memory-context", "reasoning-evidence", "adaptive-systems"];
 
@@ -945,6 +984,25 @@ function setupAboutReveals() {
   }, { root: aboutScroll, threshold: 0.22, rootMargin: "0px 0px -8%" });
 
   aboutSteps.forEach((step) => observer.observe(step));
+}
+
+/* CONTACT CHANNEL STATE — light the selected path and update only the reserved copy panel. */
+function setContactChannel(channel) {
+  const resolvedChannel = contactChannelContent[channel] ? channel : "research";
+  const content = contactChannelContent[resolvedChannel];
+  activeContactChannel = resolvedChannel;
+
+  contactChannels.forEach((control) => {
+    const isActive = control.dataset.contactChannel === resolvedChannel;
+    control.classList.toggle("is-active", isActive);
+    control.setAttribute("aria-pressed", String(isActive));
+  });
+
+  contactDetailKicker.textContent = content.kicker;
+  contactDetailTitle.textContent = content.title;
+  contactDetailCopy.textContent = content.copy;
+  contactDetailAddress.textContent = `Write to ${content.email}`;
+  contactDetailEmail.href = `mailto:${content.email}?subject=${encodeURIComponent(content.subject)}`;
 }
 
 function clearRouteTransition() {
@@ -2208,23 +2266,32 @@ function restoreArchitectureHistoryState(architectureState) {
 }
 
 function setScene(nextView, { updateHistory = true, focusDelay = 760 } = {}) {
-  const validViews = ["home", "architecture", "research", "journal", "about"];
+  const validViews = ["home", "architecture", "research", "journal", "about", "contact"];
   const resolvedView = validViews.includes(nextView) ? nextView : "home";
   const isHome = resolvedView === "home";
   const isArchitecture = resolvedView === "architecture";
   const isResearch = resolvedView === "research";
   const isJournal = resolvedView === "journal";
   const isAbout = resolvedView === "about";
+  const isContact = resolvedView === "contact";
   const wasResearch = body.dataset.view === "research";
   const wasArchitecture = body.dataset.view === "architecture";
   const wasJournal = body.dataset.view === "journal";
   const wasAbout = body.dataset.view === "about";
+  const wasContact = body.dataset.view === "contact";
 
   if (!isResearch && wasResearch && updateHistory) syncResearchHistoryState();
   if (!isArchitecture && wasArchitecture && updateHistory) syncArchitectureHistoryState();
   if (!isJournal && wasJournal && updateHistory) writeJournalHistory({ replace: true });
   if (!isAbout && wasAbout && updateHistory) {
     history.replaceState({ ...history.state, view: "about", about: { scrollTop: aboutScroll.scrollTop } }, "", location.href);
+  }
+  if (!isContact && wasContact && updateHistory) {
+    history.replaceState({
+      ...history.state,
+      view: "contact",
+      contact: { scrollTop: contactScroll.scrollTop, channel: activeContactChannel },
+    }, "", location.href);
   }
 
   if (!isArchitecture) closeArchitectureIndexVisual({ restoreFocus: false });
@@ -2239,6 +2306,10 @@ function setScene(nextView, { updateHistory = true, focusDelay = 760 } = {}) {
     renderJournalEntries();
   }
   if (isAbout && !wasAbout && updateHistory) aboutScroll.scrollTop = 0;
+  if (isContact && !wasContact && updateHistory) {
+    contactScroll.scrollTop = 0;
+    setContactChannel("research");
+  }
 
   body.dataset.view = resolvedView;
 
@@ -2260,11 +2331,13 @@ function setScene(nextView, { updateHistory = true, focusDelay = 760 } = {}) {
   researchScene.toggleAttribute("inert", !isResearch);
   journalScene.toggleAttribute("inert", !isJournal);
   aboutScene.toggleAttribute("inert", !isAbout);
+  contactScene.toggleAttribute("inert", !isContact);
   homeScene.setAttribute("aria-hidden", String(!isHome));
   architectureScene.setAttribute("aria-hidden", String(!isArchitecture));
   researchScene.setAttribute("aria-hidden", String(!isResearch));
   journalScene.setAttribute("aria-hidden", String(!isJournal));
   aboutScene.setAttribute("aria-hidden", String(!isAbout));
+  contactScene.setAttribute("aria-hidden", String(!isContact));
 
   const skipLinkTargets = {
     home: ["#home-map", "Skip to the Sylara map"],
@@ -2274,6 +2347,7 @@ function setScene(nextView, { updateHistory = true, focusDelay = 760 } = {}) {
     research: ["#research-title", "Skip to Research"],
     journal: ["#journal-index", "Skip to the Journal archive"],
     about: ["#about-trajectory", "Skip to the About research trajectory"],
+    contact: ["#contact-title", "Skip to Contact"],
   };
   [skipLink.href, skipLink.textContent] = skipLinkTargets[resolvedView];
 
@@ -2285,6 +2359,7 @@ function setScene(nextView, { updateHistory = true, focusDelay = 760 } = {}) {
         research: isResearch ? { subject: null, tabletOpen: false, scrollTop: 0 } : null,
         journal: isJournal ? { category: "all", topic: "all", article: null, scrollTop: 0 } : null,
         about: isAbout ? { scrollTop: 0 } : null,
+        contact: isContact ? { scrollTop: 0, channel: activeContactChannel } : null,
       },
       "",
       `#${resolvedView}`,
@@ -2299,6 +2374,7 @@ function setScene(nextView, { updateHistory = true, focusDelay = 760 } = {}) {
       research: researchScene.querySelector("[data-route='home']"),
       journal: journalScene.querySelector("[data-route='home']"),
       about: aboutScene.querySelector("[data-route='home']"),
+      contact: contactScene.querySelector("[data-route='home']"),
     };
     const focusTarget = focusTargets[resolvedView];
     focusTarget?.focus({ preventScroll: true });
@@ -2308,7 +2384,7 @@ function setScene(nextView, { updateHistory = true, focusDelay = 760 } = {}) {
 function navigateTo(nextView, { mode = "direct", updateHistory = true } = {}) {
   clearRouteTransition();
 
-  const useSpatialTransition = mode === "spatial" && ["architecture", "research", "journal", "about"].includes(nextView) && !prefersReducedMotion.matches;
+  const useSpatialTransition = mode === "spatial" && ["architecture", "research", "journal", "about", "contact"].includes(nextView) && !prefersReducedMotion.matches;
 
   if (useSpatialTransition) {
     body.classList.add("is-spatial-transition");
@@ -2355,6 +2431,10 @@ aboutScrollTarget.addEventListener("click", () => {
     behavior: prefersReducedMotion.matches ? "auto" : "smooth",
     block: "start",
   });
+});
+
+contactChannels.forEach((control) => {
+  control.addEventListener("click", () => setContactChannel(control.dataset.contactChannel));
 });
 
 architectureDomains.forEach((control) => {
@@ -2597,6 +2677,11 @@ window.addEventListener("keydown", (event) => {
     return;
   }
 
+  if (event.key === "Escape" && body.dataset.view === "contact") {
+    navigateTo("home");
+    return;
+  }
+
   if (event.key !== "Escape" || body.dataset.view !== "research") return;
 
   if (researchScene.classList.contains("has-tablet")) {
@@ -2621,13 +2706,19 @@ window.addEventListener("popstate", (event) => {
         ? "research"
         : hashView.startsWith("journal")
           ? "journal"
-          : hashView === "about" ? "about" : "home");
+          : hashView === "about"
+            ? "about"
+            : hashView === "contact" ? "contact" : "home");
   navigateTo(nextView, { updateHistory: false });
 
   if (nextView === "research") restoreResearchHistoryState(event.state?.research);
   if (nextView === "architecture") restoreArchitectureHistoryState(event.state?.architecture);
   if (nextView === "journal") restoreJournalHistoryState(event.state?.journal);
   if (nextView === "about") aboutScroll.scrollTop = event.state?.about?.scrollTop || 0;
+  if (nextView === "contact") {
+    setContactChannel(event.state?.contact?.channel);
+    contactScroll.scrollTop = event.state?.contact?.scrollTop || 0;
+  }
 });
 
 if (!prefersReducedMotion.matches) {
@@ -2647,6 +2738,7 @@ if (!prefersReducedMotion.matches) {
 
 buildAmbientStars();
 setupAboutReveals();
+setContactChannel("research");
 setSubjectVisualState();
 setArchitectureMapState();
 renderJournalEntries();
@@ -2657,7 +2749,9 @@ const initialView = initialHashView.startsWith("architecture")
     ? "research"
     : initialHashView.startsWith("journal")
       ? "journal"
-      : initialHashView === "about" ? "about" : "home";
+      : initialHashView === "about"
+        ? "about"
+        : initialHashView === "contact" ? "contact" : "home";
 setScene(initialView, { updateHistory: false });
 
 if (history.state?.view === initialView) {
@@ -2665,6 +2759,10 @@ if (history.state?.view === initialView) {
   if (initialView === "architecture") restoreArchitectureHistoryState(history.state.architecture);
   if (initialView === "journal") restoreJournalHistoryState(history.state.journal);
   if (initialView === "about") aboutScroll.scrollTop = history.state.about?.scrollTop || 0;
+  if (initialView === "contact") {
+    setContactChannel(history.state.contact?.channel);
+    contactScroll.scrollTop = history.state.contact?.scrollTop || 0;
+  }
 } else {
   const initialArchitectureDomain = initialView === "architecture" ? getArchitectureHashDomain() : null;
   const initialArchitectureState = initialArchitectureDomain
@@ -2678,6 +2776,7 @@ if (history.state?.view === initialView) {
       research: initialView === "research" ? { subject: null, tabletOpen: false, scrollTop: 0 } : null,
       journal: initialView === "journal" ? getJournalHashState() : null,
       about: initialView === "about" ? { scrollTop: 0 } : null,
+      contact: initialView === "contact" ? { scrollTop: 0, channel: "research" } : null,
     },
     "",
     location.href,
