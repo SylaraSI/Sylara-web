@@ -5803,20 +5803,23 @@ body.is-direct-transition[data-view="contact"] .home-scene {
   .research-projection { top: 58%; width: min(77vw, 25rem); }
 
   /*
-    MOBILE SUBJECT RAIL
-    The four subjects stay visible as part of the page skeleton. min-height is
-    the touch-target size; top/left move the complete rail without moving orbs.
+    MOBILE SUBJECT INDEX
+    Two stacked controls sit on each side above the projection. min-height is
+    the touch-target size; top moves the complete index without moving orbs.
   */
   .subject-controls {
-    left: max(0.75rem, env(safe-area-inset-left));
-    top: 41.5%;
-    width: min(10.4rem, 44vw);
+    left: 50%;
+    top: 27.5%;
+    width: min(23rem, calc(100vw - 1.5rem));
     height: auto;
     aspect-ratio: auto;
     display: grid;
-    gap: 0.3rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(3rem, auto));
+    grid-auto-flow: column;
+    gap: 0.38rem 0.72rem;
     padding-top: 1.15rem;
-    transform: none;
+    transform: translateX(-50%);
   }
 
   .subject-controls__label {
@@ -5839,14 +5842,16 @@ body.is-direct-transition[data-view="contact"] .home-scene {
     justify-content: flex-start;
     width: 100%;
     min-width: 0;
-    min-height: 2.75rem;
+    min-height: 3rem;
     padding: 0.58rem 0.62rem;
     border-right: 0;
     border-left: 1px solid rgba(167, 215, 255, 0.24);
     background: linear-gradient(90deg, rgba(5, 19, 41, 0.68), rgba(4, 13, 29, 0.18) 82%, transparent);
-    font-size: clamp(0.5rem, 2.25vw, 0.57rem);
+    font-size: clamp(0.46rem, 2.05vw, 0.54rem);
+    letter-spacing: 0.08em;
     line-height: 1.25;
     text-align: left;
+    white-space: normal;
     transform: none;
     backdrop-filter: blur(6px) saturate(1.06);
     touch-action: manipulation;
@@ -6097,6 +6102,8 @@ body.is-direct-transition[data-view="contact"] .home-scene {
   }
 
   .architecture-domain__index { font-size: 0.44rem; }
+  /* Give the longer Context Compilation label its own clear row on phones. */
+  .architecture-domain--context { top: 60.5%; }
   .architecture-map__status { bottom: -3.2rem; font-size: 0.45rem; }
 
   .architecture-scroll-cue {
