@@ -2,6 +2,7 @@ const body = document.body;
 const homeScene = document.querySelector(".home-scene");
 const architectureScene = document.querySelector(".architecture-scene");
 const researchScene = document.querySelector(".research-scene");
+const journalScene = document.querySelector(".journal-scene");
 const architectureHeader = document.querySelector(".architecture-header");
 const researchHeader = document.querySelector(".research-header");
 const skipLink = document.querySelector(".skip-link");
@@ -86,6 +87,23 @@ const tabletScroll = document.querySelector("[data-tablet-scroll]");
 const tabletPrevious = document.querySelector("[data-tablet-prev]");
 const tabletNext = document.querySelector("[data-tablet-next]");
 const tabletClose = document.querySelector("[data-tablet-close]");
+const journalScroll = document.querySelector("[data-journal-scroll]");
+const journalIndexLink = document.querySelector("[data-journal-index-link]");
+const journalEntryGrid = document.querySelector("[data-journal-entries]");
+const journalResults = document.querySelector("[data-journal-results]");
+const journalCategoryControls = [...document.querySelectorAll("[data-journal-category]")];
+const journalTopicControls = [...document.querySelectorAll("[data-journal-topic]")];
+const journalReader = document.querySelector("[data-journal-reader]");
+const journalReaderPanel = journalReader.querySelector(".journal-reader__panel");
+const journalReaderDismiss = document.querySelector("[data-journal-reader-dismiss]");
+const journalReaderClose = document.querySelector("[data-journal-reader-close]");
+const journalReaderScroll = document.querySelector("[data-journal-reader-scroll]");
+const journalReaderPath = document.querySelector("[data-journal-reader-path]");
+const journalReaderMeta = document.querySelector("[data-journal-reader-meta]");
+const journalReaderTitle = document.querySelector("[data-journal-reader-title]");
+const journalReaderDeck = document.querySelector("[data-journal-reader-deck]");
+const journalReaderToc = document.querySelector("[data-journal-reader-toc]");
+const journalReaderBody = document.querySelector("[data-journal-reader-body]");
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 const starField = [
@@ -765,6 +783,113 @@ const researchSubjects = {
   },
 };
 
+/*
+  JOURNAL CONTENT MODEL
+  Keep writing here and presentation below. Entries can be added, revised, or
+  marked readable without rebuilding the archive interface.
+*/
+const journalEntries = [
+  {
+    slug: "continuity-beyond-the-model",
+    status: "Working note",
+    readable: true,
+    category: "engineering",
+    topics: ["memory", "architecture"],
+    date: "September 2026",
+    readTime: "6 min read",
+    title: "Continuity cannot live in the model",
+    deck: "Why persistent intelligence needs a governed memory substrate beyond any individual reasoning session.",
+    sections: [
+      {
+        id: "the-pressure",
+        title: "The pressure",
+        paragraphs: [
+          "A reasoning model can be extraordinarily capable and still be temporary. It enters a bounded task, works with the context available to it, and eventually leaves. If the model also owns the history, identity, or working state of the system, continuity disappears with that session.",
+          "That tension changed the architectural question. The problem was no longer how to make a single session remember more. It became how to let many bounded reasoning sessions participate in one recoverable history without quietly turning temporary context into permanent truth.",
+        ],
+      },
+      {
+        id: "separate-responsibilities",
+        title: "Separate the responsibilities",
+        paragraphs: [
+          "Working memory, session records, durable experience, and current interpretations do different jobs. Treating them as one undifferentiated store makes it difficult to know what happened, what the system presently relies on, and what remains open to revision.",
+          "Sylara's direction is to separate those responsibilities while preserving their lineage. A reasoner may use the current state, but it does not become the sole owner of that state or the history beneath it.",
+        ],
+      },
+      {
+        id: "revision-without-erasure",
+        title: "Revision without erasure",
+        paragraphs: [
+          "Continuity is not the preservation of a single answer forever. New evidence may challenge a prior model, uncertainty may become better defined, and a working conclusion may be superseded. The important property is that revision remains explicit and the earlier evidence remains recoverable.",
+          "This turns memory into a governed process rather than a pile of context. The system can change its understanding without pretending its history never happened.",
+        ],
+      },
+      {
+        id: "what-remains-open",
+        title: "What remains open",
+        paragraphs: [
+          "The architecture establishes the boundary, not the final answer. Promotion, consolidation, forgetting, reconsolidation, and sufficiency remain active research questions. They belong in the open record precisely because the system is still being built.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "evidence-before-conclusion",
+    status: "Forthcoming",
+    readable: false,
+    category: "research",
+    topics: ["evidence", "architecture"],
+    date: "Research queue",
+    readTime: "Planned deep dive",
+    title: "Evidence before conclusion",
+    deck: "A closer look at why unavailable, unresolved, and known-empty evidence must remain distinct states.",
+  },
+  {
+    slug: "learning-without-silent-authority",
+    status: "Forthcoming",
+    readable: false,
+    category: "research",
+    topics: ["adaptation", "evidence"],
+    date: "Research queue",
+    readTime: "Planned deep dive",
+    title: "Learning without silent authority",
+    deck: "How a system can propose and evaluate change without quietly granting itself permission to adopt it.",
+  },
+  {
+    slug: "track-one-before-the-map",
+    status: "Forthcoming",
+    readable: false,
+    category: "field-notes",
+    topics: ["history", "architecture"],
+    date: "Historical review",
+    readTime: "Track 1 retrospective",
+    title: "Track 1: before the architecture had a map",
+    deck: "Returning to the earliest work to trace the obstacles, experiments, and discoveries that gave the architecture its shape.",
+  },
+  {
+    slug: "the-first-continuity-break",
+    status: "Forthcoming",
+    readable: false,
+    category: "field-notes",
+    topics: ["history", "memory"],
+    date: "Historical review",
+    readTime: "Field record",
+    title: "The first continuity break",
+    deck: "A future field note about the moment a practical failure exposed a deeper architectural requirement.",
+  },
+  {
+    slug: "public-map-private-machinery",
+    status: "Forthcoming",
+    readable: false,
+    category: "engineering",
+    topics: ["architecture", "evidence"],
+    date: "Editorial queue",
+    readTime: "Engineering note",
+    title: "A public map for private machinery",
+    deck: "Writing technically honest architecture material without exposing the implementation details that should remain internal.",
+  },
+];
+
 let focusTimer;
 let routeTimers = [];
 let tabletTransitionTimer;
@@ -777,6 +902,10 @@ let activeArchitectureDomain = null;
 let activeArchitectureSection = "domain-overview";
 let expandedArchitectureIndexDomain = null;
 let architectureIndexReturnFocus = null;
+let activeJournalCategory = "all";
+let activeJournalTopic = "all";
+let activeJournalArticle = null;
+let journalReaderReturnFocus = null;
 const architectureFigureTimers = new Map();
 const manuallyPausedArchitectureFigures = new WeakSet();
 let architectureFigureObserver;
@@ -803,6 +932,214 @@ function clearRouteTransition() {
   routeTimers = [];
   body.classList.remove("is-spatial-transition", "is-direct-transition");
   delete body.dataset.transitionTarget;
+}
+
+function formatJournalLabel(value) {
+  return value
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+function getJournalHashState() {
+  const rawHash = location.hash.slice(1);
+  const articlePrefix = "journal/article/";
+
+  if (rawHash.startsWith(articlePrefix)) {
+    return {
+      category: "all",
+      topic: "all",
+      article: decodeURIComponent(rawHash.slice(articlePrefix.length).split("?")[0]),
+    };
+  }
+
+  const [, query = ""] = rawHash.split("?");
+  const params = new URLSearchParams(query);
+  const requestedCategory = params.get("category") || "all";
+  const requestedTopic = params.get("topic") || "all";
+  const validCategories = new Set(["all", ...journalEntries.map((entry) => entry.category)]);
+  const validTopics = new Set(["all", ...journalEntries.flatMap((entry) => entry.topics)]);
+
+  return {
+    category: validCategories.has(requestedCategory) ? requestedCategory : "all",
+    topic: validTopics.has(requestedTopic) ? requestedTopic : "all",
+    article: null,
+  };
+}
+
+function getJournalArchiveHash() {
+  const params = new URLSearchParams();
+  if (activeJournalCategory !== "all") params.set("category", activeJournalCategory);
+  if (activeJournalTopic !== "all") params.set("topic", activeJournalTopic);
+  const query = params.toString();
+  return query ? `#journal?${query}` : "#journal";
+}
+
+function writeJournalHistory({ replace = false, article = activeJournalArticle } = {}) {
+  const state = {
+    view: "journal",
+    journal: {
+      category: activeJournalCategory,
+      topic: activeJournalTopic,
+      article,
+      scrollTop: journalScroll.scrollTop,
+    },
+  };
+  const hash = article ? `#journal/article/${encodeURIComponent(article)}` : getJournalArchiveHash();
+  history[replace ? "replaceState" : "pushState"](state, "", hash);
+}
+
+function updateJournalFilterControls() {
+  journalCategoryControls.forEach((control) => {
+    control.setAttribute("aria-pressed", String(control.dataset.journalCategory === activeJournalCategory));
+  });
+  journalTopicControls.forEach((control) => {
+    control.setAttribute("aria-pressed", String(control.dataset.journalTopic === activeJournalTopic));
+  });
+}
+
+function renderJournalEntries() {
+  const visibleEntries = journalEntries.filter((entry) => {
+    const categoryMatches = activeJournalCategory === "all" || entry.category === activeJournalCategory;
+    const topicMatches = activeJournalTopic === "all" || entry.topics.includes(activeJournalTopic);
+    return categoryMatches && topicMatches;
+  });
+  const fragment = document.createDocumentFragment();
+
+  visibleEntries.forEach((entry, index) => {
+    const card = document.createElement("article");
+    const meta = document.createElement("div");
+    const category = document.createElement("span");
+    const date = document.createElement("span");
+    const title = document.createElement("h4");
+    const deck = document.createElement("p");
+    const topics = document.createElement("ul");
+    const footer = document.createElement("footer");
+    const status = document.createElement("span");
+
+    card.className = `journal-entry${entry.readable ? " is-readable" : " is-forthcoming"}`;
+    card.style.setProperty("--entry-order", index);
+    meta.className = "journal-entry__meta";
+    category.textContent = formatJournalLabel(entry.category);
+    date.textContent = entry.date;
+    meta.append(category, date);
+    title.textContent = entry.title;
+    deck.textContent = entry.deck;
+    topics.className = "journal-entry__topics";
+    entry.topics.forEach((topic) => {
+      const item = document.createElement("li");
+      item.textContent = topic;
+      topics.appendChild(item);
+    });
+    footer.className = "journal-entry__footer";
+    status.textContent = `${entry.status} / ${entry.readTime}`;
+    footer.appendChild(status);
+
+    if (entry.readable) {
+      const open = document.createElement("button");
+      open.type = "button";
+      open.dataset.journalOpen = entry.slug;
+      open.innerHTML = "Read entry <i aria-hidden=\"true\">→</i>";
+      footer.appendChild(open);
+    } else {
+      const marker = document.createElement("span");
+      marker.className = "journal-entry__forthcoming";
+      marker.textContent = "In the archive queue";
+      footer.appendChild(marker);
+    }
+
+    card.append(meta, title, deck, topics, footer);
+    fragment.appendChild(card);
+  });
+
+  journalEntryGrid.replaceChildren(fragment);
+  journalResults.textContent = `${String(visibleEntries.length).padStart(2, "0")} of ${String(journalEntries.length).padStart(2, "0")} entries shown`;
+  updateJournalFilterControls();
+}
+
+function renderJournalArticle(entry) {
+  journalReaderPath.textContent = formatJournalLabel(entry.category);
+  journalReaderTitle.textContent = entry.title;
+  journalReaderDeck.textContent = entry.deck;
+  journalReaderMeta.replaceChildren();
+
+  [formatJournalLabel(entry.category), entry.date, entry.readTime].forEach((label) => {
+    const item = document.createElement("span");
+    item.textContent = label;
+    journalReaderMeta.appendChild(item);
+  });
+
+  const tocFragment = document.createDocumentFragment();
+  const bodyFragment = document.createDocumentFragment();
+
+  entry.sections.forEach((sectionData, index) => {
+    const sectionId = `journal-${entry.slug}-${sectionData.id}`;
+    const tocItem = document.createElement("li");
+    const tocControl = document.createElement("button");
+    const section = document.createElement("section");
+    const marker = document.createElement("p");
+    const heading = document.createElement("h3");
+
+    tocControl.type = "button";
+    tocControl.dataset.journalSection = sectionId;
+    tocControl.textContent = sectionData.title;
+    tocItem.appendChild(tocControl);
+    tocFragment.appendChild(tocItem);
+
+    section.id = sectionId;
+    marker.className = "journal-reader__section-marker";
+    marker.textContent = String(index + 1).padStart(2, "0");
+    heading.textContent = sectionData.title;
+    section.append(marker, heading);
+    sectionData.paragraphs.forEach((textContent) => {
+      const paragraph = document.createElement("p");
+      paragraph.textContent = textContent;
+      section.appendChild(paragraph);
+    });
+    bodyFragment.appendChild(section);
+  });
+
+  journalReaderToc.replaceChildren(tocFragment);
+  journalReaderBody.replaceChildren(bodyFragment);
+}
+
+function openJournalArticle(slug, { updateHistory = true, focusReader = true } = {}) {
+  const entry = journalEntries.find((candidate) => candidate.slug === slug && candidate.readable);
+  if (!entry) return;
+
+  journalReaderReturnFocus = document.activeElement;
+  activeJournalArticle = entry.slug;
+  renderJournalArticle(entry);
+  journalReaderScroll.scrollTop = 0;
+  journalScene.classList.add("has-reader");
+  journalReader.setAttribute("aria-hidden", "false");
+  journalReader.removeAttribute("inert");
+  if (updateHistory) writeJournalHistory({ article: entry.slug });
+  if (focusReader) journalReaderPanel.focus({ preventScroll: true });
+}
+
+function closeJournalReader({ updateHistory = true, restoreFocus = true } = {}) {
+  if (!journalScene.classList.contains("has-reader") && !activeJournalArticle) return;
+  journalScene.classList.remove("has-reader");
+  journalReader.setAttribute("aria-hidden", "true");
+  journalReader.setAttribute("inert", "");
+  activeJournalArticle = null;
+  if (updateHistory) writeJournalHistory({ article: null });
+  if (restoreFocus && journalReaderReturnFocus instanceof HTMLElement) {
+    journalReaderReturnFocus.focus({ preventScroll: true });
+  }
+}
+
+function restoreJournalHistoryState(journalState) {
+  const hashState = getJournalHashState();
+  activeJournalCategory = journalState?.category || hashState.category;
+  activeJournalTopic = journalState?.topic || hashState.topic;
+  renderJournalEntries();
+  journalScroll.scrollTop = Math.max(0, Number(journalState?.scrollTop) || 0);
+
+  const article = journalState?.article || hashState.article;
+  if (article) openJournalArticle(article, { updateHistory: false, focusReader: false });
+  else closeJournalReader({ updateHistory: false, restoreFocus: false });
 }
 
 function renderTabletSubject(subject) {
@@ -1851,20 +2188,30 @@ function restoreArchitectureHistoryState(architectureState) {
 }
 
 function setScene(nextView, { updateHistory = true, focusDelay = 760 } = {}) {
-  const validViews = ["home", "architecture", "research"];
+  const validViews = ["home", "architecture", "research", "journal"];
   const resolvedView = validViews.includes(nextView) ? nextView : "home";
   const isHome = resolvedView === "home";
   const isArchitecture = resolvedView === "architecture";
   const isResearch = resolvedView === "research";
+  const isJournal = resolvedView === "journal";
   const wasResearch = body.dataset.view === "research";
   const wasArchitecture = body.dataset.view === "architecture";
+  const wasJournal = body.dataset.view === "journal";
 
   if (!isResearch && wasResearch && updateHistory) syncResearchHistoryState();
   if (!isArchitecture && wasArchitecture && updateHistory) syncArchitectureHistoryState();
+  if (!isJournal && wasJournal && updateHistory) writeJournalHistory({ replace: true });
 
   if (!isArchitecture) closeArchitectureIndexVisual({ restoreFocus: false });
   if (isArchitecture && !wasArchitecture && updateHistory) {
     showArchitectureLanding({ updateHistory: false, scrollTop: 0, focusMap: false });
+  }
+  if (isJournal && !wasJournal && updateHistory) {
+    activeJournalCategory = "all";
+    activeJournalTopic = "all";
+    closeJournalReader({ updateHistory: false, restoreFocus: false });
+    journalScroll.scrollTop = 0;
+    renderJournalEntries();
   }
 
   body.dataset.view = resolvedView;
@@ -1878,12 +2225,18 @@ function setScene(nextView, { updateHistory = true, focusDelay = 760 } = {}) {
     closeResearchTablet({ restoreFocus: false, syncHistory: false });
   }
 
+  if (!isJournal) {
+    closeJournalReader({ updateHistory: false, restoreFocus: false });
+  }
+
   homeScene.toggleAttribute("inert", !isHome);
   architectureScene.toggleAttribute("inert", !isArchitecture);
   researchScene.toggleAttribute("inert", !isResearch);
+  journalScene.toggleAttribute("inert", !isJournal);
   homeScene.setAttribute("aria-hidden", String(!isHome));
   architectureScene.setAttribute("aria-hidden", String(!isArchitecture));
   researchScene.setAttribute("aria-hidden", String(!isResearch));
+  journalScene.setAttribute("aria-hidden", String(!isJournal));
 
   const skipLinkTargets = {
     home: ["#home-map", "Skip to the Sylara map"],
@@ -1891,6 +2244,7 @@ function setScene(nextView, { updateHistory = true, focusDelay = 760 } = {}) {
       ? ["#domain-overview", `Skip to ${architectureDomainContent[activeArchitectureDomain].title}`]
       : ["#architecture-domain-map", "Skip to the Architecture map"],
     research: ["#research-title", "Skip to Research"],
+    journal: ["#journal-index", "Skip to the Journal archive"],
   };
   [skipLink.href, skipLink.textContent] = skipLinkTargets[resolvedView];
 
@@ -1900,6 +2254,7 @@ function setScene(nextView, { updateHistory = true, focusDelay = 760 } = {}) {
         view: resolvedView,
         architecture: isArchitecture ? { page: "landing", domain: null, scrollTop: 0, indexOpen: false } : null,
         research: isResearch ? { subject: null, tabletOpen: false, scrollTop: 0 } : null,
+        journal: isJournal ? { category: "all", topic: "all", article: null, scrollTop: 0 } : null,
       },
       "",
       `#${resolvedView}`,
@@ -1912,6 +2267,7 @@ function setScene(nextView, { updateHistory = true, focusDelay = 760 } = {}) {
       home: homeScene.querySelector(".map-node--architecture"),
       architecture: architectureScene.querySelector("[data-route='home']"),
       research: researchScene.querySelector("[data-route='home']"),
+      journal: journalScene.querySelector("[data-route='home']"),
     };
     const focusTarget = focusTargets[resolvedView];
     focusTarget?.focus({ preventScroll: true });
@@ -1921,7 +2277,7 @@ function setScene(nextView, { updateHistory = true, focusDelay = 760 } = {}) {
 function navigateTo(nextView, { mode = "direct", updateHistory = true } = {}) {
   clearRouteTransition();
 
-  const useSpatialTransition = mode === "spatial" && ["architecture", "research"].includes(nextView) && !prefersReducedMotion.matches;
+  const useSpatialTransition = mode === "spatial" && ["architecture", "research", "journal"].includes(nextView) && !prefersReducedMotion.matches;
 
   if (useSpatialTransition) {
     body.classList.add("is-spatial-transition");
@@ -1943,6 +2299,9 @@ document.querySelectorAll("[data-route]").forEach((control) => {
     if (control.dataset.route === body.dataset.view) {
       if (control.dataset.route === "architecture" && activeArchitectureDomain) {
         showArchitectureLanding({ updateHistory: true, scrollTop: 0 });
+      }
+      if (control.dataset.route === "journal" && activeJournalArticle) {
+        closeJournalReader();
       }
       return;
     }
@@ -2080,6 +2439,61 @@ subjectControls.forEach((control) => {
 
 tabletClose.addEventListener("click", () => closeResearchTablet());
 
+journalIndexLink.addEventListener("click", (event) => {
+  event.preventDefault();
+  document.querySelector("#journal-index")?.scrollIntoView({
+    behavior: prefersReducedMotion.matches ? "auto" : "smooth",
+    block: "start",
+  });
+});
+
+journalCategoryControls.forEach((control) => {
+  control.addEventListener("click", () => {
+    activeJournalCategory = control.dataset.journalCategory;
+    renderJournalEntries();
+    writeJournalHistory();
+  });
+});
+
+journalTopicControls.forEach((control) => {
+  control.addEventListener("click", () => {
+    activeJournalTopic = control.dataset.journalTopic;
+    renderJournalEntries();
+    writeJournalHistory();
+  });
+});
+
+journalEntryGrid.addEventListener("click", (event) => {
+  const control = event.target.closest("[data-journal-open]");
+  if (control) openJournalArticle(control.dataset.journalOpen);
+});
+
+journalReaderDismiss.addEventListener("click", () => closeJournalReader());
+journalReaderClose.addEventListener("click", () => closeJournalReader());
+
+journalReaderToc.addEventListener("click", (event) => {
+  const control = event.target.closest("[data-journal-section]");
+  if (!control) return;
+  journalReaderBody.querySelector(`#${control.dataset.journalSection}`)?.scrollIntoView({
+    behavior: prefersReducedMotion.matches ? "auto" : "smooth",
+    block: "start",
+  });
+});
+
+journalReader.addEventListener("keydown", (event) => {
+  if (!journalScene.classList.contains("has-reader") || event.key !== "Tab") return;
+  const focusable = [journalReaderClose, ...journalReaderToc.querySelectorAll("button")];
+  const currentIndex = focusable.indexOf(document.activeElement);
+
+  if (event.shiftKey && currentIndex <= 0) {
+    event.preventDefault();
+    focusable[focusable.length - 1]?.focus();
+  } else if (!event.shiftKey && currentIndex === focusable.length - 1) {
+    event.preventDefault();
+    focusable[0]?.focus();
+  }
+});
+
 /* Keep keyboard navigation inside the open tablet; its arrows own subject changes. */
 researchTablet.addEventListener("keydown", (event) => {
   if (!researchScene.classList.contains("has-tablet")) return;
@@ -2134,6 +2548,12 @@ window.addEventListener("keydown", (event) => {
     return;
   }
 
+  if (event.key === "Escape" && body.dataset.view === "journal") {
+    if (journalScene.classList.contains("has-reader")) closeJournalReader();
+    else navigateTo("home");
+    return;
+  }
+
   if (event.key !== "Escape" || body.dataset.view !== "research") return;
 
   if (researchScene.classList.contains("has-tablet")) {
@@ -2152,11 +2572,16 @@ window.addEventListener("keydown", (event) => {
 window.addEventListener("popstate", (event) => {
   const hashView = location.hash.slice(1);
   const nextView = event.state?.view
-    || (hashView.startsWith("architecture") ? "architecture" : hashView === "research" ? "research" : "home");
+    || (hashView.startsWith("architecture")
+      ? "architecture"
+      : hashView === "research"
+        ? "research"
+        : hashView.startsWith("journal") ? "journal" : "home");
   navigateTo(nextView, { updateHistory: false });
 
   if (nextView === "research") restoreResearchHistoryState(event.state?.research);
   if (nextView === "architecture") restoreArchitectureHistoryState(event.state?.architecture);
+  if (nextView === "journal") restoreJournalHistoryState(event.state?.journal);
 });
 
 if (!prefersReducedMotion.matches) {
@@ -2177,15 +2602,19 @@ if (!prefersReducedMotion.matches) {
 buildAmbientStars();
 setSubjectVisualState();
 setArchitectureMapState();
+renderJournalEntries();
 const initialHashView = location.hash.slice(1);
 const initialView = initialHashView.startsWith("architecture")
   ? "architecture"
-  : initialHashView === "research" ? "research" : "home";
+  : initialHashView === "research"
+    ? "research"
+    : initialHashView.startsWith("journal") ? "journal" : "home";
 setScene(initialView, { updateHistory: false });
 
 if (history.state?.view === initialView) {
   if (initialView === "research") restoreResearchHistoryState(history.state.research);
   if (initialView === "architecture") restoreArchitectureHistoryState(history.state.architecture);
+  if (initialView === "journal") restoreJournalHistoryState(history.state.journal);
 } else {
   const initialArchitectureDomain = initialView === "architecture" ? getArchitectureHashDomain() : null;
   const initialArchitectureState = initialArchitectureDomain
@@ -2197,12 +2626,14 @@ if (history.state?.view === initialView) {
       view: initialView,
       architecture: initialView === "architecture" ? initialArchitectureState : null,
       research: initialView === "research" ? { subject: null, tabletOpen: false, scrollTop: 0 } : null,
+      journal: initialView === "journal" ? getJournalHashState() : null,
     },
     "",
     location.href,
   );
 
   if (initialView === "architecture") restoreArchitectureHistoryState(initialArchitectureState);
+  if (initialView === "journal") restoreJournalHistoryState(getJournalHashState());
 }
 
 setupArchitectureFigureAnimations();

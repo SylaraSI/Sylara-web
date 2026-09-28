@@ -7,8 +7,8 @@
     <meta name="description" content="Sylara — systems intelligence, architecture, and research." />
     <title>Sylara — Systems Intelligence</title>
     <link rel="preload" as="image" href="assets/redesign/home-network.png" />
-    <link rel="stylesheet" href="styles.css?v=adaptive-domain-3" />
-    <script src="app.js?v=adaptive-domain-3" defer></script>
+    <link rel="stylesheet" href="styles.css?v=journal-skeleton-1" />
+    <script src="app.js?v=journal-skeleton-1" defer></script>
   </head>
   <body data-view="home">
     <a class="skip-link" href="#home-map">Skip to the Sylara map</a>
@@ -30,7 +30,7 @@
           <nav class="route-index" aria-label="Quick navigation">
             <button type="button" data-route="architecture" data-route-mode="direct">Architecture</button>
             <button type="button" data-route="research" data-route-mode="direct">Research</button>
-            <button type="button" data-pending="Journal">Journal</button>
+            <button type="button" data-route="journal" data-route-mode="direct">Journal</button>
             <button type="button" data-pending="About">About</button>
             <button type="button" data-pending="Contact">Contact</button>
           </nav>
@@ -61,10 +61,11 @@
               <span class="node-action">Enter</span>
             </button>
 
-            <button class="map-node map-node--journal" type="button" data-pending="Journal">
+            <button class="map-node map-node--journal" type="button" data-route="journal" data-route-mode="spatial" aria-label="Enter Journal">
               <span class="node-orbit" aria-hidden="true"></span>
               <span class="node-core" aria-hidden="true"></span>
               <span class="node-label">Journal</span>
+              <span class="node-action">Enter</span>
             </button>
 
             <button class="map-node map-node--about" type="button" data-pending="About">
@@ -97,7 +98,7 @@
           <nav class="route-index interior-route-index" aria-label="Primary navigation">
             <button type="button" data-route="architecture" data-route-mode="direct" aria-current="page">Architecture</button>
             <button type="button" data-route="research" data-route-mode="direct">Research</button>
-            <button type="button" data-pending="Journal">Journal</button>
+            <button type="button" data-route="journal" data-route-mode="direct">Journal</button>
             <button type="button" data-pending="About">About</button>
             <button type="button" data-pending="Contact">Contact</button>
           </nav>
@@ -648,7 +649,7 @@
               <section>
                 <h4>Journal</h4>
                 <p>Curated engineering notes and development history will appear here as the Journal is built.</p>
-                <button type="button" data-pending="Journal">Journal connection forthcoming</button>
+                <button type="button" data-route="journal" data-route-mode="direct">Explore the Journal <span aria-hidden="true">→</span></button>
               </section>
             </div>
           </section>
@@ -684,7 +685,7 @@
           <nav class="route-index interior-route-index" aria-label="Primary navigation">
             <button type="button" data-route="architecture" data-route-mode="direct">Architecture</button>
             <button type="button" data-route="research" data-route-mode="direct" aria-current="page">Research</button>
-            <button type="button" data-pending="Journal">Journal</button>
+            <button type="button" data-route="journal" data-route-mode="direct">Journal</button>
             <button type="button" data-pending="About">About</button>
             <button type="button" data-pending="Contact">Contact</button>
           </nav>
@@ -775,6 +776,119 @@
             <p class="tablet-summary" data-tablet-summary></p>
             <div class="tablet-sections" data-tablet-sections></div>
           </div>
+        </aside>
+      </section>
+
+      <section class="scene journal-scene" id="journal" aria-labelledby="journal-title" aria-hidden="true" inert>
+        <div class="journal-field" aria-hidden="true">
+          <span class="journal-field__grid"></span>
+          <span class="journal-field__horizon"></span>
+          <span class="journal-field__signal journal-field__signal--one"></span>
+          <span class="journal-field__signal journal-field__signal--two"></span>
+        </div>
+
+        <header class="journal-header">
+          <img class="wordmark wordmark--small" src="assets/redesign/sylara-wordmark.png" width="4317" height="486" alt="Sylara" />
+
+          <nav class="route-index interior-route-index" aria-label="Primary navigation">
+            <button type="button" data-route="architecture" data-route-mode="direct">Architecture</button>
+            <button type="button" data-route="research" data-route-mode="direct">Research</button>
+            <button type="button" data-route="journal" data-route-mode="direct" aria-current="page">Journal</button>
+            <button type="button" data-pending="About">About</button>
+            <button type="button" data-pending="Contact">Contact</button>
+          </nav>
+
+          <button class="map-return" type="button" data-route="home" data-route-mode="direct"><span aria-hidden="true">←</span> Return to map</button>
+        </header>
+
+        <p class="route-status journal-route-status" data-route-status aria-live="polite"></p>
+
+        <div class="journal-scroll" data-journal-scroll tabindex="-1">
+          <section class="journal-hero" id="journal-archive" aria-describedby="journal-intro">
+            <div class="journal-hero__copy">
+              <p class="journal-eyebrow">A living record / notes from the work</p>
+              <h2 id="journal-title">Journal</h2>
+              <p id="journal-intro">Engineering notes, research questions, field observations, and the histories that shaped Sylara.</p>
+              <a class="journal-enter" href="#journal-index" data-journal-index-link>
+                <span>Open the archive</span>
+                <i aria-hidden="true">↓</i>
+              </a>
+            </div>
+
+          </section>
+
+          <section class="journal-archive" id="journal-index" aria-labelledby="journal-index-title">
+            <header class="journal-archive__header">
+              <div>
+                <p class="journal-eyebrow">Archive index</p>
+                <h3 id="journal-index-title">Work in context.</h3>
+              </div>
+            </header>
+
+            <div class="journal-controls" aria-label="Filter Journal entries">
+              <div class="journal-filter-group" role="group" aria-label="Filter by entry type">
+                <span>Entry type</span>
+                <button type="button" data-journal-category="all" aria-pressed="true">All</button>
+                <button type="button" data-journal-category="engineering" aria-pressed="false">Engineering</button>
+                <button type="button" data-journal-category="research" aria-pressed="false">Research</button>
+                <button type="button" data-journal-category="field-notes" aria-pressed="false">Field notes</button>
+              </div>
+
+              <div class="journal-filter-group journal-filter-group--topics" role="group" aria-label="Filter by topic">
+                <span>Topic</span>
+                <button type="button" data-journal-topic="all" aria-pressed="true">All</button>
+                <button type="button" data-journal-topic="architecture" aria-pressed="false">Architecture</button>
+                <button type="button" data-journal-topic="memory" aria-pressed="false">Memory</button>
+                <button type="button" data-journal-topic="evidence" aria-pressed="false">Evidence</button>
+                <button type="button" data-journal-topic="adaptation" aria-pressed="false">Adaptation</button>
+                <button type="button" data-journal-topic="history" aria-pressed="false">History</button>
+              </div>
+            </div>
+
+            <p class="journal-results" data-journal-results aria-live="polite"></p>
+            <div class="journal-entry-grid" data-journal-entries></div>
+          </section>
+
+          <section class="journal-horizon" aria-labelledby="journal-horizon-title">
+            <p class="journal-eyebrow">Historical runway</p>
+            <h3 id="journal-horizon-title">The story begins before this prototype.</h3>
+            <p>Later passes will return to Track 1 and the earliest Sylara work: not as a polished origin myth, but as a careful account of the obstacles, wrong turns, discoveries, and design pressures that changed the system.</p>
+            <div class="journal-horizon__links">
+              <button type="button" data-route="architecture" data-route-mode="direct">Read the architecture <span aria-hidden="true">→</span></button>
+              <button type="button" data-route="research" data-route-mode="direct">Enter the research field <span aria-hidden="true">→</span></button>
+            </div>
+          </section>
+
+          <footer class="journal-footer">
+            <span>Sylara Technologies</span>
+            <span>Journal / living archive</span>
+          </footer>
+        </div>
+
+        <aside class="journal-reader" data-journal-reader aria-hidden="true" inert>
+          <button class="journal-reader__backdrop" type="button" data-journal-reader-dismiss aria-label="Close Journal entry"></button>
+          <article class="journal-reader__panel" aria-labelledby="journal-reader-title" tabindex="-1">
+            <header class="journal-reader__chrome">
+              <p>Journal / <span data-journal-reader-path>Entry</span></p>
+              <button type="button" data-journal-reader-close><span>Return to archive</span><i aria-hidden="true">×</i></button>
+            </header>
+
+            <div class="journal-reader__scroll" data-journal-reader-scroll>
+              <header class="journal-reader__heading">
+                <div class="journal-entry__meta" data-journal-reader-meta></div>
+                <h2 id="journal-reader-title" data-journal-reader-title></h2>
+                <p data-journal-reader-deck></p>
+              </header>
+
+              <div class="journal-reader__layout">
+                <nav class="journal-reader__toc" aria-label="On this page">
+                  <p>On this page</p>
+                  <ol data-journal-reader-toc></ol>
+                </nav>
+                <div class="journal-reader__body" data-journal-reader-body></div>
+              </div>
+            </div>
+          </article>
         </aside>
       </section>
     </main>
