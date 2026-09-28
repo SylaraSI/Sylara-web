@@ -3,6 +3,7 @@ const homeScene = document.querySelector(".home-scene");
 const architectureScene = document.querySelector(".architecture-scene");
 const researchScene = document.querySelector(".research-scene");
 const journalScene = document.querySelector(".journal-scene");
+const aboutScene = document.querySelector(".about-scene");
 const architectureHeader = document.querySelector(".architecture-header");
 const researchHeader = document.querySelector(".research-header");
 const skipLink = document.querySelector(".skip-link");
@@ -104,6 +105,9 @@ const journalReaderTitle = document.querySelector("[data-journal-reader-title]")
 const journalReaderDeck = document.querySelector("[data-journal-reader-deck]");
 const journalReaderToc = document.querySelector("[data-journal-reader-toc]");
 const journalReaderBody = document.querySelector("[data-journal-reader-body]");
+const aboutScroll = document.querySelector("[data-about-scroll]");
+const aboutScrollTarget = document.querySelector("[data-about-scroll-target]");
+const aboutSteps = [...document.querySelectorAll("[data-about-step]")];
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 const starField = [
@@ -925,6 +929,22 @@ function buildAmbientStars() {
   });
 
   layer.appendChild(fragment);
+}
+
+/* ABOUT REVEALS — content never moves position; chapters only resolve into clarity. */
+function setupAboutReveals() {
+  if (!("IntersectionObserver" in window) || prefersReducedMotion.matches) {
+    aboutSteps.forEach((step) => step.classList.add("is-visible"));
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) entry.target.classList.add("is-visible");
+    });
+  }, { root: aboutScroll, threshold: 0.22, rootMargin: "0px 0px -8%" });
+
+  aboutSteps.forEach((step) => observer.observe(step));
 }
 
 function clearRouteTransition() {
@@ -2188,19 +2208,24 @@ function restoreArchitectureHistoryState(architectureState) {
 }
 
 function setScene(nextView, { updateHistory = true, focusDelay = 760 } = {}) {
-  const validViews = ["home", "architecture", "research", "journal"];
+  const validViews = ["home", "architecture", "research", "journal", "about"];
   const resolvedView = validViews.includes(nextView) ? nextView : "home";
   const isHome = resolvedView === "home";
   const isArchitecture = resolvedView === "architecture";
   const isResearch = resolvedView === "research";
   const isJournal = resolvedView === "journal";
+  const isAbout = resolvedView === "about";
   const wasResearch = body.dataset.view === "research";
   const wasArchitecture = body.dataset.view === "architecture";
   const wasJournal = body.dataset.view === "journal";
+  const wasAbout = body.dataset.view === "about";
 
   if (!isResearch && wasResearch && updateHistory) syncResearchHistoryState();
   if (!isArchitecture && wasArchitecture && updateHistory) syncArchitectureHistoryState();
   if (!isJournal && wasJournal && updateHistory) writeJournalHistory({ replace: true });
+  if (!isAbout && wasAbout && updateHistory) {
+    history.replaceState({ ...history.state, view: "about", about: { scrollTop: aboutScroll.scrollTop } }, "", location.href);
+  }
 
   if (!isArchitecture) closeArchitectureIndexVisual({ restoreFocus: false });
   if (isArchitecture && !wasArchitecture && updateHistory) {
@@ -2213,6 +2238,7 @@ function setScene(nextView, { updateHistory = true, focusDelay = 760 } = {}) {
     journalScroll.scrollTop = 0;
     renderJournalEntries();
   }
+  if (isAbout && !wasAbout && updateHistory) aboutScroll.scrollTop = 0;
 
   body.dataset.view = resolvedView;
 
@@ -2233,10 +2259,12 @@ function setScene(nextView, { updateHistory = true, focusDelay = 760 } = {}) {
   architectureScene.toggleAttribute("inert", !isArchitecture);
   researchScene.toggleAttribute("inert", !isResearch);
   journalScene.toggleAttribute("inert", !isJournal);
+  aboutScene.toggleAttribute("inert", !isAbout);
   homeScene.setAttribute("aria-hidden", String(!isHome));
   architectureScene.setAttribute("aria-hidden", String(!isArchitecture));
   researchScene.setAttribute("aria-hidden", String(!isResearch));
   journalScene.setAttribute("aria-hidden", String(!isJournal));
+  aboutScene.setAttribute("aria-hidden", String(!isAbout));
 
   const skipLinkTargets = {
     home: ["#home-map", "Skip to the Sylara map"],
@@ -2245,6 +2273,7 @@ function setScene(nextView, { updateHistory = true, focusDelay = 760 } = {}) {
       : ["#architecture-domain-map", "Skip to the Architecture map"],
     research: ["#research-title", "Skip to Research"],
     journal: ["#journal-index", "Skip to the Journal archive"],
+    about: ["#about-trajectory", "Skip to the About research trajectory"],
   };
   [skipLink.href, skipLink.textContent] = skipLinkTargets[resolvedView];
 
@@ -2255,6 +2284,7 @@ function setScene(nextView, { updateHistory = true, focusDelay = 760 } = {}) {
         architecture: isArchitecture ? { page: "landing", domain: null, scrollTop: 0, indexOpen: false } : null,
         research: isResearch ? { subject: null, tabletOpen: false, scrollTop: 0 } : null,
         journal: isJournal ? { category: "all", topic: "all", article: null, scrollTop: 0 } : null,
+        about: isAbout ? { scrollTop: 0 } : null,
       },
       "",
       `#${resolvedView}`,
@@ -2268,6 +2298,7 @@ function setScene(nextView, { updateHistory = true, focusDelay = 760 } = {}) {
       architecture: architectureScene.querySelector("[data-route='home']"),
       research: researchScene.querySelector("[data-route='home']"),
       journal: journalScene.querySelector("[data-route='home']"),
+      about: aboutScene.querySelector("[data-route='home']"),
     };
     const focusTarget = focusTargets[resolvedView];
     focusTarget?.focus({ preventScroll: true });
@@ -2277,7 +2308,7 @@ function setScene(nextView, { updateHistory = true, focusDelay = 760 } = {}) {
 function navigateTo(nextView, { mode = "direct", updateHistory = true } = {}) {
   clearRouteTransition();
 
-  const useSpatialTransition = mode === "spatial" && ["architecture", "research", "journal"].includes(nextView) && !prefersReducedMotion.matches;
+  const useSpatialTransition = mode === "spatial" && ["architecture", "research", "journal", "about"].includes(nextView) && !prefersReducedMotion.matches;
 
   if (useSpatialTransition) {
     body.classList.add("is-spatial-transition");
@@ -2316,6 +2347,13 @@ document.querySelectorAll("[data-pending]").forEach((control) => {
     routeStatus.classList.add("is-visible");
     window.clearTimeout(routeStatus.hideTimer);
     routeStatus.hideTimer = window.setTimeout(() => routeStatus.classList.remove("is-visible"), 2800);
+  });
+});
+
+aboutScrollTarget.addEventListener("click", () => {
+  document.querySelector("#about-trajectory").scrollIntoView({
+    behavior: prefersReducedMotion.matches ? "auto" : "smooth",
+    block: "start",
   });
 });
 
@@ -2554,6 +2592,11 @@ window.addEventListener("keydown", (event) => {
     return;
   }
 
+  if (event.key === "Escape" && body.dataset.view === "about") {
+    navigateTo("home");
+    return;
+  }
+
   if (event.key !== "Escape" || body.dataset.view !== "research") return;
 
   if (researchScene.classList.contains("has-tablet")) {
@@ -2576,12 +2619,15 @@ window.addEventListener("popstate", (event) => {
       ? "architecture"
       : hashView === "research"
         ? "research"
-        : hashView.startsWith("journal") ? "journal" : "home");
+        : hashView.startsWith("journal")
+          ? "journal"
+          : hashView === "about" ? "about" : "home");
   navigateTo(nextView, { updateHistory: false });
 
   if (nextView === "research") restoreResearchHistoryState(event.state?.research);
   if (nextView === "architecture") restoreArchitectureHistoryState(event.state?.architecture);
   if (nextView === "journal") restoreJournalHistoryState(event.state?.journal);
+  if (nextView === "about") aboutScroll.scrollTop = event.state?.about?.scrollTop || 0;
 });
 
 if (!prefersReducedMotion.matches) {
@@ -2600,6 +2646,7 @@ if (!prefersReducedMotion.matches) {
 }
 
 buildAmbientStars();
+setupAboutReveals();
 setSubjectVisualState();
 setArchitectureMapState();
 renderJournalEntries();
@@ -2608,13 +2655,16 @@ const initialView = initialHashView.startsWith("architecture")
   ? "architecture"
   : initialHashView === "research"
     ? "research"
-    : initialHashView.startsWith("journal") ? "journal" : "home";
+    : initialHashView.startsWith("journal")
+      ? "journal"
+      : initialHashView === "about" ? "about" : "home";
 setScene(initialView, { updateHistory: false });
 
 if (history.state?.view === initialView) {
   if (initialView === "research") restoreResearchHistoryState(history.state.research);
   if (initialView === "architecture") restoreArchitectureHistoryState(history.state.architecture);
   if (initialView === "journal") restoreJournalHistoryState(history.state.journal);
+  if (initialView === "about") aboutScroll.scrollTop = history.state.about?.scrollTop || 0;
 } else {
   const initialArchitectureDomain = initialView === "architecture" ? getArchitectureHashDomain() : null;
   const initialArchitectureState = initialArchitectureDomain
@@ -2627,6 +2677,7 @@ if (history.state?.view === initialView) {
       architecture: initialView === "architecture" ? initialArchitectureState : null,
       research: initialView === "research" ? { subject: null, tabletOpen: false, scrollTop: 0 } : null,
       journal: initialView === "journal" ? getJournalHashState() : null,
+      about: initialView === "about" ? { scrollTop: 0 } : null,
     },
     "",
     location.href,
