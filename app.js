@@ -21,6 +21,7 @@ const architectureDomainFigureTitle = document.querySelector("[data-domain-figur
 const architectureDomainFigureIntro = document.querySelector("[data-domain-figure-intro]");
 const architectureDomainFigureNodes = [...document.querySelectorAll("[data-domain-figure-node]")];
 const architectureDomainComments = document.querySelector("[data-domain-comments]");
+const architecturePrimaryFigure = document.querySelector("[data-domain-primary-animation]");
 const architectureObservationSections = [...document.querySelectorAll("[data-observation-only]")];
 const architectureObservationBoundaryIntro = document.querySelector("[data-observation-boundary-intro]");
 const architectureObservationBoundaryStages = document.querySelector("[data-observation-boundary-stages]");
@@ -28,7 +29,17 @@ const architectureObservationBoundaryRule = document.querySelector("[data-observ
 const architectureEvidenceFigureTitle = document.querySelector("[data-evidence-figure-title]");
 const architectureEvidenceFigureIntro = document.querySelector("[data-evidence-figure-intro]");
 const architectureEvidenceComments = document.querySelector("[data-evidence-comments]");
+const architectureMemorySections = [...document.querySelectorAll("[data-memory-only]")];
+const architectureMemoryLayerIntro = document.querySelector("[data-memory-layer-intro]");
+const architectureMemoryLayers = document.querySelector("[data-memory-layers]");
+const architectureMemoryLayerRule = document.querySelector("[data-memory-layer-rule]");
+const architectureMemoryViews = document.querySelector("[data-memory-views]");
+const architectureMemoryMaturity = document.querySelector("[data-memory-maturity]");
+const architectureMemoryRevisionTitle = document.querySelector("[data-memory-revision-title]");
+const architectureMemoryRevisionIntro = document.querySelector("[data-memory-revision-intro]");
+const architectureMemoryRevisionComments = document.querySelector("[data-memory-revision-comments]");
 const architectureAnimatedFigures = [...document.querySelectorAll("[data-architecture-animation]")];
+const architecturePlaybackControls = [...document.querySelectorAll("[data-architecture-playback]")];
 const architectureDomainPressures = document.querySelector("[data-domain-pressures]");
 const architectureDomainPressureTitle = document.querySelector("[data-domain-pressures-title]");
 const architectureDomainRelatedResearch = document.querySelector("[data-domain-related-research]");
@@ -91,8 +102,20 @@ const observationDomainSections = [
   ["domain-related", "Related material"],
 ];
 
+/* Memory has two bounded figures plus a static explanation of its layers. */
+const memoryDomainSections = [
+  ["domain-overview", "Overview"],
+  ["domain-system-view", "Continuity beyond the reasoner"],
+  ["domain-memory-layers", "Memory layers"],
+  ["domain-memory-revision", "Revision without erasure"],
+  ["domain-design-pressures", "Why continuity is difficult"],
+  ["domain-related", "Related material"],
+];
+
 function getArchitectureDomainSections(domain = activeArchitectureDomain) {
-  return domain === "observation-provenance" ? observationDomainSections : architectureDomainSections;
+  if (domain === "observation-provenance") return observationDomainSections;
+  if (domain === "memory-continuity") return memoryDomainSections;
+  return architectureDomainSections;
 }
 
 const architectureDomainContent = {
@@ -167,16 +190,90 @@ const architectureDomainContent = {
   "memory-continuity": {
     index: "02",
     title: "Memory & Continuity",
-    summary: "The structures that preserve meaningful state across time while allowing knowledge to age, be challenged, and remain connected to its history.",
-    figureTitle: "Continuity across changing state",
-    figureIntro: "This figure will explain how durable knowledge, temporary working state, and recoverable history remain distinct while still supporting one continuous body of work.",
-    nodes: { input: "Experience", core: "Memory fabric", state: "Historical state", output: "Continuity" },
-    comments: ["Separate working and durable state", "Preserve historical lineage", "Allow revision without erasure", "Recover prior context"],
-    pressures: [
-      "Long-running work needs more than storage. The architecture must preserve why information mattered, when it was valid, and what later evidence changed its standing.",
-      "The final explanation can introduce model-independent continuity and the Memory Fabric while keeping proprietary retention and retrieval mechanisms abstracted.",
+    summary: "Memory & Continuity is the architecture that allows Sylara to persist beyond any individual model invocation. It separates temporary reasoning state from durable experience, preserves how knowledge changes over time, and keeps evidence, uncertainty, and superseded interpretations connected rather than flattening them into a single store.",
+    figureTitle: "Continuity beyond the reasoner",
+    figureIntro: "Models can enter, reason over bounded state, and leave. Sylara's continuity remains in a governed memory substrate that records experience, preserves lineage, and supports later work without making the model itself the owner of long-term state.",
+    nodes: {
+      input: "Ephemeral reasoner",
+      core: "Recorded experience",
+      state: "Memory fabric",
+      output: "Continuing Sylara",
+    },
+    comments: [
+      "A reasoner serves the current task",
+      "Experience is recorded with lineage",
+      "Durable state outlives the session",
+      "Continuity remains model-independent",
     ],
-    relatedResearch: "Connect this domain to research on memory, context aging, historical identity, and continuity across tools or models.",
+    layers: {
+      intro: "Memory is separated by responsibility, not merely by how long information is retained. Each layer answers a different question while remaining connected to the same recoverable history.",
+      items: [
+        {
+          label: "01 / Active",
+          title: "Working memory",
+          body: "Short-lived task state: what is being considered now. It can be tightly bounded and released when the work ends.",
+        },
+        {
+          label: "02 / Recorded",
+          title: "Session memory",
+          body: "A faithful account of what occurred during a session. It preserves history without deciding what that history means.",
+        },
+        {
+          label: "03 / Durable",
+          title: "Episodic memory",
+          body: "Cross-session experiences—investigations, experiments, failures, recoveries, and the conditions surrounding them.",
+        },
+        {
+          label: "04 / Interpreted",
+          title: "Epistemic memory",
+          body: "Claims, models, contradictions, uncertainty, and the evidence posture behind Sylara's current understanding.",
+        },
+      ],
+      views: ["Domain views", "Capability memory", "Self-model"],
+      rule: "Different responsibilities. One continuous, recoverable history.",
+      maturity: [
+        {
+          label: "Present foundation",
+          body: "Identity, time, provenance, session history, and explicit authority establish what can be remembered responsibly.",
+        },
+        {
+          label: "Architecture direction",
+          body: "A shared Memory Fabric connects durable experience, epistemic state, lineage, and governed views across domains.",
+        },
+        {
+          label: "Research frontier",
+          body: "Promotion, consolidation, reconsolidation, and sufficiency remain active questions rather than hidden claims of completion.",
+        },
+      ],
+    },
+    revisionFigureTitle: "Revision without erasure",
+    revisionFigureIntro: "Long-term memory cannot mean that the first interpretation is preserved forever. New evidence may revise the current model while historical evidence and the model it challenged remain recoverable.",
+    revisionComments: [
+      "Historical evidence remains recoverable",
+      "New evidence may challenge the model",
+      "Current understanding changes explicitly",
+      "Superseded models retain lineage",
+    ],
+    pressureHeading: "Why continuity is difficult",
+    pressures: [
+      {
+        title: "Continuity cannot live in the model",
+        body: "A reasoning model may serve one task and disappear. If it owns the history, identity, or working state, continuity disappears with it.",
+      },
+      {
+        title: "Recording is not understanding",
+        body: "A faithful session history says what occurred; it does not independently decide what is authoritative, believed, rejected, or unresolved.",
+      },
+      {
+        title: "Consolidation is not deletion",
+        body: "Many experiences may support one durable model, but reducing redundancy must not erase the evidence, contradictions, or lineage beneath it.",
+      },
+      {
+        title: "Connection must preserve identity",
+        body: "Related patterns may cross domains, but similarly named people, systems, or events must not collapse into the same identity merely because they resemble one another.",
+      },
+    ],
+    relatedResearch: "Research continues the unresolved questions: how memory should consolidate, how knowledge should age, and how continuity can remain coherent across changing tools and models.",
   },
   "context-compilation": {
     index: "03",
@@ -390,6 +487,7 @@ let activeArchitectureSection = "domain-overview";
 let expandedArchitectureIndexDomain = null;
 let architectureIndexReturnFocus = null;
 const architectureFigureTimers = new Map();
+const manuallyPausedArchitectureFigures = new WeakSet();
 let architectureFigureObserver;
 
 function buildAmbientStars() {
@@ -753,8 +851,23 @@ function stopArchitectureFigureAnimation(figure) {
   delete figure.dataset.nextStage;
 }
 
+function updateArchitecturePlaybackControl(figure) {
+  const control = figure.querySelector("[data-architecture-playback]");
+  if (!control) return;
+
+  const isPaused = manuallyPausedArchitectureFigures.has(figure);
+  control.setAttribute("aria-pressed", String(isPaused));
+  control.setAttribute("aria-label", isPaused ? "Play animation" : "Pause animation");
+  control.dataset.tooltip = isPaused ? "Play animation" : "Pause animation";
+  control.classList.toggle("is-paused", isPaused);
+}
+
 function startArchitectureFigureAnimation(figure) {
-  if (prefersReducedMotion.matches || architectureFigureTimers.has(figure)) return;
+  if (
+    prefersReducedMotion.matches
+    || manuallyPausedArchitectureFigures.has(figure)
+    || architectureFigureTimers.has(figure)
+  ) return;
 
   figure.classList.add("is-in-view");
   if (!/^\d$/.test(figure.dataset.stage || "")) figure.dataset.stage = "0";
@@ -764,9 +877,13 @@ function startArchitectureFigureAnimation(figure) {
     Figure 02 needs a longer settled beat so its purple comment marker remains
     synchronized and readable. Figure 01 keeps the quicker continuous rhythm.
   */
-  const isEvidenceFigure = figure.dataset.architectureAnimation === "evidence-boundary";
-  const arrivalHold = isEvidenceFigure ? 900 : 320;
-  const destinationHold = isEvidenceFigure ? 2100 : 900;
+  const figureTiming = {
+    "observation-flow": { arrivalHold: 320, destinationHold: 900 },
+    "evidence-boundary": { arrivalHold: 900, destinationHold: 2100 },
+    "memory-continuity": { arrivalHold: 620, destinationHold: 1450 },
+    "memory-revision": { arrivalHold: 780, destinationHold: 1750 },
+  }[figure.dataset.architectureAnimation] || { arrivalHold: 600, destinationHold: 1200 };
+  const { arrivalHold, destinationHold } = figureTiming;
   const timers = { advance: null, travel: null, reveal: null };
 
   const scheduleTravel = () => {
@@ -805,6 +922,21 @@ function startArchitectureFigureAnimation(figure) {
   scheduleTravel();
 }
 
+function resetArchitectureFigureAnimations() {
+  architectureAnimatedFigures.forEach((figure) => {
+    stopArchitectureFigureAnimation(figure);
+    manuallyPausedArchitectureFigures.delete(figure);
+    figure.classList.remove("is-manually-paused");
+    figure.dataset.stage = prefersReducedMotion.matches ? "static" : "0";
+    updateArchitecturePlaybackControl(figure);
+
+    if (architectureFigureObserver) {
+      architectureFigureObserver.unobserve(figure);
+      architectureFigureObserver.observe(figure);
+    }
+  });
+}
+
 function setupArchitectureFigureAnimations() {
   architectureAnimatedFigures.forEach((figure) => {
     figure.dataset.stage = prefersReducedMotion.matches ? "static" : "0";
@@ -812,6 +944,7 @@ function setupArchitectureFigureAnimations() {
 
   architectureFigureObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
+      entry.target.dataset.inViewport = String(entry.isIntersecting && entry.intersectionRatio >= 0.24);
       if (entry.isIntersecting && entry.intersectionRatio >= 0.24) {
         startArchitectureFigureAnimation(entry.target);
       } else {
@@ -821,6 +954,28 @@ function setupArchitectureFigureAnimations() {
   }, { root: architectureDomainScroll, threshold: [0, 0.24, 0.55] });
 
   architectureAnimatedFigures.forEach((figure) => architectureFigureObserver.observe(figure));
+
+  architecturePlaybackControls.forEach((control) => {
+    const figure = control.closest("[data-architecture-animation]");
+    if (!figure) return;
+    updateArchitecturePlaybackControl(figure);
+
+    control.addEventListener("click", () => {
+      const shouldPause = !manuallyPausedArchitectureFigures.has(figure);
+
+      if (shouldPause) {
+        manuallyPausedArchitectureFigures.add(figure);
+        figure.classList.add("is-manually-paused");
+        stopArchitectureFigureAnimation(figure);
+      } else {
+        manuallyPausedArchitectureFigures.delete(figure);
+        figure.classList.remove("is-manually-paused");
+        if (figure.dataset.inViewport === "true") startArchitectureFigureAnimation(figure);
+      }
+
+      updateArchitecturePlaybackControl(figure);
+    });
+  });
 }
 
 prefersReducedMotion.addEventListener("change", () => {
@@ -844,6 +999,9 @@ function renderArchitectureDomain(domain) {
   activeArchitectureDomain = domain;
   activeArchitectureSection = "domain-overview";
   architectureDomainScroll.dataset.domain = domain;
+  architecturePrimaryFigure.dataset.architectureAnimation = domain === "observation-provenance"
+    ? "observation-flow"
+    : domain === "memory-continuity" ? "memory-continuity" : "generic-flow";
   architectureDomainKicker.textContent = `Architecture domain / ${domainData.index}`;
   architectureDomainTitle.textContent = domainData.title;
   architectureDomainSummary.textContent = domainData.summary;
@@ -865,8 +1023,12 @@ function renderArchitectureDomain(domain) {
   );
 
   const isObservationDomain = domain === "observation-provenance";
+  const isMemoryDomain = domain === "memory-continuity";
   architectureObservationSections.forEach((section) => {
     section.hidden = !isObservationDomain;
+  });
+  architectureMemorySections.forEach((section) => {
+    section.hidden = !isMemoryDomain;
   });
 
   if (isObservationDomain) {
@@ -897,8 +1059,57 @@ function renderArchitectureDomain(domain) {
     );
   }
 
+  if (isMemoryDomain) {
+    architectureMemoryLayerIntro.textContent = domainData.layers.intro;
+    architectureMemoryLayers.replaceChildren(
+      ...domainData.layers.items.map((layer) => {
+        const article = document.createElement("article");
+        const label = document.createElement("p");
+        const heading = document.createElement("h4");
+        const body = document.createElement("p");
+        label.className = "memory-layer__label";
+        label.textContent = layer.label;
+        heading.textContent = layer.title;
+        body.textContent = layer.body;
+        article.append(label, heading, body);
+        return article;
+      }),
+    );
+    architectureMemoryViews.replaceChildren(
+      ...domainData.layers.views.map((view) => {
+        const item = document.createElement("span");
+        item.textContent = view;
+        return item;
+      }),
+    );
+    architectureMemoryLayerRule.textContent = domainData.layers.rule;
+    architectureMemoryMaturity.replaceChildren(
+      ...domainData.layers.maturity.map((item) => {
+        const article = document.createElement("article");
+        const label = document.createElement("p");
+        const body = document.createElement("p");
+        label.textContent = item.label;
+        body.textContent = item.body;
+        article.append(label, body);
+        return article;
+      }),
+    );
+    architectureMemoryRevisionTitle.textContent = domainData.revisionFigureTitle;
+    architectureMemoryRevisionIntro.textContent = domainData.revisionFigureIntro;
+    architectureMemoryRevisionComments.replaceChildren(
+      ...domainData.revisionComments.map((comment) => {
+        const item = document.createElement("li");
+        item.textContent = comment;
+        return item;
+      }),
+    );
+  }
+
   architectureDomainPressureTitle.textContent = domainData.pressureHeading || "Why this part of the architecture exists";
-  architectureDomainPressures.classList.toggle("architecture-domain-copy--turning-points", isObservationDomain);
+  architectureDomainPressures.classList.toggle(
+    "architecture-domain-copy--turning-points",
+    isObservationDomain || isMemoryDomain,
+  );
   architectureDomainPressures.replaceChildren(
     ...domainData.pressures.map((pressure, index) => {
       if (typeof pressure === "string") {
@@ -926,6 +1137,7 @@ function renderArchitectureDomain(domain) {
   architectureScroll.setAttribute("inert", "");
   architectureDomainScroll.setAttribute("aria-hidden", "false");
   architectureDomainScroll.removeAttribute("inert");
+  resetArchitectureFigureAnimations();
   renderArchitectureIndex();
 }
 

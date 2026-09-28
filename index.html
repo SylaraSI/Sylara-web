@@ -7,8 +7,8 @@
     <meta name="description" content="Sylara — systems intelligence, architecture, and research." />
     <title>Sylara — Systems Intelligence</title>
     <link rel="preload" as="image" href="assets/redesign/home-network.png" />
-    <link rel="stylesheet" href="styles.css?v=observation-domain-11" />
-    <script src="app.js?v=observation-domain-11" defer></script>
+    <link rel="stylesheet" href="styles.css?v=memory-domain-2" />
+    <script src="app.js?v=memory-domain-2" defer></script>
   </head>
   <body data-view="home">
     <a class="skip-link" href="#home-map">Skip to the Sylara map</a>
@@ -249,7 +249,7 @@
               <p data-domain-figure-intro></p>
             </header>
 
-            <div class="architecture-figure-layout" data-architecture-animation="observation-flow" data-stage="0">
+            <div class="architecture-figure-layout" data-domain-primary-animation data-architecture-animation="observation-flow" data-stage="0">
               <figure class="architecture-figure" aria-labelledby="domain-figure-caption">
                 <div class="architecture-figure__canvas architecture-figure__canvas--primary" data-domain-figure aria-hidden="true">
                   <!-- Observation context labels are only shown for domain 01. -->
@@ -275,11 +275,20 @@
                       <path class="observation-context-path" d="M304 82 C304 120 304 150 304 174"></path>
                       <path class="observation-context-path" d="M304 338 C304 302 304 270 304 246"></path>
                     </g>
+                    <g class="architecture-figure__paths architecture-figure__paths--memory">
+                      <path d="M112 210 C190 210 224 210 304 210"></path>
+                      <path d="M304 210 C390 210 424 210 510 210"></path>
+                      <path d="M510 210 C590 210 622 210 700 210"></path>
+                    </g>
                   </svg>
                   <span class="architecture-flow-signal architecture-flow-signal--one"></span>
                   <span class="architecture-flow-signal architecture-flow-signal--two"></span>
                   <span class="architecture-flow-signal architecture-flow-signal--three"></span>
                 </div>
+                <button class="architecture-playback" type="button" data-architecture-playback aria-label="Pause animation" aria-pressed="false">
+                  <span class="architecture-playback__pause" aria-hidden="true"></span>
+                  <span class="architecture-playback__play" aria-hidden="true"></span>
+                </button>
                 <figcaption id="domain-figure-caption">Conceptual public architecture — implementation details intentionally abstracted</figcaption>
               </figure>
 
@@ -331,10 +340,75 @@
                   </svg>
                   <span class="evidence-flow-signal"></span>
                 </div>
+                <button class="architecture-playback" type="button" data-architecture-playback aria-label="Pause animation" aria-pressed="false">
+                  <span class="architecture-playback__pause" aria-hidden="true"></span>
+                  <span class="architecture-playback__play" aria-hidden="true"></span>
+                </button>
                 <figcaption id="evidence-figure-caption">Traceability supports judgment; it does not replace it</figcaption>
               </figure>
 
               <ol class="architecture-quick-comments" data-evidence-comments aria-label="Evidence figure notes"></ol>
+            </div>
+          </section>
+
+          <!--
+            MEMORY & CONTINUITY — FUNCTIONAL LAYERS
+            These are conceptual responsibilities, not exposed storage schemas.
+            Layer copy and maturity notes live in the memory-continuity entry.
+          -->
+          <section class="architecture-domain-section memory-layers" id="domain-memory-layers" aria-labelledby="domain-memory-layers-title" data-memory-only hidden>
+            <header class="architecture-domain-section__header">
+              <p class="architecture-section-label">Functional layers</p>
+              <h3 id="domain-memory-layers-title">Memory is not one store</h3>
+              <p data-memory-layer-intro></p>
+            </header>
+            <div class="memory-layer-stack" data-memory-layers></div>
+            <div class="memory-view-strip" aria-label="Governed memory views">
+              <p>Governed views over the shared substrate</p>
+              <div data-memory-views></div>
+            </div>
+            <p class="memory-layer-rule" data-memory-layer-rule></p>
+            <div class="memory-maturity" data-memory-maturity></div>
+          </section>
+
+          <!--
+            MEMORY & CONTINUITY — REVISION WITHOUT ERASURE
+            The signal stays on one straight route. The lower branch keeps the
+            superseded model visible without turning the animation backward.
+          -->
+          <section class="architecture-domain-section architecture-domain-section--figure memory-revision" id="domain-memory-revision" aria-labelledby="domain-memory-revision-title" data-memory-only hidden>
+            <header class="architecture-domain-section__header">
+              <p class="architecture-section-label">Model lineage</p>
+              <h3 id="domain-memory-revision-title" data-memory-revision-title>Revision without erasure</h3>
+              <p data-memory-revision-intro></p>
+            </header>
+
+            <div class="architecture-figure-layout" data-architecture-animation="memory-revision" data-stage="0">
+              <figure class="architecture-figure" aria-labelledby="memory-revision-caption">
+                <div class="architecture-figure__canvas memory-revision__canvas" aria-hidden="true">
+                  <span class="memory-revision__context">New evidence</span>
+                  <span class="memory-revision__node memory-revision__node--history">Historical evidence</span>
+                  <span class="memory-revision__node memory-revision__node--review">Model under review</span>
+                  <span class="memory-revision__node memory-revision__node--revised">Revised model</span>
+                  <span class="memory-revision__node memory-revision__node--continuity">Continuing state</span>
+                  <span class="memory-revision__prior">Prior model <i>lineage retained</i></span>
+                  <svg viewBox="0 0 800 420" preserveAspectRatio="none">
+                    <path d="M112 210 C188 210 226 210 304 210"></path>
+                    <path d="M304 210 C388 210 426 210 510 210"></path>
+                    <path d="M510 210 C592 210 624 210 700 210"></path>
+                    <path class="memory-revision__branch" d="M304 78 C304 112 304 146 304 174"></path>
+                    <path class="memory-revision__branch" d="M510 246 C510 278 510 304 510 334"></path>
+                  </svg>
+                  <span class="memory-revision-signal"></span>
+                </div>
+                <button class="architecture-playback" type="button" data-architecture-playback aria-label="Pause animation" aria-pressed="false">
+                  <span class="architecture-playback__pause" aria-hidden="true"></span>
+                  <span class="architecture-playback__play" aria-hidden="true"></span>
+                </button>
+                <figcaption id="memory-revision-caption">Current understanding may change without rewriting history</figcaption>
+              </figure>
+
+              <ol class="architecture-quick-comments" data-memory-revision-comments aria-label="Revision figure notes"></ol>
             </div>
           </section>
 

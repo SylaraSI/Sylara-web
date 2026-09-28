@@ -2138,6 +2138,7 @@ body.is-direct-transition[data-view="research"] .home-scene {
 }
 
 .architecture-figure {
+  position: relative;
   min-width: 0;
   margin: 0;
 }
@@ -2185,6 +2186,7 @@ body.is-direct-transition[data-view="research"] .home-scene {
 }
 
 .architecture-figure__paths--observation,
+.architecture-figure__paths--memory,
 .observation-context,
 .architecture-flow-signal,
 .evidence-flow-signal { display: none; }
@@ -2269,6 +2271,7 @@ body.is-direct-transition[data-view="research"] .home-scene {
   text-transform: uppercase;
   transform: translate(-50%, -50%);
   box-shadow: inset 0 0 18px rgba(157, 92, 255, 0.045);
+  transition: border-color 280ms ease, box-shadow 280ms ease, color 280ms ease, background 280ms ease;
 }
 
 .architecture-figure__node--input { left: 19%; top: 50%; }
@@ -2284,6 +2287,75 @@ body.is-direct-transition[data-view="research"] .home-scene {
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
+
+/* Shared subdued playback control for each bounded architecture animation. */
+.architecture-playback {
+  position: absolute;
+  z-index: 5;
+  right: 0.8rem;
+  bottom: 2rem;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 1px solid rgba(205, 170, 248, 0.2);
+  border-radius: 50%;
+  background: rgba(10, 8, 15, 0.78);
+  color: rgba(231, 219, 245, 0.58);
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+}
+
+.architecture-playback:hover,
+.architecture-playback:focus-visible {
+  border-color: rgba(205, 170, 248, 0.58);
+  color: rgba(249, 245, 255, 0.94);
+  outline: none;
+}
+
+.architecture-playback::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  right: 2.45rem;
+  top: 50%;
+  width: max-content;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid rgba(202, 164, 250, 0.18);
+  background: rgba(9, 7, 13, 0.94);
+  color: rgba(228, 217, 240, 0.7);
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: 0.45rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(0.25rem, -50%);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.architecture-playback:hover::after,
+.architecture-playback:focus-visible::after { opacity: 1; transform: translate(0, -50%); }
+
+.architecture-playback__pause {
+  width: 0.55rem;
+  height: 0.65rem;
+  border-left: 1px solid currentColor;
+  border-right: 1px solid currentColor;
+}
+
+.architecture-playback__play {
+  display: none;
+  width: 0;
+  height: 0;
+  margin-left: 0.1rem;
+  border-top: 0.34rem solid transparent;
+  border-bottom: 0.34rem solid transparent;
+  border-left: 0.52rem solid currentColor;
+}
+
+.architecture-playback.is-paused .architecture-playback__pause { display: none; }
+.architecture-playback.is-paused .architecture-playback__play { display: block; }
 
 .architecture-quick-comments {
   display: grid;
@@ -2369,6 +2441,26 @@ body.is-direct-transition[data-view="research"] .home-scene {
   transform: translateY(-50%) scale(1);
 }
 
+/*
+  SHARED MODULE ILLUMINATION
+  Every animated Architecture figure now uses the same sequence language:
+  the packet arrives, its module receives a restrained halo, and the matching
+  side-comment marker advances. No inactive module is dimmed or moved.
+*/
+[data-architecture-animation="observation-flow"][data-stage="0"] .architecture-figure__node--input,
+[data-architecture-animation="observation-flow"][data-stage="1"] .architecture-figure__node--core,
+[data-architecture-animation="observation-flow"][data-stage="2"] .architecture-figure__node--state,
+[data-architecture-animation="observation-flow"][data-stage="3"] .architecture-figure__node--output,
+[data-architecture-animation="memory-continuity"][data-stage="0"] .architecture-figure__node--input,
+[data-architecture-animation="memory-continuity"][data-stage="1"] .architecture-figure__node--core,
+[data-architecture-animation="memory-continuity"][data-stage="2"] .architecture-figure__node--state,
+[data-architecture-animation="memory-continuity"][data-stage="3"] .architecture-figure__node--output {
+  border-color: rgba(210, 168, 255, 0.72);
+  background: rgba(30, 22, 42, 0.98);
+  box-shadow: inset 0 0 20px rgba(157, 92, 255, 0.08), 0 0 22px rgba(157, 92, 255, 0.13);
+  color: rgba(250, 246, 255, 0.96);
+}
+
 /* Figure 01 stages move the packet and comment marker; modules stay legible. */
 
 [data-architecture-animation="observation-flow"][data-stage="0"] .architecture-flow-signal { left: 14%; }
@@ -2401,6 +2493,64 @@ body.is-direct-transition[data-view="research"] .home-scene {
 }
 
 [data-architecture-animation="observation-flow"] .observation-context { transition: none; }
+
+/*
+  MEMORY FIGURE 01 — CONTINUITY BEYOND THE REASONER
+  The four cards stay fixed and readable. The packet and active-card halo
+  advance together so the interaction matches every other Architecture figure.
+*/
+.architecture-domain-scroll[data-domain="memory-continuity"] .architecture-figure__paths--generic,
+.architecture-domain-scroll[data-domain="memory-continuity"] .architecture-figure__paths--observation { display: none; }
+.architecture-domain-scroll[data-domain="memory-continuity"] .architecture-figure__paths--memory { display: initial; }
+.architecture-domain-scroll[data-domain="memory-continuity"] .architecture-figure__canvas--primary .architecture-figure__node--input { left: 14%; top: 50%; }
+.architecture-domain-scroll[data-domain="memory-continuity"] .architecture-figure__canvas--primary .architecture-figure__node--core { left: 38%; top: 50%; }
+.architecture-domain-scroll[data-domain="memory-continuity"] .architecture-figure__canvas--primary .architecture-figure__node--state { left: 64%; top: 50%; }
+.architecture-domain-scroll[data-domain="memory-continuity"] .architecture-figure__canvas--primary .architecture-figure__node--output { left: 87%; top: 50%; }
+
+.architecture-domain-scroll[data-domain="memory-continuity"] .architecture-figure__node--input,
+.architecture-domain-scroll[data-domain="memory-continuity"] .architecture-figure__node--output {
+  border-style: dashed;
+  background: rgba(18, 16, 25, 0.9);
+}
+
+.architecture-domain-scroll[data-domain="memory-continuity"] .architecture-flow-signal {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 14%;
+  display: block;
+  width: 0.48rem;
+  height: 0.48rem;
+  border: 1px solid rgba(244, 234, 255, 0.9);
+  border-radius: 50%;
+  background: rgba(224, 205, 251, 0.98);
+  box-shadow: 0 0 8px rgba(246, 237, 255, 0.98), 0 0 18px rgba(178, 117, 255, 0.96), 0 0 34px rgba(157, 92, 255, 0.34);
+  transform: translate(-50%, -50%);
+  transition: left 2400ms linear, opacity 420ms ease, box-shadow 420ms ease;
+}
+
+.architecture-domain-scroll[data-domain="memory-continuity"] .architecture-flow-signal--two,
+.architecture-domain-scroll[data-domain="memory-continuity"] .architecture-flow-signal--three { display: none; }
+
+[data-architecture-animation="memory-continuity"][data-stage="0"] .architecture-flow-signal { left: 14%; }
+[data-architecture-animation="memory-continuity"][data-stage="1"] .architecture-flow-signal { left: 38%; }
+[data-architecture-animation="memory-continuity"][data-stage="2"] .architecture-flow-signal { left: 64%; }
+[data-architecture-animation="memory-continuity"][data-stage="3"] .architecture-flow-signal { left: 87%; }
+[data-architecture-animation="memory-continuity"][data-next-stage="1"] .architecture-flow-signal { left: 38%; }
+[data-architecture-animation="memory-continuity"][data-next-stage="2"] .architecture-flow-signal { left: 64%; }
+[data-architecture-animation="memory-continuity"][data-next-stage="3"] .architecture-flow-signal { left: 87%; }
+[data-architecture-animation="memory-continuity"].is-travelling .architecture-flow-signal {
+  box-shadow: 0 0 10px rgba(250, 244, 255, 1), 0 0 22px rgba(194, 145, 255, 1), 0 0 42px rgba(157, 92, 255, 0.5);
+}
+[data-architecture-animation="memory-continuity"].is-resetting .architecture-flow-signal {
+  opacity: 0;
+  transition: opacity 420ms ease, box-shadow 420ms ease;
+}
+
+[data-architecture-animation="memory-continuity"].is-in-view .architecture-figure__paths--memory path {
+  stroke-dasharray: 7 9;
+  animation: architecture-line-travel 720ms linear infinite;
+}
 
 .architecture-domain-copy {
   display: grid;
@@ -2474,6 +2624,140 @@ body.is-direct-transition[data-view="research"] .home-scene {
   line-height: 1.4;
 }
 
+/*
+  MEMORY LAYERS — QUICK TUNING
+  Cards explain functional responsibility rather than exposing storage shape.
+  The view strip names governed perspectives that cross the shared substrate.
+*/
+.memory-layer-stack {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  margin-top: clamp(3rem, 5vw, 5rem);
+  border: 1px solid rgba(190, 153, 239, 0.13);
+  background: rgba(190, 153, 239, 0.13);
+}
+
+.memory-layer-stack article {
+  position: relative;
+  min-height: 19rem;
+  padding: clamp(1.35rem, 2.5vw, 2.25rem);
+  background:
+    linear-gradient(180deg, rgba(125, 73, 188, 0.09), transparent 42%),
+    rgba(9, 8, 14, 0.97);
+}
+
+.memory-layer-stack article::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(199, 151, 255, 0.7), transparent 72%);
+}
+
+.memory-layer__label {
+  margin: 0 0 3rem;
+  color: rgba(192, 148, 247, 0.58);
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+}
+
+.memory-layer-stack h4 {
+  margin: 0;
+  color: rgba(241, 235, 249, 0.9);
+  font-size: clamp(1rem, 1.55vw, 1.35rem);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+}
+
+.memory-layer-stack article > p:last-child {
+  margin: 1.1rem 0 0;
+  color: rgba(215, 205, 226, 0.58);
+  font-size: clamp(0.82rem, 0.9vw, 0.94rem);
+  font-weight: 300;
+  line-height: 1.8;
+}
+
+.memory-view-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.15rem clamp(1.2rem, 2.5vw, 2.2rem);
+  border: 1px solid rgba(190, 153, 239, 0.13);
+  border-top: 0;
+  background: rgba(12, 10, 18, 0.7);
+}
+
+.memory-view-strip > p {
+  margin: 0;
+  color: rgba(211, 198, 227, 0.46);
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.memory-view-strip > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.6rem;
+}
+
+.memory-view-strip span {
+  padding: 0.4rem 0.55rem;
+  border-left: 1px solid rgba(198, 151, 255, 0.42);
+  color: rgba(228, 218, 239, 0.66);
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: 0.48rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.memory-layer-rule {
+  margin: clamp(2.5rem, 5vw, 5rem) 0 0;
+  padding-left: clamp(1.3rem, 2.5vw, 2.2rem);
+  border-left: 1px solid rgba(195, 145, 255, 0.7);
+  color: rgba(235, 225, 247, 0.82);
+  font-size: clamp(1.3rem, 2.4vw, 2.2rem);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 1.4;
+}
+
+.memory-maturity {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 2rem);
+  margin-top: clamp(3rem, 5vw, 5rem);
+}
+
+.memory-maturity article {
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba(191, 145, 248, 0.24);
+}
+
+.memory-maturity article > p:first-child {
+  margin: 0 0 0.85rem;
+  color: rgba(196, 152, 249, 0.66);
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.memory-maturity article > p:last-child {
+  margin: 0;
+  color: rgba(213, 204, 224, 0.58);
+  font-size: 0.9rem;
+  line-height: 1.75;
+}
+
 /* OBSERVATION FIGURE 02 — evidence can inform state without becoming truth. */
 .evidence-figure__node,
 .evidence-figure__projection {
@@ -2495,6 +2779,7 @@ body.is-direct-transition[data-view="research"] .home-scene {
   text-transform: uppercase;
   transform: translate(-50%, -50%);
   box-shadow: inset 0 0 18px rgba(157, 92, 255, 0.045);
+  transition: border-color 280ms ease, box-shadow 280ms ease, color 280ms ease, background 280ms ease;
 }
 
 .evidence-figure__node--ledger { left: 34%; top: 50%; }
@@ -2596,7 +2881,164 @@ body.is-direct-transition[data-view="research"] .home-scene {
   stroke-dasharray: 2 7;
 }
 
+[data-architecture-animation="evidence-boundary"][data-stage="0"] .evidence-input-stack span {
+  color: rgba(247, 239, 255, 0.94);
+  text-shadow: 0 0 12px rgba(174, 111, 255, 0.38);
+}
+
+[data-architecture-animation="evidence-boundary"][data-stage="0"] .evidence-input-stack span::before {
+  box-shadow: 0 0 10px rgba(222, 191, 255, 0.74), 0 0 20px rgba(157, 92, 255, 0.28);
+}
+
+[data-architecture-animation="evidence-boundary"][data-stage="1"] .evidence-figure__node--ledger,
+[data-architecture-animation="evidence-boundary"][data-stage="2"] .evidence-figure__node--state,
+[data-architecture-animation="evidence-boundary"][data-stage="3"] .evidence-figure__node--belief {
+  border-color: rgba(210, 168, 255, 0.72);
+  background: rgba(30, 22, 42, 0.98);
+  box-shadow: inset 0 0 20px rgba(157, 92, 255, 0.08), 0 0 22px rgba(157, 92, 255, 0.13);
+  color: rgba(250, 246, 255, 0.96);
+}
+
 /* Figure 02 stages move the packet and comment marker; modules stay legible. */
+
+/*
+  MEMORY FIGURE 02 — REVISION WITHOUT ERASURE
+  Keep the active packet on one straight path. The vertical branches show the
+  incoming challenge and retained prior model without making the packet wander.
+*/
+.memory-revision__node,
+.memory-revision__prior {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: clamp(6.4rem, 11.5vw, 9.5rem);
+  min-height: 4.8rem;
+  padding: 0.75rem;
+  border: 1px solid rgba(211, 180, 249, 0.42);
+  background: rgba(22, 17, 31, 0.95);
+  color: rgba(241, 234, 249, 0.88);
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: clamp(0.44rem, 0.58vw, 0.58rem);
+  letter-spacing: 0.11em;
+  line-height: 1.5;
+  text-align: center;
+  text-transform: uppercase;
+  transform: translate(-50%, -50%);
+  transition: border-color 280ms ease, box-shadow 280ms ease, color 280ms ease;
+}
+
+.memory-revision__node--history { left: 14%; top: 50%; }
+.memory-revision__node--review { left: 38%; top: 50%; }
+.memory-revision__node--revised { left: 64%; top: 50%; }
+.memory-revision__node--continuity { left: 87%; top: 50%; }
+
+.memory-revision__context {
+  position: absolute;
+  z-index: 2;
+  left: 38%;
+  top: 17%;
+  color: rgba(230, 217, 245, 0.76);
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: clamp(0.46rem, 0.58vw, 0.56rem);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transform: translate(-50%, -50%);
+}
+
+.memory-revision__context::before {
+  content: "";
+  display: inline-block;
+  width: 0.34rem;
+  height: 0.34rem;
+  margin-right: 0.45rem;
+  border-radius: 50%;
+  background: rgba(202, 158, 255, 0.8);
+  box-shadow: 0 0 9px rgba(167, 100, 250, 0.54);
+  vertical-align: 0.08rem;
+}
+
+.memory-revision__prior {
+  left: 64%;
+  top: 82%;
+  min-height: 3.7rem;
+  border-style: dashed;
+  color: rgba(224, 211, 238, 0.72);
+}
+
+.memory-revision__prior i {
+  display: block;
+  color: rgba(204, 189, 220, 0.52);
+  font-size: 0.42rem;
+  font-style: normal;
+}
+
+.memory-revision__canvas path {
+  stroke-dasharray: 6 9;
+}
+
+.memory-revision__canvas .memory-revision__branch {
+  stroke: rgba(194, 154, 240, 0.38);
+  stroke-dasharray: 2 8;
+}
+
+[data-architecture-animation="memory-revision"].is-in-view .memory-revision__canvas path {
+  animation: architecture-line-travel 760ms linear infinite;
+}
+
+[data-architecture-animation="memory-revision"].is-in-view .memory-revision__canvas .memory-revision__branch {
+  animation-duration: 1300ms;
+}
+
+.memory-revision-signal {
+  position: absolute;
+  z-index: 1;
+  left: 14%;
+  top: 50%;
+  width: 0.48rem;
+  height: 0.48rem;
+  border: 1px solid rgba(244, 234, 255, 0.9);
+  border-radius: 50%;
+  background: rgba(224, 205, 251, 0.98);
+  box-shadow: 0 0 8px rgba(246, 237, 255, 0.98), 0 0 18px rgba(178, 117, 255, 0.96), 0 0 34px rgba(157, 92, 255, 0.34);
+  transform: translate(-50%, -50%);
+  transition: left 2400ms linear, opacity 420ms ease, box-shadow 420ms ease;
+}
+
+[data-architecture-animation="memory-revision"][data-stage="0"] .memory-revision-signal { left: 14%; }
+[data-architecture-animation="memory-revision"][data-stage="1"] .memory-revision-signal { left: 38%; }
+[data-architecture-animation="memory-revision"][data-stage="2"] .memory-revision-signal { left: 64%; }
+[data-architecture-animation="memory-revision"][data-stage="3"] .memory-revision-signal { left: 87%; }
+[data-architecture-animation="memory-revision"][data-next-stage="1"] .memory-revision-signal { left: 38%; }
+[data-architecture-animation="memory-revision"][data-next-stage="2"] .memory-revision-signal { left: 64%; }
+[data-architecture-animation="memory-revision"][data-next-stage="3"] .memory-revision-signal { left: 87%; }
+[data-architecture-animation="memory-revision"].is-travelling .memory-revision-signal {
+  box-shadow: 0 0 10px rgba(250, 244, 255, 1), 0 0 22px rgba(194, 145, 255, 1), 0 0 42px rgba(157, 92, 255, 0.5);
+}
+[data-architecture-animation="memory-revision"].is-resetting .memory-revision-signal {
+  opacity: 0;
+  transition: opacity 420ms ease, box-shadow 420ms ease;
+}
+
+/* Active stages add a halo; no component is dimmed or moved. */
+[data-architecture-animation="memory-revision"][data-stage="0"] .memory-revision__node--history,
+[data-architecture-animation="memory-revision"][data-stage="1"] .memory-revision__node--review,
+[data-architecture-animation="memory-revision"][data-stage="2"] .memory-revision__node--revised,
+[data-architecture-animation="memory-revision"][data-stage="3"] .memory-revision__node--continuity {
+  border-color: rgba(210, 168, 255, 0.72);
+  box-shadow: inset 0 0 20px rgba(157, 92, 255, 0.08), 0 0 22px rgba(157, 92, 255, 0.13);
+  color: rgba(250, 246, 255, 0.96);
+}
+
+[data-architecture-animation="memory-revision"][data-stage="1"] .memory-revision__context,
+[data-architecture-animation="memory-revision"][data-stage="3"] .memory-revision__prior {
+  color: rgba(244, 233, 255, 0.9);
+}
+
+[data-architecture-animation="memory-revision"][data-stage="3"] .memory-revision__prior {
+  border-color: rgba(210, 168, 255, 0.58);
+  box-shadow: inset 0 0 18px rgba(157, 92, 255, 0.06), 0 0 18px rgba(157, 92, 255, 0.1);
+}
 
 .architecture-domain-copy--turning-points {
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2635,11 +3077,14 @@ body.is-direct-transition[data-view="research"] .home-scene {
 
 [data-architecture-animation][data-stage="static"] .architecture-quick-comments li::before,
 [data-architecture-animation][data-stage="static"] .architecture-flow-signal,
-[data-architecture-animation][data-stage="static"] .evidence-flow-signal { display: none; }
+[data-architecture-animation][data-stage="static"] .evidence-flow-signal,
+[data-architecture-animation][data-stage="static"] .memory-revision-signal { display: none; }
 
 [data-architecture-animation][data-stage="static"] .architecture-figure__node,
 [data-architecture-animation][data-stage="static"] .evidence-figure__node,
-[data-architecture-animation][data-stage="static"] .evidence-figure__projection {
+[data-architecture-animation][data-stage="static"] .evidence-figure__projection,
+[data-architecture-animation][data-stage="static"] .memory-revision__node,
+[data-architecture-animation][data-stage="static"] .memory-revision__prior {
   border-color: rgba(211, 180, 249, 0.44);
   color: rgba(241, 234, 249, 0.9);
 }
@@ -3301,7 +3746,9 @@ body.is-direct-transition[data-view="research"] .home-scene {
 
   .architecture-figure-layout,
   .architecture-domain-copy,
-  .architecture-related-grid {
+  .architecture-related-grid,
+  .memory-layer-stack,
+  .memory-maturity {
     grid-template-columns: 1fr;
   }
 
@@ -3311,6 +3758,20 @@ body.is-direct-transition[data-view="research"] .home-scene {
   .architecture-quick-comments li { min-height: 2.75rem; font-size: 0.56rem; }
   .architecture-domain-copy { gap: 1.5rem; }
   .architecture-related-grid p { min-height: 0; }
+
+  .memory-layer-stack article { min-height: 0; }
+  .memory-layer__label { margin-bottom: 2rem; }
+  .memory-view-strip { align-items: flex-start; flex-direction: column; }
+  .memory-view-strip > div { justify-content: flex-start; }
+  .architecture-domain-scroll[data-domain="memory-continuity"] .architecture-figure__canvas--primary .architecture-figure__node {
+    width: 5.05rem;
+    padding: 0.45rem;
+    font-size: 0.39rem;
+    letter-spacing: 0.08em;
+  }
+  .memory-revision__node { width: 5.05rem; min-height: 4.3rem; padding: 0.42rem; font-size: 0.38rem; letter-spacing: 0.07em; }
+  .memory-revision__prior { width: 5.3rem; min-height: 3.1rem; padding: 0.4rem; font-size: 0.38rem; }
+  .memory-revision__context { font-size: 0.38rem; letter-spacing: 0.08em; }
 
   .observation-boundary-stages,
   .architecture-domain-copy--turning-points { grid-template-columns: 1fr; }
@@ -3354,7 +3815,11 @@ body.is-direct-transition[data-view="research"] .home-scene {
   .subject-orb__glyph,
   .projection-base::after,
   .architecture-flow-signal,
-  .evidence-figure__canvas path { animation: none !important; }
+  .evidence-figure__canvas path,
+  .architecture-figure__paths--memory path,
+  .memory-revision__canvas path { animation: none !important; }
+
+  .architecture-playback { display: none; }
 
   .globe-transit { opacity: 0 !important; }
   .ambient-stars i { opacity: 0.24; }
