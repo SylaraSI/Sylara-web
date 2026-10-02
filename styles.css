@@ -5817,7 +5817,7 @@ body.is-direct-transition[data-view="contact"] .home-scene {
   */
   .subject-controls {
     left: 50%;
-    top: 27.5%;
+    top: 25%;
     width: min(23rem, calc(100vw - 1.5rem));
     height: auto;
     aspect-ratio: auto;
