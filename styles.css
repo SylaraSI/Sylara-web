@@ -5782,6 +5782,11 @@ body.is-direct-transition[data-view="contact"] .home-scene {
   .map-node--journal { left: 24%; top: 64%; }
   .map-node--about { left: 70%; top: 70%; }
   .map-node--contact { left: 84%; top: 22%; }
+  body.is-spatial-transition[data-transition-target="architecture"] .map-node--architecture,
+  body.is-spatial-transition[data-transition-target="research"] .map-node--research,
+  body.is-spatial-transition[data-transition-target="contact"] .map-node--contact {
+    transform: translate(calc(-50% - 2.75rem), -50%) scale(var(--node-scale));
+  }
   .route-status { left: 1rem; right: 1rem; bottom: 3.6rem; text-align: center; }
 
   /* MOBILE RESEARCH HEADER — compact enough for 320px screens, but still easy to tap. */
