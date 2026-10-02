@@ -250,7 +250,7 @@ body[data-view="contact"] .contact-scene {
   z-index: 4;
   top: clamp(12.5rem, 31vh, 21rem);
   left: clamp(1.4rem, 4vw, 4.25rem);
-  width: min(32rem, 40vw);
+  width: min(48rem, 48vw);
   padding: clamp(1.15rem, 1.55vw, 1.6rem);
   border: 1px solid rgba(218, 195, 255, 0.12);
   border-radius: clamp(0.85rem, 1.25vw, 1.1rem);
@@ -267,23 +267,30 @@ body[data-view="contact"] .contact-scene {
 }
 
 .home-intro h1 {
-  max-width: 15ch;
+  max-width: none;
   margin: 0;
   color: rgba(250, 248, 255, 0.98);
-  font-size: clamp(2.1rem, 3.25vw, 3.6rem);
+  font-size: clamp(1.25rem, 2.1vw, 2.2rem);
   font-weight: 300;
-  letter-spacing: -0.045em;
-  line-height: 0.98;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  hyphens: none;
+  overflow-wrap: normal;
+  white-space: nowrap;
+  word-break: normal;
 }
 
 .home-intro__summary {
-  max-width: 29rem;
+  max-width: 39rem;
   margin: 1.1rem 0 0;
   color: rgba(235, 226, 249, 0.72);
   font-size: clamp(0.82rem, 1.03vw, 1rem);
   font-weight: 300;
   letter-spacing: 0.015em;
   line-height: 1.7;
+  hyphens: none;
+  overflow-wrap: normal;
+  word-break: normal;
 }
 
 .site-header {
@@ -5762,9 +5769,10 @@ body.is-direct-transition[data-view="contact"] .home-scene {
   .site-header { grid-template-columns: minmax(9rem, 12rem) 1fr; }
   .route-index { display: none; }
   .brand-subtitle { margin-top: 0.45rem; font-size: 0.64rem; letter-spacing: 0.2em; }
-  .home-intro { top: 20%; width: min(14.1rem, 58vw); padding: 0.85rem 0.9rem; }
-  .home-intro h1 { font-size: clamp(1.4rem, 6vw, 1.85rem); line-height: 1.02; }
-  .home-intro__summary { margin-top: 0.8rem; font-size: 0.76rem; line-height: 1.55; }
+  .home-intro { top: 20%; left: 1rem; width: min(12.5rem, 50vw); padding: 0.78rem 0.82rem; }
+  .home-intro h1 { font-size: clamp(1.05rem, 4.4vw, 1.4rem); line-height: 1.08; white-space: normal; }
+  .home-intro h1 span { display: block; }
+  .home-intro__summary { margin-top: 0.72rem; font-size: 0.72rem; line-height: 1.48; }
   .map-axis { width: 54vw; }
   .map-node { min-width: 7.7rem; padding: 0.7rem; column-gap: 0.65rem; }
   .node-orbit, .node-core { left: 1.45rem; }

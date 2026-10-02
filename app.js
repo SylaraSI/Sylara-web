@@ -2265,7 +2265,7 @@ function restoreArchitectureHistoryState(architectureState) {
   });
 }
 
-function setScene(nextView, { updateHistory = true, focusDelay = 760 } = {}) {
+function setScene(nextView, { updateHistory = true, focusDelay = 760, focusSceneEntry = true } = {}) {
   const validViews = ["home", "architecture", "research", "journal", "about", "contact"];
   const resolvedView = validViews.includes(nextView) ? nextView : "home";
   const isHome = resolvedView === "home";
@@ -2367,18 +2367,20 @@ function setScene(nextView, { updateHistory = true, focusDelay = 760 } = {}) {
   }
 
   window.clearTimeout(focusTimer);
-  focusTimer = window.setTimeout(() => {
-    const focusTargets = {
-      home: homeScene.querySelector(".map-node--architecture"),
-      architecture: architectureScene.querySelector("[data-route='home']"),
-      research: researchScene.querySelector("[data-route='home']"),
-      journal: journalScene.querySelector("[data-route='home']"),
-      about: aboutScene.querySelector("[data-route='home']"),
-      contact: contactScene.querySelector("[data-route='home']"),
-    };
-    const focusTarget = focusTargets[resolvedView];
-    focusTarget?.focus({ preventScroll: true });
-  }, prefersReducedMotion.matches ? 0 : focusDelay);
+  if (focusSceneEntry) {
+    focusTimer = window.setTimeout(() => {
+      const focusTargets = {
+        home: homeScene.querySelector(".map-node--architecture"),
+        architecture: architectureScene.querySelector("[data-route='home']"),
+        research: researchScene.querySelector("[data-route='home']"),
+        journal: journalScene.querySelector("[data-route='home']"),
+        about: aboutScene.querySelector("[data-route='home']"),
+        contact: contactScene.querySelector("[data-route='home']"),
+      };
+      const focusTarget = focusTargets[resolvedView];
+      focusTarget?.focus({ preventScroll: true });
+    }, prefersReducedMotion.matches ? 0 : focusDelay);
+  }
 }
 
 function navigateTo(nextView, { mode = "direct", updateHistory = true } = {}) {
@@ -2752,7 +2754,7 @@ const initialView = initialHashView.startsWith("architecture")
       : initialHashView === "about"
         ? "about"
         : initialHashView === "contact" ? "contact" : "home";
-setScene(initialView, { updateHistory: false });
+setScene(initialView, { updateHistory: false, focusSceneEntry: false });
 
 if (history.state?.view === initialView) {
   if (initialView === "research") restoreResearchHistoryState(history.state.research);
