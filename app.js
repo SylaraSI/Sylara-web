@@ -693,33 +693,38 @@ function buildRelatedSkeleton() {
 /* PROTOTYPE TABLET COPY — content can be refined without changing the panel system. */
 const researchSubjects = {
   foundations: {
-    title: "Foundations",
-    domain: "Core models",
-    summary: "The primitives, boundaries, and definitions beneath every Sylara system.",
+    title: "Foundations of Continuity",
+    domain: "Core Models",
+    summary: "What has to remain intact for intelligent work to continue across sessions, models, tools, failures, and time?",
     sections: [
       {
         title: "Overview",
-        body: "Foundations examines the assumptions that make complex systems understandable: what exists, what remains invariant, and where authority begins and ends.",
+        body: "Persistent intelligence requires more than remembering previous information. A continuing system has to preserve the identity of what happened, distinguish recorded events from later interpretations, and know which state can still be relied upon as conditions change.\n\nThe questions underneath that continuity reach into identity, occurrence, time, authority, state, and change.",
       },
       {
         title: "Enduring Questions",
         items: [
-          "Which invariants must survive every implementation change?",
-          "Where should ambiguity remain visible instead of being silently resolved?",
+          "When does continuing work remain the same investigation, and when has a new occurrence begun?",
+          "What must survive when the model performing the reasoning is replaced, restarted, or given different context?",
+          "How should observation, evidence, interpretation, decision, and authority remain distinct while still participating in one history?",
+          "What does it actually mean for a system to continue, rather than merely remember?",
         ],
       },
       {
         title: "Currently Exploring",
         items: [
-          "Formal boundaries for long-lived reasoning work.",
-          "Interfaces between human intent, machine action, and verifiable evidence.",
+          "A common ontology for observations, occurrences, evidence, hypotheses, commands, results, failures, and decisions.",
+          "How event time, observation time, processing time, and state-transition time should coexist without being collapsed into one timestamp.",
+          "Boundaries between temporary reasoning, governed system state, and the authority to change that state.",
+          "Identity rules that prevent a familiar condition from being mistaken for the same occurrence simply because it looks similar.",
         ],
       },
       {
-        title: "Resolved / Advanced",
+        title: "Findings So Far",
         items: [
-          "Expose assumptions before asserting conclusions.",
-          "Keep architectural authority explicit and traceable.",
+          "Continuity is not memory.\nA system can retain information and still lose the identity and relationships that made that information meaningful.",
+          "Similarity does not establish identity.\nThe same condition can occur twice while representing two different events with different evidence, history, and consequences.",
+          "History and authority are different things.\nPreserving a previous conclusion does not require treating that conclusion as presently true.",
         ],
       },
       buildRelatedSkeleton(),
@@ -727,32 +732,40 @@ const researchSubjects = {
   },
   "memory-context": {
     title: "Memory & Context",
-    domain: "Continuity",
-    summary: "How an intelligent system preserves meaning across time, tools, and changing conditions.",
+    domain: "Continuity Infrastructure",
+    summary: "How can an intelligent system preserve enough of its past to continue meaningful work without carrying its entire history into every new reasoning step?",
     sections: [
       {
         title: "Overview",
-        body: "Memory is treated as governed continuity rather than simple storage: a record of what matters, why it matters, and how confidently it may be reused.",
+        body: "Long-term memory and active context solve different problems. Memory has to preserve what happened, what was learned, what failed, what remains unresolved, and how those records changed over time. Context has to decide what part of that history is actually useful now.\n\nThe challenge is making those systems work together without turning retrieval into noise, temporary reasoning into permanent knowledge, or missing context into lost continuity.",
       },
       {
         title: "Enduring Questions",
         items: [
-          "What deserves to persist, and who decides?",
-          "How should context age, weaken, or be superseded without disappearing?",
+          "What should become durable memory, and what should remain temporary working state?",
+          "How can an unfinished investigation become relevant again when new evidence appears weeks or months later?",
+          "How much historical context does a reasoner actually need before additional information begins to reduce rather than improve understanding?",
+          "How should context expand when the system discovers that the information it was initially given is insufficient?",
+          "How should unresolved analyses, abandoned hypotheses, failed approaches, and pending work remain available without dominating every future task?",
         ],
       },
       {
         title: "Currently Exploring",
         items: [
-          "Layered memory across conversations, projects, and institutions.",
-          "Context retrieval that preserves provenance and uncertainty.",
+          "Layered memory that separates immediate working state, recorded experience, durable episodes, and evolving knowledge.",
+          "A context compiler that assembles minimum-sufficient context for the current task instead of simply retrieving everything related to it.",
+          "Rules for promoting information into durable memory while retaining provenance, uncertainty, and the reason it was preserved.",
+          "Mechanisms for reconnecting new evidence with older unresolved questions, failed experiments, and suspended work.",
+          "Representations for pending analysis so a planner can continue useful work while deeper examination is still underway.",
         ],
       },
       {
-        title: "Resolved / Advanced",
+        title: "Findings So Far",
         items: [
-          "Separate durable knowledge from temporary working state.",
-          "Preserve the origin and authority of remembered information.",
+          "Memory and context are not the same thing.\nA system may remember something without needing it in the current reasoning window.",
+          "Durable does not mean true.\nSomething can deserve preservation because it happened, influenced a decision, or remains unresolved without becoming an accepted fact.",
+          "More context is not automatically better context.\nContinuity depends on preserving access to history while still selecting what matters for the present problem.",
+          "Shared state does not require shared context.\nMultiple reasoners can participate in the same continuing system while receiving different views of the underlying history according to the work they are performing.",
         ],
       },
       buildRelatedSkeleton(),
@@ -760,32 +773,43 @@ const researchSubjects = {
   },
   "reasoning-evidence": {
     title: "Reasoning & Evidence",
-    domain: "Assurance",
-    summary: "Making conclusions inspectable by keeping claims connected to their supporting evidence.",
+    domain: "Epistemic Assurance",
+    summary: "How can an intelligent system continue reasoning when evidence is incomplete, contradictory, delayed, or unavailable without turning uncertainty into certainty simply because an answer is expected?",
     sections: [
       {
         title: "Overview",
-        body: "This subject explores reasoning that can explain its own limits: evidence is attributable, conclusions remain challengeable, and missing proof stays visible.",
+        body: "Useful reasoning rarely begins with complete information. Evidence can arrive from different sources, disagree with itself, become outdated, or expose questions that were not visible when an investigation began.\n\nThe work here focuses on forming hypotheses, testing explanations, identifying what is still missing, and revising understanding without separating a conclusion from the evidence that supports it.",
       },
       {
         title: "Enduring Questions",
         items: [
-          "What evidence is sufficient for a specific decision?",
-          "How should a system distinguish uncertainty from failure?",
+          "What constitutes sufficient evidence for a particular conclusion, decision, or next action?",
+          "How should the system distinguish false, unsupported, unresolved, unknown, and currently unverifiable?",
+          "When should contradictory evidence weaken a hypothesis, suspend it, split the investigation, or trigger a search for another explanation?",
+          "How can evidence gathered by different tools, workers, and reasoning sessions remain part of one inspectable chain?",
+          "When an investigation fails, what should be learned from the failure without turning one unsuccessful attempt into a universal rule?",
+          "How should the system recognize that the most important result of a reasoning step is sometimes a newly discovered question rather than an answer?",
         ],
       },
       {
         title: "Currently Exploring",
         items: [
-          "Evidence chains that remain intact across tools and agents.",
-          "Reasoning interfaces that reveal gaps without overwhelming the reader.",
+          "Explicit hypothesis lifecycles that preserve proposed explanations, supporting evidence, contradictions, assumptions, tests, and unresolved dependencies.",
+          "Knowledge-gap detection that can identify what the system would need to know before a stronger conclusion becomes justified.",
+          "Evidence structures that preserve provenance and allow later reasoning to distinguish direct observations from derived interpretations.",
+          "Ways to retain anomalies, failed experiments, and negative results so they can become useful when later evidence changes the surrounding picture.",
+          "Verification across multiple reasoning processes without allowing agreement between models to substitute for independent evidence.",
+          "Priority mechanisms for deeper analysis when several unresolved questions compete for limited time or compute.",
         ],
       },
       {
-        title: "Resolved / Advanced",
+        title: "Findings So Far",
         items: [
-          "Readiness, execution, and proof are distinct states.",
-          "Unavailable evidence cannot be converted into a substantive verdict.",
+          "Absence of evidence is not evidence of absence.\nUnavailable, unresolved, and known-empty evidence must remain different states.",
+          "A hypothesis is not a belief simply because it is useful.\nThe system should be able to explore an explanation aggressively without silently promoting it into accepted state.",
+          "Failure is information, not prohibition.\nA failed approach should preserve the conditions, assumptions, and reason for failure so later work can determine whether those conditions still apply.",
+          "Contradiction should remain visible.\nConflicting evidence is often the beginning of a better question. Simply choosing one side can destroy the information that matters most.",
+          "Sometimes the correct result is that the evidence is insufficient.\nA reasoning system should be capable of reaching that state deliberately instead of manufacturing confidence to complete the task.",
         ],
       },
       buildRelatedSkeleton(),
@@ -793,32 +817,46 @@ const researchSubjects = {
   },
   "adaptive-systems": {
     title: "Adaptive Systems",
-    domain: "Evolution",
-    summary: "Systems that can change with their environment without losing identity, control, or accountability.",
+    domain: "Governed Evolution",
+    summary: "How can an intelligent system change its plans, behavior, tools, and internal models as conditions evolve without losing control of what it is becoming?",
     sections: [
       {
         title: "Overview",
-        body: "Adaptation is explored as bounded evolution: the system may learn and reorganize, while its commitments, permissions, and evidence remain governable.",
+        body: "A persistent intelligent system cannot remain static. New evidence arrives, assumptions fail, environments change, tools become unavailable, models are replaced, and long-running investigations expose problems that were invisible when they began.\n\nThe problem is how Sylara responds to those changes without allowing adaptation to become uncontrolled drift. Change should be something the system can recognize, propose, evaluate, recover from, and explain afterward.",
       },
       {
         title: "Enduring Questions",
         items: [
           "Which changes may happen autonomously, and which require renewed authority?",
-          "How can adaptation remain reversible and observable?",
+          "How should the system distinguish useful adaptation from gradual drift away from its original constraints or objectives?",
+          "When new evidence undermines an active investigation, should the system revise the current plan, suspend it, fork a competing line of inquiry, or abandon it?",
+          "How can multiple workers adapt their own local strategies while still participating in one coherent system?",
+          "What must remain invariant when models, tools, representations, or execution environments are replaced?",
+          "How should a system learn from failure without allowing one failure to permanently constrain situations that only appear similar?",
+          "When adaptation produces a worse state, what must have been preserved for meaningful recovery to remain possible?",
+          "How much autonomy can a system gain while keeping its actions observable, interruptible, and attributable?",
         ],
       },
       {
         title: "Currently Exploring",
         items: [
-          "Feedback loops that improve behavior without hiding drift.",
-          "Graceful degradation and recovery under changing constraints.",
+          "Durable task and investigation state that survives beyond the reasoning process currently working on it.",
+          "Evidence-triggered replanning, where new information can reopen, suspend, redirect, or reprioritize ongoing work.",
+          "Bounded worker and child-reasoning lanes that can pursue different problems without silently diverging from shared system state.",
+          "Explicit transitions from proposal to authorization, command, action, and result, keeping the ability to reason about change separate from permission to perform it.",
+          "Checkpoints and telemetry that preserve not only where work currently stands, but what the system believes it is doing and how stable that understanding is.",
+          "Recovery mechanisms that preserve failed paths, abandoned assumptions, anomalies, and prior states instead of simply replacing them with the latest result.",
+          "Ways for the underlying reasoning model to change without making the model itself the identity or long-term authority of the system.",
         ],
       },
       {
-        title: "Resolved / Advanced",
+        title: "Findings So Far",
         items: [
-          "Adaptation must not silently broaden authority.",
-          "State changes should preserve a clear path to inspection and rollback.",
+          "Adaptation is not authority.\nA system may recognize a better course of action without automatically gaining permission to take it.",
+          "Change without lineage is drift.\nIf the system cannot reconstruct what changed, why it changed, and what evidence supported the transition, improvement and corruption become difficult to distinguish.",
+          "Continuity does not require the components to remain identical.\nModels, tools, workers, and representations can change while the continuing system remains anchored in governed state and recoverable history.",
+          "Recovery is part of adaptation, not merely a response to failure.\nA system capable of meaningful change must also preserve enough structure to reverse, revise, or branch from that change when later evidence demands it.",
+          "Autonomy is not the absence of boundaries.\nUseful autonomy depends on knowing where independent action is permitted, where escalation is required, and how the consequences of both remain visible afterward.",
         ],
       },
       buildRelatedSkeleton(),
