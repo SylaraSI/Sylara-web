@@ -116,7 +116,7 @@ body[data-view="contact"] .contact-scene {
 }
 
 /* The head bootstrap resolves supported hashes before deferred JavaScript runs. */
-html:not([data-initial-view="home"]) body[data-view="home"] .home-scene {
+html[data-initial-view]:not([data-initial-view="home"]) body[data-view="home"] .home-scene {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;

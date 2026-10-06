@@ -19,11 +19,45 @@
                 ? "about"
                 : hash === "contact" ? "contact" : "home";
         document.documentElement.dataset.initialView = view;
+
+        const releaseInitialRoute = ({ recover = false } = {}) => {
+          if (!document.body) return;
+
+          if (recover) {
+            const sceneSelectors = {
+              home: ".home-scene",
+              architecture: ".architecture-scene",
+              research: ".research-scene",
+              journal: ".journal-scene",
+              about: ".about-scene",
+              contact: ".contact-scene",
+            };
+
+            document.body.dataset.view = view;
+            Object.entries(sceneSelectors).forEach(([sceneView, selector]) => {
+              const scene = document.querySelector(selector);
+              if (!scene) return;
+              const isCurrent = sceneView === view;
+              scene.toggleAttribute("inert", !isCurrent);
+              scene.setAttribute("aria-hidden", String(!isCurrent));
+            });
+          }
+
+          document.body.dataset.routeReady = "true";
+          window.requestAnimationFrame(() => delete document.documentElement.dataset.initialView);
+        };
+
+        window.__sylaraReleaseInitialRoute = releaseInitialRoute;
+        window.addEventListener("DOMContentLoaded", () => {
+          if (document.body.dataset.routeReady === "true") return;
+          console.error("[Sylara] Application initialization did not release the initial route. Using the prepaint route fallback.");
+          releaseInitialRoute({ recover: true });
+        }, { once: true });
       })();
     </script>
     <link rel="preload" as="image" href="assets/redesign/home-network.png" />
-    <link rel="stylesheet" href="styles.css?v=architecture-atlas-5" />
-    <script src="app.js?v=architecture-atlas-5" defer></script>
+    <link rel="stylesheet" href="styles.css?v=startup-safety-1" />
+    <script src="app.js?v=startup-safety-1" defer></script>
   </head>
   <body data-view="home">
     <a class="skip-link" href="#home-map">Skip to the Sylara map</a>

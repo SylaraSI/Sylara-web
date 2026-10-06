@@ -19,7 +19,7 @@ const atlasStatus = document.querySelector("[data-atlas-status]");
 const atlasIndexList = document.querySelector("[data-atlas-index-list]");
 const atlasIndexToggle = document.querySelector("[data-atlas-index-toggle]");
 const atlasIndexOverlay = document.querySelector("[data-atlas-index-overlay]");
-const atlasIndexOverlayPanel = atlasIndexOverlay.querySelector(".atlas-index-overlay__panel");
+const atlasIndexOverlayPanel = atlasIndexOverlay?.querySelector(".atlas-index-overlay__panel") || null;
 const atlasIndexOverlayList = document.querySelector("[data-atlas-index-overlay-list]");
 const atlasIndexDismiss = document.querySelector("[data-atlas-index-dismiss]");
 const atlasIndexClose = document.querySelector("[data-atlas-index-close]");
@@ -1173,6 +1173,7 @@ let atlasDrawFrame = null;
 let atlasPathHideTimer = null;
 let atlasIndexReturnFocus = null;
 let atlasIndexScrollPosition = 0;
+let isSystemAtlasReady = false;
 let activeJournalCategory = "all";
 let activeJournalTopic = "all";
 let activeJournalArticle = null;
@@ -1837,6 +1838,8 @@ function describeAtlasSystem(system) {
 }
 
 function setActiveAtlasSystem(systemId = null, { announce = true } = {}) {
+  if (!isSystemAtlasReady) return;
+
   const nextSystem = systemId ? atlasSystemsById.get(systemId) : null;
   activeAtlasSystem = nextSystem?.id || null;
 
@@ -1947,6 +1950,8 @@ function routeAtlasPath(start, end, sourceBox, targetBox, avatarBox, canvasBox, 
 }
 
 function hideAtlasRelationships() {
+  if (!isSystemAtlasReady) return;
+
   window.clearTimeout(atlasPathHideTimer);
   atlasRelationships.classList.remove("is-visible");
   if (prefersReducedMotion.matches) {
@@ -1957,6 +1962,8 @@ function hideAtlasRelationships() {
 }
 
 function drawAtlasRelationships() {
+  if (!isSystemAtlasReady) return;
+
   window.clearTimeout(atlasPathHideTimer);
   if (!activeAtlasSystem || body.dataset.view !== "architecture" || architectureScene.dataset.architectureView !== "landing") {
     hideAtlasRelationships();
@@ -2000,11 +2007,14 @@ function drawAtlasRelationships() {
 }
 
 function scheduleAtlasRelationships() {
+  if (!isSystemAtlasReady) return;
+
   window.cancelAnimationFrame(atlasDrawFrame);
   atlasDrawFrame = window.requestAnimationFrame(drawAtlasRelationships);
 }
 
 function openAtlasIndex() {
+  if (!isSystemAtlasReady) return;
   if (architectureScene.dataset.architectureView !== "landing" || architectureScene.classList.contains("has-atlas-index")) return;
   atlasIndexReturnFocus = atlasIndexToggle;
   atlasIndexScrollPosition = architectureScroll.scrollTop;
@@ -2018,6 +2028,7 @@ function openAtlasIndex() {
 }
 
 function closeAtlasIndex({ restoreFocus = true } = {}) {
+  if (!isSystemAtlasReady) return;
   if (!architectureScene.classList.contains("has-atlas-index")) return;
   architectureScene.classList.remove("has-atlas-index");
   atlasIndexOverlay.setAttribute("aria-hidden", "true");
@@ -2031,6 +2042,25 @@ function closeAtlasIndex({ restoreFocus = true } = {}) {
 }
 
 function setupSystemAtlas() {
+  const requiredElements = [
+    ["canvas", atlasCanvas],
+    ["node layer", atlasNodeLayer],
+    ["relationships layer", atlasRelationships],
+    ["central identity", atlasIdentity],
+    ["status region", atlasStatus],
+    ["desktop index", atlasIndexList],
+    ["index toggle", atlasIndexToggle],
+    ["index overlay", atlasIndexOverlay],
+    ["index overlay panel", atlasIndexOverlayPanel],
+    ["index overlay list", atlasIndexOverlayList],
+    ["index dismiss control", atlasIndexDismiss],
+    ["index close control", atlasIndexClose],
+  ];
+  const missingElements = requiredElements.filter(([, element]) => !element).map(([name]) => name);
+  if (missingElements.length) {
+    throw new Error(`System Atlas markup is incomplete. Missing: ${missingElements.join(", ")}.`);
+  }
+
   renderSystemAtlas();
 
   atlasNodes.forEach((node) => {
@@ -2076,9 +2106,45 @@ function setupSystemAtlas() {
     if (atlasMobileMedia.matches) setActiveAtlasSystem(null);
   });
 
-  const atlasResizeObserver = new ResizeObserver(scheduleAtlasRelationships);
-  atlasResizeObserver.observe(atlasCanvas);
-  atlasNodes.forEach((node) => atlasResizeObserver.observe(node));
+  atlasIndexToggle.addEventListener("click", openAtlasIndex);
+  atlasIndexDismiss.addEventListener("click", () => closeAtlasIndex());
+  atlasIndexClose.addEventListener("click", () => closeAtlasIndex());
+
+  atlasIndexOverlay.addEventListener("keydown", (event) => {
+    if (!architectureScene.classList.contains("has-atlas-index")) return;
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeAtlasIndex();
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const focusable = [atlasIndexClose, ...atlasIndexOverlayList.querySelectorAll("a[href]")];
+    const currentIndex = focusable.indexOf(document.activeElement);
+    if (event.shiftKey && currentIndex <= 0) {
+      event.preventDefault();
+      focusable[focusable.length - 1]?.focus();
+    } else if (!event.shiftKey && currentIndex === focusable.length - 1) {
+      event.preventDefault();
+      focusable[0]?.focus();
+    }
+  });
+
+  atlasMobileMedia.addEventListener("change", () => {
+    setActiveAtlasSystem(null, { announce: false });
+    scheduleAtlasRelationships();
+  });
+
+  const atlasResizeObserver = typeof ResizeObserver === "function"
+    ? new ResizeObserver(scheduleAtlasRelationships)
+    : null;
+  isSystemAtlasReady = true;
+
+  if (atlasResizeObserver) {
+    atlasResizeObserver.observe(atlasCanvas);
+    atlasNodes.forEach((node) => atlasResizeObserver.observe(node));
+  } else {
+    window.addEventListener("resize", scheduleAtlasRelationships, { passive: true });
+  }
 }
 
 /*
@@ -2992,29 +3058,6 @@ architectureOverviewControl.addEventListener("click", () => {
   showArchitectureLanding({ updateHistory: true, scrollTop: 0 });
 });
 
-atlasIndexToggle.addEventListener("click", openAtlasIndex);
-atlasIndexDismiss.addEventListener("click", () => closeAtlasIndex());
-atlasIndexClose.addEventListener("click", () => closeAtlasIndex());
-
-atlasIndexOverlay.addEventListener("keydown", (event) => {
-  if (!architectureScene.classList.contains("has-atlas-index")) return;
-  if (event.key === "Escape") {
-    event.preventDefault();
-    closeAtlasIndex();
-    return;
-  }
-  if (event.key !== "Tab") return;
-  const focusable = [atlasIndexClose, ...atlasIndexOverlayList.querySelectorAll("a[href]")];
-  const currentIndex = focusable.indexOf(document.activeElement);
-  if (event.shiftKey && currentIndex <= 0) {
-    event.preventDefault();
-    focusable[focusable.length - 1]?.focus();
-  } else if (!event.shiftKey && currentIndex === focusable.length - 1) {
-    event.preventDefault();
-    focusable[0]?.focus();
-  }
-});
-
 architectureIndexToggle.addEventListener("click", () => openArchitectureIndex());
 architectureIndexDismiss.addEventListener("click", () => closeArchitectureIndex());
 architectureIndexClose.addEventListener("click", () => closeArchitectureIndex());
@@ -3224,11 +3267,6 @@ window.addEventListener("resize", () => {
   if (window.innerWidth > 1100) closeAtlasIndex({ restoreFocus: false });
 });
 
-atlasMobileMedia.addEventListener("change", () => {
-  setActiveAtlasSystem(null, { announce: false });
-  scheduleAtlasRelationships();
-});
-
 window.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && body.dataset.view === "architecture" && architectureScene.classList.contains("has-atlas-index")) {
     closeAtlasIndex();
@@ -3310,12 +3348,14 @@ if (!prefersReducedMotion.matches) {
   }, { passive: true });
 }
 
-buildAmbientStars();
-setupAboutReveals();
-setContactChannel("research");
-setSubjectVisualState();
-setupSystemAtlas();
-renderJournalEntries();
+function initializeSubsystem(name, initializer) {
+  try {
+    initializer();
+  } catch (error) {
+    console.error(`[Sylara] ${name} initialization failed.`, error);
+  }
+}
+
 const initialHashView = location.hash.slice(1);
 const initialView = initialHashView.startsWith("architecture")
   ? "architecture"
@@ -3326,40 +3366,58 @@ const initialView = initialHashView.startsWith("architecture")
       : initialHashView === "about"
         ? "about"
     : initialHashView === "contact" ? "contact" : "home";
-setScene(initialView, { updateHistory: false, focusSceneEntry: false });
+let initialRouteFailed = false;
 
-if (history.state?.view === initialView) {
-  if (initialView === "research") restoreResearchHistoryState(history.state.research);
-  if (initialView === "architecture") restoreArchitectureHistoryState(history.state.architecture);
-  if (initialView === "journal") restoreJournalHistoryState(history.state.journal);
-  if (initialView === "about") aboutScroll.scrollTop = history.state.about?.scrollTop || 0;
-  if (initialView === "contact") {
-    setContactChannel(history.state.contact?.channel);
-    contactScroll.scrollTop = history.state.contact?.scrollTop || 0;
+try {
+  setScene(initialView, { updateHistory: false, focusSceneEntry: false });
+
+  if (history.state?.view === initialView) {
+    if (initialView === "research") restoreResearchHistoryState(history.state.research);
+    if (initialView === "architecture") restoreArchitectureHistoryState(history.state.architecture);
+    if (initialView === "journal") restoreJournalHistoryState(history.state.journal);
+    if (initialView === "about") aboutScroll.scrollTop = history.state.about?.scrollTop || 0;
+    if (initialView === "contact") {
+      setContactChannel(history.state.contact?.channel);
+      contactScroll.scrollTop = history.state.contact?.scrollTop || 0;
+    }
+  } else {
+    const initialArchitectureDomain = initialView === "architecture" ? getArchitectureHashDomain() : null;
+    const initialArchitectureState = initialArchitectureDomain
+      ? { page: "domain", domain: initialArchitectureDomain, scrollTop: 0, indexOpen: false }
+      : { page: "landing", domain: null, scrollTop: 0, indexOpen: false };
+
+    history.replaceState(
+      {
+        view: initialView,
+        architecture: initialView === "architecture" ? initialArchitectureState : null,
+        research: initialView === "research" ? { subject: null, tabletOpen: false, scrollTop: 0 } : null,
+        journal: initialView === "journal" ? getJournalHashState() : null,
+        about: initialView === "about" ? { scrollTop: 0 } : null,
+        contact: initialView === "contact" ? { scrollTop: 0, channel: "research" } : null,
+      },
+      "",
+      location.href,
+    );
+
+    if (initialView === "architecture") restoreArchitectureHistoryState(initialArchitectureState);
+    if (initialView === "journal") restoreJournalHistoryState(getJournalHashState());
   }
-} else {
-  const initialArchitectureDomain = initialView === "architecture" ? getArchitectureHashDomain() : null;
-  const initialArchitectureState = initialArchitectureDomain
-    ? { page: "domain", domain: initialArchitectureDomain, scrollTop: 0, indexOpen: false }
-    : { page: "landing", domain: null, scrollTop: 0, indexOpen: false };
-
-  history.replaceState(
-    {
-      view: initialView,
-      architecture: initialView === "architecture" ? initialArchitectureState : null,
-      research: initialView === "research" ? { subject: null, tabletOpen: false, scrollTop: 0 } : null,
-      journal: initialView === "journal" ? getJournalHashState() : null,
-      about: initialView === "about" ? { scrollTop: 0 } : null,
-      contact: initialView === "contact" ? { scrollTop: 0, channel: "research" } : null,
-    },
-    "",
-    location.href,
-  );
-
-  if (initialView === "architecture") restoreArchitectureHistoryState(initialArchitectureState);
-  if (initialView === "journal") restoreJournalHistoryState(getJournalHashState());
+} catch (error) {
+  initialRouteFailed = true;
+  console.error("[Sylara] Initial route initialization failed.", error);
+} finally {
+  if (typeof window.__sylaraReleaseInitialRoute === "function") {
+    window.__sylaraReleaseInitialRoute({ recover: initialRouteFailed });
+  } else {
+    body.dataset.routeReady = "true";
+    window.requestAnimationFrame(() => delete document.documentElement.dataset.initialView);
+  }
 }
 
-body.dataset.routeReady = "true";
-window.requestAnimationFrame(() => delete document.documentElement.dataset.initialView);
-setupArchitectureFigureAnimations();
+initializeSubsystem("ambient background", buildAmbientStars);
+initializeSubsystem("About page", setupAboutReveals);
+initializeSubsystem("Contact page", () => setContactChannel(activeContactChannel));
+initializeSubsystem("Research page", () => setSubjectVisualState(activeSubject ? "active" : "neutral", activeSubject));
+initializeSubsystem("System Atlas", setupSystemAtlas);
+initializeSubsystem("Journal page", renderJournalEntries);
+initializeSubsystem("Architecture figures", setupArchitectureFigureAnimations);
