@@ -6,9 +6,24 @@
     <meta name="theme-color" content="#05030a" />
     <meta name="description" content="Sylara — systems intelligence, architecture, and research." />
     <title>Sylara — Systems Intelligence</title>
+    <script>
+      (() => {
+        const hash = location.hash.slice(1);
+        const view = hash.startsWith("architecture")
+          ? "architecture"
+          : hash === "research"
+            ? "research"
+            : hash.startsWith("journal")
+              ? "journal"
+              : hash === "about"
+                ? "about"
+                : hash === "contact" ? "contact" : "home";
+        document.documentElement.dataset.initialView = view;
+      })();
+    </script>
     <link rel="preload" as="image" href="assets/redesign/home-network.png" />
-    <link rel="stylesheet" href="styles.css?v=mobile-home-transition-1" />
-    <script src="app.js?v=51409dc" defer></script>
+    <link rel="stylesheet" href="styles.css?v=architecture-atlas-5" />
+    <script src="app.js?v=architecture-atlas-5" defer></script>
   </head>
   <body data-view="home">
     <a class="skip-link" href="#home-map">Skip to the Sylara map</a>
@@ -111,118 +126,73 @@
         <p class="route-status architecture-route-status" data-route-status aria-live="polite"></p>
 
         <div class="architecture-scroll" data-architecture-scroll tabindex="-1">
-          <section class="architecture-hero" aria-describedby="architecture-intro">
-            <div class="architecture-heading">
-              <p class="architecture-kicker">System architecture / public map</p>
+          <section class="architecture-opening" aria-describedby="architecture-intro">
+            <div class="architecture-opening__copy">
+              <p class="architecture-opening__eyebrow">OBSERVING. INTERPRETING. EVOLVING.</p>
               <h2 id="architecture-title">Architecture</h2>
-              <p id="architecture-intro">A structural view of how Sylara preserves continuity, compiles context, and keeps reasoning connected to evidence.</p>
+              <div id="architecture-intro" class="architecture-opening__body">
+                <p>Sylara is built as a layered system for maintaining continuity, evidence, identity, state, reasoning, and authority across long-running work.</p>
+                <p>Its architecture separates observation, provenance, lifecycle state, runtime execution, memory, temporal semantics, cognition, research orchestration, and operator-facing surfaces into distinct responsibility and authority boundaries. Those boundaries determine what information means, where it came from, what may change it, what may persist, and what may become authoritative.</p>
+                <p>This section documents Sylara as it exists today. It covers implemented systems, governing contracts, cross-layer relationships, active development, known limitations, and architecture that has been defined but is not yet operational.</p>
+                <p>The architecture presented here is a living technical view of Sylara. As the platform changes, this representation changes with it.</p>
+              </div>
             </div>
-
-            <!--
-              ARCHITECTURE DOMAIN MAP
-              Position each module in styles.css. Keep the graph static at rest;
-              JavaScript adds brightness only for hover and keyboard focus.
-            -->
-            <nav class="architecture-map" id="architecture-domain-map" data-architecture-map aria-label="Architecture domains">
-              <svg class="architecture-map__relations" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden="true">
-                <line data-relation data-from="observation-provenance" data-to="memory-continuity" x1="500" y1="90" x2="190" y2="255"></line>
-                <line data-relation data-from="observation-provenance" data-to="reasoning-verification" x1="500" y1="90" x2="810" y2="255"></line>
-                <line data-relation data-from="observation-provenance" data-to="context-compilation" x1="500" y1="90" x2="500" y2="305"></line>
-                <line data-relation data-from="memory-continuity" data-to="context-compilation" x1="190" y1="255" x2="500" y2="305"></line>
-                <line data-relation data-from="context-compilation" data-to="reasoning-verification" x1="500" y1="305" x2="810" y2="255"></line>
-                <line data-relation data-from="memory-continuity" data-to="adaptive-systems" x1="190" y1="255" x2="500" y2="515"></line>
-                <line data-relation data-from="context-compilation" data-to="adaptive-systems" x1="500" y1="305" x2="500" y2="515"></line>
-                <line data-relation data-from="reasoning-verification" data-to="adaptive-systems" x1="810" y1="255" x2="500" y2="515"></line>
-              </svg>
-
-              <button class="architecture-domain architecture-domain--observation" type="button" data-domain="observation-provenance">
-                <span class="architecture-domain__index">01</span>
-                <span>Observation <i>&amp;</i> Provenance</span>
-              </button>
-              <button class="architecture-domain architecture-domain--memory" type="button" data-domain="memory-continuity">
-                <span class="architecture-domain__index">02</span>
-                <span>Memory <i>&amp;</i> Continuity</span>
-              </button>
-              <button class="architecture-domain architecture-domain--context" type="button" data-domain="context-compilation">
-                <span class="architecture-domain__index">03</span>
-                <span>Context Compilation</span>
-              </button>
-              <button class="architecture-domain architecture-domain--reasoning" type="button" data-domain="reasoning-verification">
-                <span class="architecture-domain__index">04</span>
-                <span>Reasoning <i>&amp;</i> Verification</span>
-              </button>
-              <button class="architecture-domain architecture-domain--adaptive" type="button" data-domain="adaptive-systems">
-                <span class="architecture-domain__index">05</span>
-                <span>Adaptive Systems</span>
-              </button>
-
-              <p class="architecture-map__status" data-architecture-status aria-live="polite">Select a domain to enter its dedicated architecture page.</p>
-            </nav>
-
-            <a class="architecture-scroll-cue" href="#architecture-biography" data-architecture-scroll-target>
-              <span>Architectural biography</span>
-              <i aria-hidden="true">↓</i>
-            </a>
           </section>
 
-          <!--
-            ARCHITECTURAL BIOGRAPHY SKELETON
-            Replace copy inside these sections without changing page structure.
-          -->
-          <article class="architecture-biography" id="architecture-biography">
-            <header class="architecture-biography__intro">
-              <p class="architecture-section-label">Orientation</p>
-              <h3>A system shaped by the need to remember responsibly.</h3>
-              <p>Sylara begins with a structural question: how can an intelligent system continue complex work over time without losing the evidence, boundaries, and decisions that make its reasoning trustworthy?</p>
+          <section class="system-atlas" id="architecture-system-atlas" aria-labelledby="system-atlas-title">
+            <header class="system-atlas__header">
+              <div>
+                <p class="architecture-section-label">Architecture / public systems</p>
+                <h3 id="system-atlas-title">SYSTEM ATLAS</h3>
+              </div>
+              <button class="atlas-index-toggle" type="button" data-atlas-index-toggle aria-controls="atlas-index" aria-expanded="false">
+                <span class="atlas-index-toggle__mark" aria-hidden="true"></span>
+                <span>ATLAS</span>
+              </button>
             </header>
 
-            <section class="architecture-chapter" id="architecture-continuity">
-              <div class="architecture-chapter__number" aria-hidden="true">01</div>
-              <div class="architecture-chapter__body">
-                <p class="architecture-section-label">Design pressure</p>
-                <h3>Continuity without flattening uncertainty</h3>
-                <p>This section is reserved for the architectural consequences of long-running work: what must persist, what must remain revisable, and how historical state stays recoverable.</p>
-                <aside class="architecture-aside">
-                  <strong>Content note</strong>
-                  <p>Add the final public-safe explanation here without changing the surrounding layout.</p>
-                </aside>
-              </div>
-            </section>
+            <div class="system-atlas__layout">
+              <aside class="atlas-index" aria-label="System Atlas index">
+                <p class="atlas-index__title">ATLAS INDEX</p>
+                <div class="atlas-index__list" data-atlas-index-list></div>
+              </aside>
 
-            <section class="architecture-chapter" id="architecture-context">
-              <div class="architecture-chapter__number" aria-hidden="true">02</div>
-              <div class="architecture-chapter__body">
-                <p class="architecture-section-label">System shape</p>
-                <h3>Context must be compiled, not merely collected</h3>
-                <p>This section holds the narrative for minimum-sufficient context, provenance-aware retrieval, and the boundaries between durable knowledge and temporary working state.</p>
+              <div class="atlas-canvas" data-atlas-canvas role="group" aria-label="Ten top-level Sylara systems. Focus a system to inspect its relationships.">
+                <div class="atlas-canvas__geometry" aria-hidden="true">
+                  <span></span><span></span><span></span>
+                </div>
+                <svg class="atlas-relationships" data-atlas-relationships aria-hidden="true"></svg>
+                <div class="atlas-node-layer" data-atlas-node-layer></div>
+                <div class="atlas-identity" data-atlas-identity aria-label="Sylara unified platform">
+                  <span class="atlas-identity__orbit atlas-identity__orbit--outer" aria-hidden="true"></span>
+                  <span class="atlas-identity__orbit atlas-identity__orbit--inner" aria-hidden="true"></span>
+                  <img class="atlas-identity__avatar" src="images/sylara-avatar.png" width="1448" height="1086" alt="Sylara" />
+                  <img class="atlas-identity__wordmark" src="assets/redesign/sylara-wordmark.png" width="4317" height="486" alt="" aria-hidden="true" />
+                </div>
+                <p class="visually-hidden" data-atlas-status aria-live="polite"></p>
               </div>
-            </section>
-
-            <section class="architecture-chapter" id="architecture-authority">
-              <div class="architecture-chapter__number" aria-hidden="true">03</div>
-              <div class="architecture-chapter__body">
-                <p class="architecture-section-label">Structural principle</p>
-                <h3>Authority remains explicit and bounded</h3>
-                <p>This section is ready for the story of how verification, reversibility, attribution, and clear execution boundaries became structural requirements rather than afterthoughts.</p>
-              </div>
-            </section>
-          </article>
-
-          <section class="architecture-handoff" aria-labelledby="architecture-handoff-title">
-            <p class="architecture-section-label">Beyond the present architecture</p>
-            <h3 id="architecture-handoff-title">The structure supports a larger field of questions.</h3>
-            <p>The architecture describes what Sylara is building now. Research examines the questions that remain open—and what persistent intelligence may make possible next.</p>
-            <button type="button" data-route="research" data-route-mode="direct">
-              <span>Explore the research</span>
-              <i aria-hidden="true">→</i>
-            </button>
+            </div>
           </section>
 
           <footer class="architecture-footer">
             <span>Sylara Technologies</span>
-            <span>Architecture / public overview</span>
+            <span>Architecture / System Atlas</span>
           </footer>
         </div>
+
+        <aside class="atlas-index-overlay" id="atlas-index" data-atlas-index-overlay aria-hidden="true" inert>
+          <button class="atlas-index-overlay__backdrop" type="button" data-atlas-index-dismiss aria-label="Close Atlas index"></button>
+          <nav class="atlas-index-overlay__panel" aria-label="System Atlas index" tabindex="-1">
+            <header>
+              <p>ATLAS</p>
+              <button type="button" data-atlas-index-close aria-label="Close Atlas index">
+                <span>Close</span>
+                <span aria-hidden="true">×</span>
+              </button>
+            </header>
+            <div class="atlas-index-overlay__list" data-atlas-index-overlay-list></div>
+          </nav>
+        </aside>
 
         <!--
           SHARED ARCHITECTURE DOMAIN PAGE

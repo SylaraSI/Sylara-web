@@ -11,11 +11,18 @@ const skipLink = document.querySelector(".skip-link");
 const routeStatuses = [...document.querySelectorAll("[data-route-status]")];
 const architectureScroll = document.querySelector("[data-architecture-scroll]");
 const architectureDomainScroll = document.querySelector("[data-architecture-domain-scroll]");
-const architectureMap = document.querySelector("[data-architecture-map]");
-const architectureDomains = [...document.querySelectorAll("[data-domain]")];
-const architectureRelations = [...document.querySelectorAll("[data-relation]")];
-const architectureStatus = document.querySelector("[data-architecture-status]");
-const architectureScrollTarget = document.querySelector("[data-architecture-scroll-target]");
+const atlasCanvas = document.querySelector("[data-atlas-canvas]");
+const atlasNodeLayer = document.querySelector("[data-atlas-node-layer]");
+const atlasRelationships = document.querySelector("[data-atlas-relationships]");
+const atlasIdentity = document.querySelector("[data-atlas-identity]");
+const atlasStatus = document.querySelector("[data-atlas-status]");
+const atlasIndexList = document.querySelector("[data-atlas-index-list]");
+const atlasIndexToggle = document.querySelector("[data-atlas-index-toggle]");
+const atlasIndexOverlay = document.querySelector("[data-atlas-index-overlay]");
+const atlasIndexOverlayPanel = atlasIndexOverlay.querySelector(".atlas-index-overlay__panel");
+const atlasIndexOverlayList = document.querySelector("[data-atlas-index-overlay-list]");
+const atlasIndexDismiss = document.querySelector("[data-atlas-index-dismiss]");
+const atlasIndexClose = document.querySelector("[data-atlas-index-close]");
 const architectureOverviewControl = document.querySelector("[data-architecture-overview]");
 const architectureDomainTitle = document.querySelector("[data-domain-title]");
 const architectureDomainKicker = document.querySelector("[data-domain-kicker]");
@@ -117,6 +124,7 @@ const contactDetailCopy = document.querySelector("[data-contact-detail-copy]");
 const contactDetailEmail = document.querySelector("[data-contact-detail-email]");
 const contactDetailAddress = document.querySelector("[data-contact-detail-address]");
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+const atlasMobileMedia = window.matchMedia("(max-width: 760px)");
 const researchTabletMobileMedia = window.matchMedia(
   "(max-width: 760px), (max-height: 590px) and (orientation: landscape) and (max-width: 960px)",
 );
@@ -159,6 +167,179 @@ const contactChannelContent = {
 let activeContactChannel = "research";
 
 const subjectOrder = ["foundations", "memory-context", "reasoning-evidence", "adaptive-systems"];
+
+/*
+  HOME SYSTEM ATLAS
+  This is the single structural source for cards, indexes, relationship paths,
+  and future route activation. A null route is intentionally inspectable only.
+*/
+const atlasSystems = [
+  {
+    id: "system-foundation",
+    number: "01",
+    title: "System & Foundation",
+    accent: "#D8C4FF",
+    glyph: "foundation",
+    route: null,
+    position: { x: 50, y: 8 },
+    mobile: { column: 1, row: 1 },
+    relationships: {
+      input: [],
+      shared: ["ingress-observation", "identity-state-lifecycle", "trust-evidence-provenance", "runtime-execution-resources", "memory-persistence", "time-temporal-semantics", "cognition-meaning-epistemic", "research-orchestration", "models-operator-surfaces"],
+      output: [],
+    },
+  },
+  {
+    id: "ingress-observation",
+    number: "02",
+    title: "Ingress & Observation",
+    accent: "#9EDBFF",
+    glyph: "observation",
+    route: null,
+    position: { x: 72, y: 13 },
+    mobile: { column: 2, row: 1 },
+    relationships: {
+      input: ["time-temporal-semantics"],
+      shared: ["system-foundation", "identity-state-lifecycle", "trust-evidence-provenance", "runtime-execution-resources"],
+      output: ["memory-persistence", "cognition-meaning-epistemic"],
+    },
+  },
+  {
+    id: "identity-state-lifecycle",
+    number: "03",
+    title: "Identity, State & Lifecycle",
+    accent: "#B8ACFF",
+    glyph: "identity",
+    route: null,
+    position: { x: 88, y: 31 },
+    mobile: { column: 1, row: 2 },
+    relationships: {
+      input: [],
+      shared: ["system-foundation", "ingress-observation", "trust-evidence-provenance", "runtime-execution-resources", "time-temporal-semantics"],
+      output: ["memory-persistence", "cognition-meaning-epistemic", "research-orchestration"],
+    },
+  },
+  {
+    id: "trust-evidence-provenance",
+    number: "04",
+    title: "Trust, Evidence & Provenance",
+    accent: "#91CFC5",
+    glyph: "provenance",
+    route: null,
+    position: { x: 90, y: 58 },
+    mobile: { column: 2, row: 2 },
+    relationships: {
+      input: ["time-temporal-semantics"],
+      shared: ["system-foundation", "ingress-observation", "identity-state-lifecycle", "research-orchestration"],
+      output: ["runtime-execution-resources", "memory-persistence", "cognition-meaning-epistemic"],
+    },
+  },
+  {
+    id: "runtime-execution-resources",
+    number: "05",
+    title: "Runtime, Execution & Resources",
+    accent: "#9D5CFF",
+    glyph: "runtime",
+    route: null,
+    position: { x: 76, y: 82 },
+    mobile: { column: 1, row: 4 },
+    relationships: {
+      input: ["trust-evidence-provenance"],
+      shared: ["system-foundation", "ingress-observation", "identity-state-lifecycle", "time-temporal-semantics", "research-orchestration"],
+      output: ["memory-persistence", "cognition-meaning-epistemic", "models-operator-surfaces"],
+    },
+  },
+  {
+    id: "memory-persistence",
+    number: "06",
+    title: "Memory & Persistence",
+    accent: "#B78AF2",
+    glyph: "memory",
+    route: null,
+    position: { x: 50, y: 92 },
+    mobile: { column: 2, row: 4 },
+    relationships: {
+      input: ["ingress-observation", "identity-state-lifecycle", "trust-evidence-provenance", "runtime-execution-resources", "time-temporal-semantics"],
+      shared: ["system-foundation", "cognition-meaning-epistemic", "research-orchestration"],
+      output: [],
+    },
+  },
+  {
+    id: "time-temporal-semantics",
+    number: "07",
+    title: "Time & Temporal Semantics",
+    accent: "#B4DEFF",
+    glyph: "time",
+    route: null,
+    position: { x: 24, y: 82 },
+    mobile: { column: 1, row: 5 },
+    relationships: {
+      input: [],
+      shared: ["system-foundation", "identity-state-lifecycle", "runtime-execution-resources"],
+      output: ["ingress-observation", "trust-evidence-provenance", "memory-persistence", "cognition-meaning-epistemic", "research-orchestration"],
+    },
+  },
+  {
+    id: "cognition-meaning-epistemic",
+    number: "08",
+    title: "Cognition, Meaning & Epistemic State",
+    accent: "#B275FF",
+    glyph: "cognition",
+    route: null,
+    position: { x: 10, y: 58 },
+    mobile: { column: 2, row: 5 },
+    relationships: {
+      input: ["ingress-observation", "identity-state-lifecycle", "trust-evidence-provenance", "runtime-execution-resources", "time-temporal-semantics"],
+      shared: ["system-foundation", "memory-persistence", "research-orchestration", "models-operator-surfaces"],
+      output: [],
+    },
+  },
+  {
+    id: "research-orchestration",
+    number: "09",
+    title: "Research & Orchestration",
+    accent: "#6CC7B9",
+    glyph: "research",
+    route: null,
+    position: { x: 12, y: 31 },
+    mobile: { column: 1, row: 6 },
+    relationships: {
+      input: ["identity-state-lifecycle", "time-temporal-semantics"],
+      shared: ["system-foundation", "trust-evidence-provenance", "runtime-execution-resources", "memory-persistence", "cognition-meaning-epistemic", "models-operator-surfaces"],
+      output: [],
+    },
+  },
+  {
+    id: "models-operator-surfaces",
+    number: "10",
+    title: "Models & Operator Surfaces",
+    accent: "#E7D8FF",
+    glyph: "surfaces",
+    route: null,
+    position: { x: 28, y: 13 },
+    mobile: { column: 2, row: 6 },
+    relationships: {
+      input: ["runtime-execution-resources"],
+      shared: ["system-foundation", "cognition-meaning-epistemic", "research-orchestration"],
+      output: [],
+    },
+  },
+];
+
+const atlasSystemsById = new Map(atlasSystems.map((system) => [system.id, system]));
+
+const atlasGlyphs = {
+  foundation: '<rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="7.5" y="7.5" width="9" height="9" rx="1"></rect><path d="M4 9h3.5M16.5 15H20"></path>',
+  observation: '<circle cx="12" cy="12" r="2.4"></circle><path d="M5.7 8.4a7.2 7.2 0 0 0 0 7.2M18.3 8.4a7.2 7.2 0 0 1 0 7.2M2.8 5.9a10.4 10.4 0 0 0 0 12.2M21.2 5.9a10.4 10.4 0 0 1 0 12.2"></path>',
+  identity: '<circle cx="7" cy="7" r="2.2"></circle><path d="M7 9.2v4.2c0 2.2 1.8 4 4 4h6M12 7h4.5a2.5 2.5 0 0 1 2.5 2.5V12M15.5 14.5 18 12l2.5 2.5"></path>',
+  provenance: '<rect x="3.5" y="4.5" width="17" height="15" rx="2.5"></rect><circle cx="8" cy="12" r="2"></circle><circle cx="16" cy="9" r="2"></circle><circle cx="16" cy="15" r="2"></circle><path d="m9.8 11.1 4.3-1.3M9.8 12.9l4.3 1.3"></path>',
+  runtime: '<rect x="3.5" y="7" width="7" height="7" rx="1.5"></rect><rect x="13.5" y="10" width="7" height="7" rx="1.5"></rect><path d="M10.5 9h3M10.5 12h3M7 14v3h6.5"></path><circle cx="7" cy="17" r="1"></circle>',
+  memory: '<path d="m4 8 8-3 8 3-8 3-8-3Z"></path><path d="m4 12 8 3 8-3M4 16l8 3 8-3"></path><circle cx="12" cy="11" r="1.6"></circle>',
+  time: '<circle cx="12" cy="12" r="7.5"></circle><circle cx="17.4" cy="6.8" r="1.5"></circle><path d="M12 8.5V12l2.5 2M4.5 12H2.8M21.2 12h-1.7"></path>',
+  cognition: '<circle cx="6" cy="12" r="1.8"></circle><circle cx="12" cy="6" r="1.8"></circle><circle cx="18" cy="10" r="1.8"></circle><circle cx="13" cy="18" r="1.8"></circle><path d="m7.4 10.8 3.2-3.5M13.7 6.8l2.7 2.4M17.3 11.7l-3.1 4.7M11.3 16.4l-4-3.2"></path>',
+  research: '<circle cx="5" cy="7" r="1.5"></circle><circle cx="5" cy="17" r="1.5"></circle><circle cx="19" cy="12" r="1.5"></circle><path d="M6.5 7h3.2c2.5 0 3.2 2.2 4.2 3.5M6.5 17h3.2c2.5 0 3.2-2.2 4.2-3.5M13.9 10.5c.8 1.1 1.7 1.5 3.6 1.5"></path>',
+  surfaces: '<rect x="3.5" y="4.5" width="17" height="15" rx="2"></rect><path d="M3.5 8h17M8 8v11"></path><circle cx="14.2" cy="13" r="2.2"></circle><path d="m15.8 14.6 2 2"></path>',
+};
 
 /*
   ARCHITECTURE DOMAIN SKELETON COPY
@@ -986,6 +1167,12 @@ let activeArchitectureDomain = null;
 let activeArchitectureSection = "domain-overview";
 let expandedArchitectureIndexDomain = null;
 let architectureIndexReturnFocus = null;
+let activeAtlasSystem = null;
+let atlasNodes = [];
+let atlasDrawFrame = null;
+let atlasPathHideTimer = null;
+let atlasIndexReturnFocus = null;
+let atlasIndexScrollPosition = 0;
 let activeJournalCategory = "all";
 let activeJournalTopic = "all";
 let activeJournalArticle = null;
@@ -1555,31 +1742,343 @@ function clearSubjectSelection() {
   setSubjectVisualState();
 }
 
-/*
-  ARCHITECTURE MAP STATE
-  The landing graph never changes position. Hover/focus brightens only the
-  selected module, its direct relationships, and their connected modules.
-*/
-function setArchitectureMapState(domain = null) {
-  const connectedDomains = new Set();
+function createAtlasGlyph(glyph, className = "atlas-node__glyph") {
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("fill", "none");
+  svg.setAttribute("stroke", "currentColor");
+  svg.setAttribute("stroke-width", "1.5");
+  svg.setAttribute("stroke-linecap", "round");
+  svg.setAttribute("stroke-linejoin", "round");
+  svg.setAttribute("aria-hidden", "true");
+  svg.classList.add(className);
+  svg.innerHTML = atlasGlyphs[glyph];
+  return svg;
+}
 
-  architectureRelations.forEach((relation) => {
-    const isConnected = domain && [relation.dataset.from, relation.dataset.to].includes(domain);
-    relation.classList.toggle("is-active", Boolean(isConnected));
+function createAtlasIndexEntry(system, compact = false) {
+  const entry = system.route ? document.createElement("a") : document.createElement("div");
+  entry.className = compact ? "atlas-index-entry atlas-index-entry--compact" : "atlas-index-entry";
+  entry.style.setProperty("--atlas-accent", system.accent);
+  if (system.route) entry.href = system.route;
 
-    if (isConnected) {
-      connectedDomains.add(relation.dataset.from);
-      connectedDomains.add(relation.dataset.to);
+  const number = document.createElement("span");
+  const label = document.createElement("span");
+  number.className = "atlas-index-entry__number";
+  label.className = "atlas-index-entry__label";
+  number.textContent = system.number;
+  label.textContent = system.title;
+  entry.append(number, label);
+  return entry;
+}
+
+function renderSystemAtlas() {
+  const nodeFragment = document.createDocumentFragment();
+
+  atlasSystems.forEach((system) => {
+    const card = document.createElement("div");
+    card.className = "atlas-node";
+    card.dataset.atlasSystem = system.id;
+    card.style.setProperty("--atlas-accent", system.accent);
+    card.style.setProperty("--atlas-x", `${system.position.x}%`);
+    card.style.setProperty("--atlas-y", `${system.position.y}%`);
+    card.style.setProperty("--atlas-mobile-column", system.mobile.column);
+    card.style.setProperty("--atlas-mobile-row", system.mobile.row);
+    card.tabIndex = 0;
+    card.setAttribute("role", "button");
+    card.setAttribute("aria-pressed", "false");
+    card.setAttribute("aria-label", `${system.number} / ${system.title}. Inspect architectural relationships.`);
+
+    const heading = document.createElement("span");
+    const number = document.createElement("span");
+    const title = document.createElement("span");
+    const ports = document.createElement("span");
+    heading.className = "atlas-node__heading";
+    number.className = "atlas-node__number";
+    title.className = "atlas-node__title";
+    ports.className = "atlas-node__ports";
+    number.textContent = system.number;
+    title.textContent = system.title;
+    heading.append(number, createAtlasGlyph(system.glyph), title);
+
+    ["input", "shared", "output"].forEach((portName) => {
+      const port = document.createElement("i");
+      port.dataset.atlasPort = portName;
+      port.setAttribute("aria-hidden", "true");
+      ports.appendChild(port);
+    });
+
+    card.append(heading, ports);
+
+    if (system.route) {
+      const enter = document.createElement("a");
+      enter.className = "atlas-node__enter";
+      enter.href = system.route;
+      enter.textContent = "ENTER";
+      card.appendChild(enter);
     }
+
+    nodeFragment.appendChild(card);
   });
 
-  architectureDomains.forEach((control) => {
-    control.classList.toggle("is-active", control.dataset.domain === domain);
-    control.classList.toggle(
-      "is-connected",
-      connectedDomains.has(control.dataset.domain) && control.dataset.domain !== domain,
-    );
+  atlasNodeLayer.replaceChildren(nodeFragment);
+  atlasIndexList.replaceChildren(...atlasSystems.map((system) => createAtlasIndexEntry(system)));
+  atlasIndexOverlayList.replaceChildren(...atlasSystems.map((system) => createAtlasIndexEntry(system, true)));
+  atlasNodes = [...atlasNodeLayer.querySelectorAll("[data-atlas-system]")];
+}
+
+function describeAtlasSystem(system) {
+  const names = (ids) => ids.map((id) => atlasSystemsById.get(id)?.title).filter(Boolean).join(", ");
+  const parts = [`${system.number} / ${system.title}.`];
+  if (system.relationships.input.length) parts.push(`Input from ${names(system.relationships.input)}.`);
+  if (system.relationships.shared.length) parts.push(`Shared with ${names(system.relationships.shared)}.`);
+  if (system.relationships.output.length) parts.push(`Output to ${names(system.relationships.output)}.`);
+  return parts.join(" ");
+}
+
+function setActiveAtlasSystem(systemId = null, { announce = true } = {}) {
+  const nextSystem = systemId ? atlasSystemsById.get(systemId) : null;
+  activeAtlasSystem = nextSystem?.id || null;
+
+  atlasNodes.forEach((node) => {
+    const isSelected = node.dataset.atlasSystem === activeAtlasSystem;
+    node.classList.toggle("is-selected", isSelected);
+    node.setAttribute("aria-pressed", String(isSelected));
   });
+
+  if (announce) atlasStatus.textContent = nextSystem ? describeAtlasSystem(nextSystem) : "System Atlas relationships cleared.";
+  scheduleAtlasRelationships();
+}
+
+function atlasElementBox(element, canvasBox) {
+  const box = element.getBoundingClientRect();
+  return {
+    left: box.left - canvasBox.left,
+    right: box.right - canvasBox.left,
+    top: box.top - canvasBox.top,
+    bottom: box.bottom - canvasBox.top,
+    width: box.width,
+    height: box.height,
+    centerX: box.left - canvasBox.left + box.width / 2,
+    centerY: box.top - canvasBox.top + box.height / 2,
+  };
+}
+
+function atlasPortPoint(systemId, portName, canvasBox) {
+  const port = atlasNodeLayer.querySelector(`[data-atlas-system="${systemId}"] [data-atlas-port="${portName}"]`);
+  const box = port.getBoundingClientRect();
+  return {
+    x: box.left - canvasBox.left + box.width / 2,
+    y: box.top - canvasBox.top + box.height / 2,
+  };
+}
+
+function roundedAtlasPath(points, radius = 9) {
+  const filtered = points.filter((point, index) => {
+    if (!index) return true;
+    const previous = points[index - 1];
+    return Math.abs(point.x - previous.x) > 0.1 || Math.abs(point.y - previous.y) > 0.1;
+  });
+  if (filtered.length < 2) return "";
+
+  const round = (value) => Math.round(value * 10) / 10;
+  let path = `M ${round(filtered[0].x)} ${round(filtered[0].y)}`;
+
+  for (let index = 1; index < filtered.length - 1; index += 1) {
+    const previous = filtered[index - 1];
+    const point = filtered[index];
+    const next = filtered[index + 1];
+    const incomingLength = Math.hypot(point.x - previous.x, point.y - previous.y);
+    const outgoingLength = Math.hypot(next.x - point.x, next.y - point.y);
+    const bend = Math.min(radius, incomingLength / 2, outgoingLength / 2);
+    const before = {
+      x: point.x - ((point.x - previous.x) / incomingLength) * bend,
+      y: point.y - ((point.y - previous.y) / incomingLength) * bend,
+    };
+    const after = {
+      x: point.x + ((next.x - point.x) / outgoingLength) * bend,
+      y: point.y + ((next.y - point.y) / outgoingLength) * bend,
+    };
+    path += ` L ${round(before.x)} ${round(before.y)} Q ${round(point.x)} ${round(point.y)} ${round(after.x)} ${round(after.y)}`;
+  }
+
+  const last = filtered[filtered.length - 1];
+  return `${path} L ${round(last.x)} ${round(last.y)}`;
+}
+
+function routeAtlasPath(start, end, sourceBox, targetBox, avatarBox, canvasBox, pathIndex) {
+  const lead = atlasMobileMedia.matches ? 12 : 16;
+  const startLead = { x: start.x, y: start.y + lead };
+  const endLead = { x: end.x, y: end.y + lead };
+  const laneOffset = (pathIndex % 4) * (atlasMobileMedia.matches ? 1 : 4);
+  const sameRow = Math.abs(sourceBox.centerY - targetBox.centerY) < Math.max(sourceBox.height, targetBox.height) * 0.55;
+  const crossesAvatar = Math.min(sourceBox.centerY, targetBox.centerY) < avatarBox.bottom + 32
+    && Math.max(sourceBox.centerY, targetBox.centerY) > avatarBox.top - 32;
+
+  if (sameRow && !crossesAvatar) {
+    const laneY = Math.max(sourceBox.bottom, targetBox.bottom) + lead + laneOffset;
+    return [start, { x: start.x, y: laneY }, { x: end.x, y: laneY }, end];
+  }
+
+  const bothLeft = sourceBox.centerX < canvasBox.width / 2 && targetBox.centerX < canvasBox.width / 2;
+  const bothRight = sourceBox.centerX > canvasBox.width / 2 && targetBox.centerX > canvasBox.width / 2;
+  const useOuterRail = crossesAvatar || bothLeft || bothRight;
+  let railX;
+
+  if (useOuterRail) {
+    const leftDistance = sourceBox.centerX + targetBox.centerX;
+    const rightDistance = (canvasBox.width - sourceBox.centerX) + (canvasBox.width - targetBox.centerX);
+    const useLeft = bothLeft || (!bothRight && leftDistance <= rightDistance);
+    railX = atlasMobileMedia.matches
+      ? (useLeft ? 1 : canvasBox.width - 1)
+      : (useLeft ? 7 + laneOffset : canvasBox.width - 7 - laneOffset);
+  } else {
+    railX = canvasBox.width / 2 + (pathIndex % 2 ? laneOffset : -laneOffset);
+  }
+
+  return [
+    start,
+    startLead,
+    { x: railX, y: startLead.y },
+    { x: railX, y: endLead.y },
+    endLead,
+    end,
+  ];
+}
+
+function hideAtlasRelationships() {
+  window.clearTimeout(atlasPathHideTimer);
+  atlasRelationships.classList.remove("is-visible");
+  if (prefersReducedMotion.matches) {
+    atlasRelationships.replaceChildren();
+    return;
+  }
+  atlasPathHideTimer = window.setTimeout(() => atlasRelationships.replaceChildren(), 210);
+}
+
+function drawAtlasRelationships() {
+  window.clearTimeout(atlasPathHideTimer);
+  if (!activeAtlasSystem || body.dataset.view !== "architecture" || architectureScene.dataset.architectureView !== "landing") {
+    hideAtlasRelationships();
+    return;
+  }
+
+  const system = atlasSystemsById.get(activeAtlasSystem);
+  const canvasBox = atlasCanvas.getBoundingClientRect();
+  if (!canvasBox.width || !canvasBox.height) return;
+
+  const avatarBox = atlasElementBox(atlasIdentity, canvasBox);
+  const relationships = [
+    ...system.relationships.input.map((sourceId) => ({ sourceId, sourcePort: "output", targetId: system.id, targetPort: "input", kind: "input" })),
+    ...system.relationships.shared.map((targetId) => ({ sourceId: system.id, sourcePort: "shared", targetId, targetPort: "shared", kind: "shared" })),
+    ...system.relationships.output.map((targetId) => ({ sourceId: system.id, sourcePort: "output", targetId, targetPort: "input", kind: "output" })),
+  ];
+
+  atlasRelationships.setAttribute("viewBox", `0 0 ${canvasBox.width} ${canvasBox.height}`);
+  atlasRelationships.style.setProperty("--atlas-path-accent", system.accent);
+  const fragment = document.createDocumentFragment();
+
+  relationships.forEach((relationship, index) => {
+    const sourceElement = atlasNodeLayer.querySelector(`[data-atlas-system="${relationship.sourceId}"]`);
+    const targetElement = atlasNodeLayer.querySelector(`[data-atlas-system="${relationship.targetId}"]`);
+    const sourceBox = atlasElementBox(sourceElement, canvasBox);
+    const targetBox = atlasElementBox(targetElement, canvasBox);
+    const start = atlasPortPoint(relationship.sourceId, relationship.sourcePort, canvasBox);
+    const end = atlasPortPoint(relationship.targetId, relationship.targetPort, canvasBox);
+    const points = routeAtlasPath(start, end, sourceBox, targetBox, avatarBox, canvasBox, index);
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.dataset.relationshipKind = relationship.kind;
+    path.dataset.sourceSystem = relationship.sourceId;
+    path.dataset.targetSystem = relationship.targetId;
+    path.setAttribute("d", roundedAtlasPath(points));
+    fragment.appendChild(path);
+  });
+
+  atlasRelationships.replaceChildren(fragment);
+  atlasRelationships.classList.remove("is-visible");
+  window.requestAnimationFrame(() => atlasRelationships.classList.add("is-visible"));
+}
+
+function scheduleAtlasRelationships() {
+  window.cancelAnimationFrame(atlasDrawFrame);
+  atlasDrawFrame = window.requestAnimationFrame(drawAtlasRelationships);
+}
+
+function openAtlasIndex() {
+  if (architectureScene.dataset.architectureView !== "landing" || architectureScene.classList.contains("has-atlas-index")) return;
+  atlasIndexReturnFocus = atlasIndexToggle;
+  atlasIndexScrollPosition = architectureScroll.scrollTop;
+  architectureScene.classList.add("has-atlas-index");
+  atlasIndexOverlay.setAttribute("aria-hidden", "false");
+  atlasIndexOverlay.removeAttribute("inert");
+  atlasIndexToggle.setAttribute("aria-expanded", "true");
+  architectureScroll.setAttribute("inert", "");
+  architectureHeader.setAttribute("inert", "");
+  atlasIndexOverlayPanel.focus({ preventScroll: true });
+}
+
+function closeAtlasIndex({ restoreFocus = true } = {}) {
+  if (!architectureScene.classList.contains("has-atlas-index")) return;
+  architectureScene.classList.remove("has-atlas-index");
+  atlasIndexOverlay.setAttribute("aria-hidden", "true");
+  atlasIndexOverlay.setAttribute("inert", "");
+  atlasIndexToggle.setAttribute("aria-expanded", "false");
+  architectureScroll.removeAttribute("inert");
+  architectureHeader.removeAttribute("inert");
+  architectureScroll.scrollTop = atlasIndexScrollPosition;
+  if (restoreFocus) atlasIndexReturnFocus?.focus({ preventScroll: true });
+  atlasIndexReturnFocus = null;
+}
+
+function setupSystemAtlas() {
+  renderSystemAtlas();
+
+  atlasNodes.forEach((node) => {
+    const systemId = node.dataset.atlasSystem;
+    node.addEventListener("pointerenter", (event) => {
+      if (event.pointerType !== "touch" && !atlasMobileMedia.matches) setActiveAtlasSystem(systemId, { announce: false });
+    });
+    node.addEventListener("pointerleave", () => {
+      if (!atlasMobileMedia.matches) {
+        const focusedSystem = atlasNodeLayer.querySelector(".atlas-node:focus-within")?.dataset.atlasSystem || null;
+        setActiveAtlasSystem(focusedSystem, { announce: false });
+      }
+    });
+    node.addEventListener("focus", () => setActiveAtlasSystem(systemId));
+    node.addEventListener("blur", () => {
+      window.requestAnimationFrame(() => {
+        if (
+          activeAtlasSystem === systemId
+          && !atlasMobileMedia.matches
+          && !node.matches(":hover")
+          && !node.contains(document.activeElement)
+        ) {
+          setActiveAtlasSystem(null, { announce: false });
+        }
+      });
+    });
+    node.addEventListener("click", (event) => {
+      if (event.target.closest(".atlas-node__enter")) return;
+      event.stopPropagation();
+      setActiveAtlasSystem(systemId);
+      node.focus({ preventScroll: true });
+    });
+    node.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      if (event.target.closest(".atlas-node__enter")) return;
+      event.preventDefault();
+      setActiveAtlasSystem(systemId);
+    });
+  });
+
+  atlasCanvas.addEventListener("click", (event) => {
+    if (event.target.closest(".atlas-node") || event.target.closest(".atlas-identity")) return;
+    if (atlasMobileMedia.matches) setActiveAtlasSystem(null);
+  });
+
+  const atlasResizeObserver = new ResizeObserver(scheduleAtlasRelationships);
+  atlasResizeObserver.observe(atlasCanvas);
+  atlasNodes.forEach((node) => atlasResizeObserver.observe(node));
 }
 
 /*
@@ -1740,6 +2239,7 @@ prefersReducedMotion.addEventListener("change", () => {
     architectureFigureObserver?.unobserve(figure);
     architectureFigureObserver?.observe(figure);
   });
+  scheduleAtlasRelationships();
 });
 
 function getArchitectureHashDomain() {
@@ -2040,6 +2540,8 @@ function showArchitectureDomain(domain, {
 } = {}) {
   if (!architectureDomainContent[domain]) return;
 
+  closeAtlasIndex({ restoreFocus: false });
+  setActiveAtlasSystem(null, { announce: false });
   if (!keepIndexOpen) closeArchitectureIndexVisual({ restoreFocus: false });
   renderArchitectureDomain(domain);
 
@@ -2106,6 +2608,8 @@ function showArchitectureDomainFromIndex(domain) {
 
 function showArchitectureLanding({ updateHistory = true, scrollTop = 0, focusMap = true } = {}) {
   closeArchitectureIndexVisual({ restoreFocus: false });
+  closeAtlasIndex({ restoreFocus: false });
+  setActiveAtlasSystem(null, { announce: false });
   activeArchitectureDomain = null;
   activeArchitectureSection = "domain-overview";
   architectureScene.dataset.architectureView = "landing";
@@ -2125,9 +2629,10 @@ function showArchitectureLanding({ updateHistory = true, scrollTop = 0, focusMap
     );
   }
 
-  skipLink.href = "#architecture-domain-map";
-  skipLink.textContent = "Skip to the Architecture map";
-  if (focusMap) architectureDomains[0]?.focus({ preventScroll: true });
+  skipLink.href = "#architecture-system-atlas";
+  skipLink.textContent = "Skip to the System Atlas";
+  if (focusMap) atlasNodes[0]?.focus({ preventScroll: true });
+  window.requestAnimationFrame(scheduleAtlasRelationships);
 }
 
 function renderArchitectureIndex() {
@@ -2335,7 +2840,10 @@ function setScene(nextView, { updateHistory = true, focusDelay = 760, focusScene
     }, "", location.href);
   }
 
-  if (!isArchitecture) closeArchitectureIndexVisual({ restoreFocus: false });
+  if (!isArchitecture) {
+    closeArchitectureIndexVisual({ restoreFocus: false });
+    closeAtlasIndex({ restoreFocus: false });
+  }
   if (isArchitecture && !wasArchitecture && updateHistory) {
     showArchitectureLanding({ updateHistory: false, scrollTop: 0, focusMap: false });
   }
@@ -2384,7 +2892,7 @@ function setScene(nextView, { updateHistory = true, focusDelay = 760, focusScene
     home: ["#home-map", "Skip to the Sylara map"],
     architecture: activeArchitectureDomain
       ? ["#domain-overview", `Skip to ${architectureDomainContent[activeArchitectureDomain].title}`]
-      : ["#architecture-domain-map", "Skip to the Architecture map"],
+      : ["#architecture-system-atlas", "Skip to the System Atlas"],
     research: ["#research-title", "Skip to Research"],
     journal: ["#journal-index", "Skip to the Journal archive"],
     about: ["#about-trajectory", "Skip to the About research trajectory"],
@@ -2480,33 +2988,31 @@ contactChannels.forEach((control) => {
   control.addEventListener("click", () => setContactChannel(control.dataset.contactChannel));
 });
 
-architectureDomains.forEach((control) => {
-  const domain = control.dataset.domain;
-
-  control.addEventListener("pointerenter", () => setArchitectureMapState(domain));
-  control.addEventListener("pointerleave", () => {
-    if (!control.matches(":focus-visible")) setArchitectureMapState();
-  });
-  control.addEventListener("focus", () => setArchitectureMapState(domain));
-  control.addEventListener("blur", () => {
-    if (!control.matches(":hover")) setArchitectureMapState();
-  });
-  control.addEventListener("click", () => {
-    showArchitectureDomain(domain);
-  });
-});
-
-/* Scroll inside the Architecture surface without replacing the page route hash. */
-architectureScrollTarget.addEventListener("click", (event) => {
-  event.preventDefault();
-  document.querySelector("#architecture-biography")?.scrollIntoView({
-    behavior: prefersReducedMotion.matches ? "auto" : "smooth",
-    block: "start",
-  });
-});
-
 architectureOverviewControl.addEventListener("click", () => {
   showArchitectureLanding({ updateHistory: true, scrollTop: 0 });
+});
+
+atlasIndexToggle.addEventListener("click", openAtlasIndex);
+atlasIndexDismiss.addEventListener("click", () => closeAtlasIndex());
+atlasIndexClose.addEventListener("click", () => closeAtlasIndex());
+
+atlasIndexOverlay.addEventListener("keydown", (event) => {
+  if (!architectureScene.classList.contains("has-atlas-index")) return;
+  if (event.key === "Escape") {
+    event.preventDefault();
+    closeAtlasIndex();
+    return;
+  }
+  if (event.key !== "Tab") return;
+  const focusable = [atlasIndexClose, ...atlasIndexOverlayList.querySelectorAll("a[href]")];
+  const currentIndex = focusable.indexOf(document.activeElement);
+  if (event.shiftKey && currentIndex <= 0) {
+    event.preventDefault();
+    focusable[focusable.length - 1]?.focus();
+  } else if (!event.shiftKey && currentIndex === focusable.length - 1) {
+    event.preventDefault();
+    focusable[0]?.focus();
+  }
 });
 
 architectureIndexToggle.addEventListener("click", () => openArchitectureIndex());
@@ -2713,9 +3219,22 @@ architectureDomainScroll.addEventListener("scroll", () => {
   updateArchitectureWordmark();
   scheduleArchitectureHistorySync();
 }, { passive: true });
-window.addEventListener("resize", updateTabletScrollCue);
+window.addEventListener("resize", () => {
+  updateTabletScrollCue();
+  if (window.innerWidth > 1100) closeAtlasIndex({ restoreFocus: false });
+});
+
+atlasMobileMedia.addEventListener("change", () => {
+  setActiveAtlasSystem(null, { announce: false });
+  scheduleAtlasRelationships();
+});
 
 window.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && body.dataset.view === "architecture" && architectureScene.classList.contains("has-atlas-index")) {
+    closeAtlasIndex();
+    return;
+  }
+
   if (event.key === "Escape" && body.dataset.view === "architecture" && architectureScene.classList.contains("has-architecture-index")) {
     closeArchitectureIndex();
     return;
@@ -2795,7 +3314,7 @@ buildAmbientStars();
 setupAboutReveals();
 setContactChannel("research");
 setSubjectVisualState();
-setArchitectureMapState();
+setupSystemAtlas();
 renderJournalEntries();
 const initialHashView = location.hash.slice(1);
 const initialView = initialHashView.startsWith("architecture")
@@ -2806,7 +3325,7 @@ const initialView = initialHashView.startsWith("architecture")
       ? "journal"
       : initialHashView === "about"
         ? "about"
-        : initialHashView === "contact" ? "contact" : "home";
+    : initialHashView === "contact" ? "contact" : "home";
 setScene(initialView, { updateHistory: false, focusSceneEntry: false });
 
 if (history.state?.view === initialView) {
@@ -2841,4 +3360,6 @@ if (history.state?.view === initialView) {
   if (initialView === "journal") restoreJournalHistoryState(getJournalHashState());
 }
 
+body.dataset.routeReady = "true";
+window.requestAnimationFrame(() => delete document.documentElement.dataset.initialView);
 setupArchitectureFigureAnimations();
