@@ -117,6 +117,9 @@ const contactDetailCopy = document.querySelector("[data-contact-detail-copy]");
 const contactDetailEmail = document.querySelector("[data-contact-detail-email]");
 const contactDetailAddress = document.querySelector("[data-contact-detail-address]");
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+const researchTabletMobileMedia = window.matchMedia(
+  "(max-width: 760px), (max-height: 590px) and (orientation: landscape) and (max-width: 960px)",
+);
 
 const starField = [
   [8, 20, 1, 8.5, -1.2], [22, 47, 1, 9.2, -3.2], [36, 80, 2, 8.1, -2.7],
@@ -2564,6 +2567,18 @@ architectureIndex.addEventListener("keydown", (event) => {
     focusable[0]?.focus();
   }
 });
+
+function handleResearchTabletOutsideClick(event) {
+  const target = event.target;
+
+  if (!(target instanceof Element)) return;
+  if (!researchScene.classList.contains("has-tablet") || researchTabletMobileMedia.matches) return;
+  if (target.closest("[data-research-tablet]") || target.closest(".subject-control")) return;
+
+  closeResearchTablet();
+}
+
+document.addEventListener("click", handleResearchTabletOutsideClick);
 
 subjectControls.forEach((control) => {
   const subject = control.dataset.subject;
