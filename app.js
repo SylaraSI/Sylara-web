@@ -181,7 +181,8 @@ const atlasSystems = [
     accent: "#D8C4FF",
     glyph: "foundation",
     route: null,
-    position: { x: 50, y: 8 },
+    position: { x: 50, y: 11.5 },
+    compactY: 8,
     mobile: { column: 1, row: 1 },
     relationships: {
       input: [],
@@ -196,7 +197,8 @@ const atlasSystems = [
     accent: "#9EDBFF",
     glyph: "observation",
     route: null,
-    position: { x: 72, y: 13 },
+    position: { x: 72, y: 18.5 },
+    compactY: 13,
     mobile: { column: 2, row: 1 },
     relationships: {
       input: ["time-temporal-semantics"],
@@ -211,7 +213,8 @@ const atlasSystems = [
     accent: "#B8ACFF",
     glyph: "identity",
     route: null,
-    position: { x: 88, y: 31 },
+    position: { x: 88, y: 34.5 },
+    compactY: 31,
     mobile: { column: 1, row: 2 },
     relationships: {
       input: [],
@@ -226,7 +229,8 @@ const atlasSystems = [
     accent: "#91CFC5",
     glyph: "provenance",
     route: null,
-    position: { x: 90, y: 58 },
+    position: { x: 90, y: 62 },
+    compactY: 58,
     mobile: { column: 2, row: 2 },
     relationships: {
       input: ["time-temporal-semantics"],
@@ -241,7 +245,8 @@ const atlasSystems = [
     accent: "#9D5CFF",
     glyph: "runtime",
     route: null,
-    position: { x: 76, y: 82 },
+    position: { x: 76, y: 77.5 },
+    compactY: 82,
     mobile: { column: 1, row: 4 },
     relationships: {
       input: ["trust-evidence-provenance"],
@@ -256,7 +261,8 @@ const atlasSystems = [
     accent: "#B78AF2",
     glyph: "memory",
     route: null,
-    position: { x: 50, y: 92 },
+    position: { x: 50, y: 88.5 },
+    compactY: 92,
     mobile: { column: 2, row: 4 },
     relationships: {
       input: ["ingress-observation", "identity-state-lifecycle", "trust-evidence-provenance", "runtime-execution-resources", "time-temporal-semantics"],
@@ -271,7 +277,8 @@ const atlasSystems = [
     accent: "#B4DEFF",
     glyph: "time",
     route: null,
-    position: { x: 24, y: 82 },
+    position: { x: 24, y: 77.5 },
+    compactY: 82,
     mobile: { column: 1, row: 5 },
     relationships: {
       input: [],
@@ -286,7 +293,8 @@ const atlasSystems = [
     accent: "#B275FF",
     glyph: "cognition",
     route: null,
-    position: { x: 10, y: 58 },
+    position: { x: 10, y: 62 },
+    compactY: 58,
     mobile: { column: 2, row: 5 },
     relationships: {
       input: ["ingress-observation", "identity-state-lifecycle", "trust-evidence-provenance", "runtime-execution-resources", "time-temporal-semantics"],
@@ -301,7 +309,8 @@ const atlasSystems = [
     accent: "#6CC7B9",
     glyph: "research",
     route: null,
-    position: { x: 12, y: 31 },
+    position: { x: 12, y: 34.5 },
+    compactY: 31,
     mobile: { column: 1, row: 6 },
     relationships: {
       input: ["identity-state-lifecycle", "time-temporal-semantics"],
@@ -316,7 +325,8 @@ const atlasSystems = [
     accent: "#E7D8FF",
     glyph: "surfaces",
     route: null,
-    position: { x: 28, y: 13 },
+    position: { x: 28, y: 18.5 },
+    compactY: 13,
     mobile: { column: 2, row: 6 },
     relationships: {
       input: ["runtime-execution-resources"],
@@ -1783,6 +1793,7 @@ function renderSystemAtlas() {
     card.style.setProperty("--atlas-accent", system.accent);
     card.style.setProperty("--atlas-x", `${system.position.x}%`);
     card.style.setProperty("--atlas-y", `${system.position.y}%`);
+    card.style.setProperty("--atlas-compact-y", `${system.compactY}%`);
     card.style.setProperty("--atlas-mobile-column", system.mobile.column);
     card.style.setProperty("--atlas-mobile-row", system.mobile.row);
     card.tabIndex = 0;
