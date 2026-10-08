@@ -18,6 +18,13 @@ const foundationRegions = document.querySelector("[data-foundation-regions]");
 const foundationInterfaces = document.querySelector("[data-foundation-interfaces]");
 const foundationConnectors = document.querySelector("[data-foundation-connectors]");
 const foundationConnectionList = document.querySelector("[data-foundation-connection-list]");
+const foundationMobileContext = document.querySelector("[data-foundation-mobile-context]");
+const foundationMobileContextKicker = document.querySelector("[data-foundation-mobile-context-kicker]");
+const foundationMobileContextTitle = document.querySelector("[data-foundation-mobile-context-title]");
+const foundationMobileSchematic = document.querySelector("[data-foundation-mobile-schematic]");
+const foundationMobileInterfacesSection = document.querySelector("[data-foundation-mobile-interfaces-section]");
+const foundationMobileInterfaces = document.querySelector("[data-foundation-mobile-interfaces]");
+const foundationMobileRelationships = document.querySelector("[data-foundation-mobile-relationships]");
 const foundationInspector = document.querySelector("[data-foundation-inspector]");
 const foundationInspectorKicker = document.querySelector("[data-foundation-inspector-kicker]");
 const foundationInspectorTitle = document.querySelector("[data-foundation-inspector-title]");
@@ -139,7 +146,7 @@ const contactDetailEmail = document.querySelector("[data-contact-detail-email]")
 const contactDetailAddress = document.querySelector("[data-contact-detail-address]");
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const atlasMobileMedia = window.matchMedia("(max-width: 760px)");
-const foundationMobileMedia = window.matchMedia("(max-width: 760px)");
+const foundationMobileMedia = window.matchMedia("(max-width: 900px)");
 const researchTabletMobileMedia = window.matchMedia(
   "(max-width: 760px), (max-height: 590px) and (orientation: landscape) and (max-width: 960px)",
 );
@@ -373,8 +380,11 @@ const foundationRegionsData = [
     id: "admission-provenance",
     code: "A",
     title: "ADMISSION & PROVENANCE",
+    topologyOrder: 1,
     maturity: "ACTIVE BOUNDED RUNTIME",
     anchors: ["ObservationService", "AdapterCoupler", "RuntimeAdmissionGuard"],
+    mobileLayout: "zones",
+    interfaceIds: ["governed-rule-processing"],
     owns: "Layer 02 owns source-specific collection/normalization, attribution, and observation admission within its declared scope. Layer 04 owns minimum provenance validation and provenance-based quarantine/admission policy.",
     consumes: "Source-local records/metadata, attributed observation context, and enriched trust metadata with required source-provenance identity where applicable.",
     produces: "Admitted attributed observations; bounded admission/quarantine/rejection outcomes at the owner that issues each decision; applicable diagnostics/references.",
@@ -406,8 +416,11 @@ const foundationRegionsData = [
     id: "present-state-health",
     code: "B",
     title: "PRESENT STATE & HEALTH",
+    topologyOrder: 2,
     maturity: "ACTIVE IMPLEMENTATION",
     anchors: ["ConditionRegistry", "HealthAuthority"],
+    mobileLayout: "flow",
+    interfaceIds: ["governed-rule-processing"],
     owns: "ConditionRegistry owns current condition identity, occurrence and episode state, lifecycle truth, and present condition truth. Health Authority owns current Sylara operational-health classification.",
     consumes: "Governed condition-producing inputs and lifecycle material, then authoritative active condition truth for health classification.",
     produces: "Current condition records, lifecycle and episode state, current/recent condition projections, lifecycle mutation facts, and one current operational-health class.",
@@ -442,8 +455,11 @@ const foundationRegionsData = [
     id: "memory-qualification",
     code: "C",
     title: "MEMORY QUALIFICATION",
+    topologyOrder: 4,
     maturity: "ACTIVE CLASSIFICATION · REPORT-ONLY",
     anchors: ["MemoryEligibilityGate"],
+    mobileLayout: "flow",
+    interfaceIds: ["evidence-diagnostic"],
     owns: "Bounded memory-candidacy classification and assignment of an applicable memory class.",
     consumes: "Governed evidence diagnostics or lifecycle-finalization eligibility inputs with preserved subject/source references and required decision context.",
     produces: "Structured Memory Eligibility Decisions containing candidacy status, memory class, decision rationale, qualification basis, subject reference, evaluation context/time, and policy/schema information.",
@@ -478,8 +494,11 @@ const foundationRegionsData = [
     id: "recording-persistence",
     code: "D",
     title: "RECORDING & PERSISTENCE",
+    topologyOrder: 5,
     maturity: "MIXED CURRENT, GATED, AND OPEN CONTRACTS",
     anchors: ["SessionMemoryService", "InsightHistory", "F2 / Schema 2", "RG1"],
+    mobileLayout: "bands",
+    interfaceIds: ["observation-references"],
     owns: "Memory-local historical record structures, accepted occurrence-correct recording semantics, version-aware history interpretation, and separately governed durability responsibilities within their declared contracts.",
     consumes: "Completed cycle/report state for current history, plus coherent Registry-owned census material and authorized occurrence, condition, observation/reference, temporal, completeness, and currentness information for governed recording.",
     produces: "Session history, derived insight history, attributed occurrence snapshots, session summaries, explicit recording coverage, Memory record identity, and logical finalization state according to the active or accepted contract.",
@@ -558,8 +577,11 @@ const foundationRegionsData = [
     id: "governed-projection",
     code: "E",
     title: "GOVERNED PROJECTION",
+    topologyOrder: 3,
     maturity: "ACTIVE PROJECTION SURFACES",
     anchors: ["build_view_model()", "build_interpreted_summary()", "render_view_model()", "adapt_vm_for_web()"],
+    mobileLayout: "grid",
+    interfaceIds: ["temporal-interpretation", "cognition-decision-context", "recent-observations"],
     owns: "Projection assembly, presentation transformation, and operator-facing representation within the Layer-10 projection contract.",
     consumes: "Shared Cycle Report material plus governed system state, observations, diagnostics, temporal interpretation, cognition/decision material, and trace references from their respective source authorities.",
     produces: "View-model structures, interpreted summaries, readable display fields, CLI output, web-dashboard projections, trace-linked operator guidance, and other authorized presentation artifacts.",
@@ -2499,37 +2521,39 @@ function foundationAnchorLabel(id) {
 function renderFoundationBlueprint() {
   const regionFragment = document.createDocumentFragment();
 
-  foundationRegionsData.forEach((region) => {
-    const article = foundationElement("article", "foundation-region");
-    article.dataset.foundationRegion = region.id;
-    article.dataset.foundationAnchor = region.id;
+  [...foundationRegionsData]
+    .sort((left, right) => left.topologyOrder - right.topologyOrder)
+    .forEach((region) => {
+      const article = foundationElement("article", "foundation-region");
+      article.dataset.foundationRegion = region.id;
+      article.dataset.foundationAnchor = region.id;
 
-    const control = foundationElement("button", "foundation-region__control");
-    control.type = "button";
-    control.dataset.foundationSelect = region.id;
-    control.setAttribute("aria-pressed", "false");
-    const code = foundationElement("span", "foundation-region__code", region.code);
-    const title = foundationElement("span", "foundation-region__title", region.title);
-    control.append(code, title);
+      const control = foundationElement("button", "foundation-region__control");
+      control.type = "button";
+      control.dataset.foundationSelect = region.id;
+      control.setAttribute("aria-pressed", "false");
+      const code = foundationElement("span", "foundation-region__code", region.code);
+      const title = foundationElement("span", "foundation-region__title", region.title);
+      control.append(code, title);
 
-    const modules = foundationElement("div", "foundation-region__modules");
-    let currentGroup = null;
-    region.modules.forEach((module) => {
-      if (module.group && module.group !== currentGroup) {
-        modules.appendChild(foundationElement("p", "foundation-region__group", module.group));
-        currentGroup = module.group;
-      }
-      const moduleControl = foundationElement("button", "foundation-module", module.title);
-      moduleControl.type = "button";
-      moduleControl.dataset.foundationSelect = module.id;
-      moduleControl.dataset.foundationAnchor = module.id;
-      moduleControl.setAttribute("aria-pressed", "false");
-      modules.appendChild(moduleControl);
+      const modules = foundationElement("div", "foundation-region__modules");
+      let currentGroup = null;
+      region.modules.forEach((module) => {
+        if (module.group && module.group !== currentGroup) {
+          modules.appendChild(foundationElement("p", "foundation-region__group", module.group));
+          currentGroup = module.group;
+        }
+        const moduleControl = foundationElement("button", "foundation-module", module.title);
+        moduleControl.type = "button";
+        moduleControl.dataset.foundationSelect = module.id;
+        moduleControl.dataset.foundationAnchor = module.id;
+        moduleControl.setAttribute("aria-pressed", "false");
+        modules.appendChild(moduleControl);
+      });
+
+      article.append(control, modules);
+      regionFragment.appendChild(article);
     });
-
-    article.append(control, modules);
-    regionFragment.appendChild(article);
-  });
 
   const interfaceFragment = document.createDocumentFragment();
   foundationInterfacesData.forEach((entry) => {
@@ -2552,6 +2576,110 @@ function renderFoundationBlueprint() {
   foundationRegions.replaceChildren(regionFragment);
   foundationInterfaces.replaceChildren(interfaceFragment);
   foundationConnectionList.replaceChildren(connectionFragment);
+}
+
+function foundationConnectionsForRegion(regionId) {
+  return foundationConnectionsData.filter((connection) => (
+    foundationRegionForItem(connection.from) === regionId
+    || foundationRegionForItem(connection.to) === regionId
+  ));
+}
+
+function foundationMobileModuleControl(module, inspectedId) {
+  const control = foundationElement("button", "foundation-mobile-module", module.title);
+  control.type = "button";
+  control.dataset.foundationSelect = module.id;
+  control.setAttribute("aria-pressed", String(foundationLockedItem === module.id));
+  control.classList.toggle("is-inspected", inspectedId === module.id);
+  return control;
+}
+
+function renderFoundationMobileContext(itemId = "foundation") {
+  const regionId = foundationRegionForItem(itemId);
+  const region = foundationRegionsData.find((entry) => entry.id === regionId);
+  const isAvailable = foundationMobileMedia.matches && Boolean(region);
+  foundationMobileContext.hidden = !isAvailable;
+  if (!isAvailable) return;
+
+  foundationMobileContextKicker.textContent = `${region.code} / REGION DETAIL`;
+  foundationMobileContextTitle.textContent = region.title;
+  foundationMobileSchematic.dataset.layout = region.mobileLayout;
+
+  const schematicFragment = document.createDocumentFragment();
+  if (region.mobileLayout === "bands") {
+    const groups = new Map();
+    region.modules.forEach((module) => {
+      const group = module.group || "CONTRACT MODULES";
+      if (!groups.has(group)) groups.set(group, []);
+      groups.get(group).push(module);
+    });
+    groups.forEach((modules, group) => {
+      const band = foundationElement("section", "foundation-mobile-band");
+      band.appendChild(foundationElement("p", "foundation-mobile-band__label", group));
+      const moduleGrid = foundationElement("div", "foundation-mobile-band__modules");
+      modules.forEach((module) => moduleGrid.appendChild(foundationMobileModuleControl(module, itemId)));
+      band.appendChild(moduleGrid);
+      schematicFragment.appendChild(band);
+    });
+  } else if (region.mobileLayout === "flow") {
+    region.modules.forEach((module, index) => {
+      schematicFragment.appendChild(foundationMobileModuleControl(module, itemId));
+      if (index >= region.modules.length - 1) return;
+      const nextModule = region.modules[index + 1];
+      const internalConnection = foundationConnectionsData.find((connection) => (
+        connection.from === module.id && connection.to === nextModule.id
+      ));
+      const connector = foundationElement("div", "foundation-mobile-flow-connector");
+      connector.setAttribute("aria-hidden", "true");
+      connector.appendChild(foundationElement("i"));
+      if (internalConnection) connector.appendChild(foundationElement("span", "", internalConnection.label));
+      schematicFragment.appendChild(connector);
+    });
+  } else {
+    const moduleGrid = foundationElement("div", "foundation-mobile-schematic__grid");
+    region.modules.forEach((module) => moduleGrid.appendChild(foundationMobileModuleControl(module, itemId)));
+    schematicFragment.appendChild(moduleGrid);
+  }
+  foundationMobileSchematic.replaceChildren(schematicFragment);
+
+  const interfaceFragment = document.createDocumentFragment();
+  (region.interfaceIds || []).forEach((interfaceId) => {
+    const entry = foundationInterfacesData.find((candidate) => candidate.id === interfaceId);
+    if (!entry) return;
+    const reference = foundationElement("div", "foundation-mobile-interface");
+    reference.appendChild(foundationElement("span", "", entry.label));
+    if (entry.detail) reference.appendChild(foundationElement("small", "", entry.detail));
+    interfaceFragment.appendChild(reference);
+  });
+  foundationMobileInterfaces.replaceChildren(interfaceFragment);
+  foundationMobileInterfacesSection.hidden = !foundationMobileInterfaces.childElementCount;
+
+  const relationshipFragment = document.createDocumentFragment();
+  foundationConnectionsForRegion(region.id).forEach((connection) => {
+    const fromRegion = foundationRegionForItem(connection.from);
+    const toRegion = foundationRegionForItem(connection.to);
+    const relationship = foundationElement("article", `foundation-mobile-relationship is-${connection.state}`);
+    const header = foundationElement("header");
+    const direction = fromRegion === region.id && toRegion === region.id
+      ? "INTERNAL"
+      : toRegion === region.id ? "RECEIVES" : "PRODUCES";
+    const posture = connection.state === "active" ? "ACTIVE" : "ACCEPTED / GATED";
+    header.append(
+      foundationElement("strong", "", direction),
+      foundationElement("span", "", posture),
+    );
+    let description;
+    if (direction === "INTERNAL") {
+      description = `${connection.label} between ${foundationAnchorLabel(connection.from)} and ${foundationAnchorLabel(connection.to)}.`;
+    } else if (direction === "RECEIVES") {
+      description = `${connection.label} from ${foundationAnchorLabel(connection.from)}.`;
+    } else {
+      description = `${connection.label} to ${foundationAnchorLabel(connection.to)}.`;
+    }
+    relationship.append(header, foundationElement("p", "", description));
+    relationshipFragment.appendChild(relationship);
+  });
+  foundationMobileRelationships.replaceChildren(relationshipFragment);
 }
 
 function renderFoundationInspector(itemId = "foundation") {
@@ -2634,10 +2762,19 @@ function foundationRegionForItem(itemId) {
   return item?.regionId || (foundationRegionsData.some((region) => region.id === itemId) ? itemId : null);
 }
 
+function foundationConnectionRelatesToItem(connection, itemId, regionId) {
+  const fromRegion = foundationRegionForItem(connection.from);
+  const toRegion = foundationRegionForItem(connection.to);
+  return connection.from === itemId
+    || connection.to === itemId
+    || Boolean(regionId && (fromRegion === regionId || toRegion === regionId));
+}
+
 function applyFoundationInspection() {
   const itemId = foundationLockedItem || foundationPreviewItem || "foundation";
   const regionId = foundationRegionForItem(itemId);
   renderFoundationInspector(itemId);
+  renderFoundationMobileContext(itemId);
 
   foundationBlueprint.dataset.foundationInspection = itemId;
   foundationBlueprint.querySelectorAll("[data-foundation-select]").forEach((control) => {
@@ -2651,14 +2788,22 @@ function applyFoundationInspection() {
     region.classList.toggle("is-related", Boolean(regionId) && region.dataset.foundationRegion === regionId);
   });
 
-  foundationConnectors.querySelectorAll("[data-foundation-connection]").forEach((group) => {
-    const fromRegion = foundationRegionForItem(group.dataset.from);
-    const toRegion = foundationRegionForItem(group.dataset.to);
+  const inspectedRegion = foundationRegionsData.find((region) => region.id === regionId);
+  foundationInterfaces.querySelectorAll("[data-foundation-anchor]").forEach((reference) => {
+    const interfaceId = reference.dataset.foundationAnchor;
     const isRelated = itemId !== "foundation" && (
-      group.dataset.from === itemId
-      || group.dataset.to === itemId
-      || (regionId && (fromRegion === regionId || toRegion === regionId))
+      inspectedRegion?.interfaceIds?.includes(interfaceId)
+      || foundationConnectionsData.some((connection) => (
+        (connection.from === interfaceId || connection.to === interfaceId)
+        && foundationConnectionRelatesToItem(connection, itemId, regionId)
+      ))
     );
+    reference.classList.toggle("is-related", Boolean(isRelated));
+    reference.classList.toggle("is-receded", itemId !== "foundation" && !isRelated);
+  });
+
+  foundationConnectors.querySelectorAll("[data-foundation-connection]").forEach((group) => {
+    const isRelated = itemId !== "foundation" && foundationConnectionRelatesToItem(group.dataset, itemId, regionId);
     group.classList.toggle("is-related", isRelated);
     group.classList.toggle("is-receded", itemId !== "foundation" && !isRelated);
   });
@@ -2680,7 +2825,7 @@ function selectFoundationItem(itemId, { lock = false, preview = false, scrollIns
   applyFoundationInspection();
 
   if (scrollInspector && foundationMobileMedia.matches) {
-    foundationInspector.scrollIntoView({
+    foundationMobileContext.scrollIntoView({
       behavior: prefersReducedMotion.matches ? "auto" : "smooth",
       block: "start",
     });
@@ -2801,6 +2946,13 @@ function setupSystemFoundation() {
     ["interface layer", foundationInterfaces],
     ["connector layer", foundationConnectors],
     ["relationship list", foundationConnectionList],
+    ["compact context", foundationMobileContext],
+    ["compact context kicker", foundationMobileContextKicker],
+    ["compact context title", foundationMobileContextTitle],
+    ["compact schematic", foundationMobileSchematic],
+    ["compact interface section", foundationMobileInterfacesSection],
+    ["compact interfaces", foundationMobileInterfaces],
+    ["compact relationships", foundationMobileRelationships],
     ["inspector", foundationInspector],
   ];
   const missing = requiredElements.filter(([, element]) => !element).map(([name]) => name);
@@ -2861,7 +3013,10 @@ function setupSystemFoundation() {
   } else {
     window.addEventListener("resize", scheduleFoundationConnectors, { passive: true });
   }
-  foundationMobileMedia.addEventListener("change", scheduleFoundationConnectors);
+  foundationMobileMedia.addEventListener("change", () => {
+    applyFoundationInspection();
+    scheduleFoundationConnectors();
+  });
   window.requestAnimationFrame(scheduleFoundationConnectors);
 }
 
