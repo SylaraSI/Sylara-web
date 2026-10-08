@@ -11,6 +11,20 @@ const skipLink = document.querySelector(".skip-link");
 const routeStatuses = [...document.querySelectorAll("[data-route-status]")];
 const architectureScroll = document.querySelector("[data-architecture-scroll]");
 const architectureDomainScroll = document.querySelector("[data-architecture-domain-scroll]");
+const foundationSystemScroll = document.querySelector("[data-foundation-system-scroll]");
+const foundationOverviewControl = document.querySelector("[data-foundation-overview]");
+const foundationBlueprint = document.querySelector("[data-foundation-blueprint]");
+const foundationRegions = document.querySelector("[data-foundation-regions]");
+const foundationInterfaces = document.querySelector("[data-foundation-interfaces]");
+const foundationConnectors = document.querySelector("[data-foundation-connectors]");
+const foundationConnectionList = document.querySelector("[data-foundation-connection-list]");
+const foundationInspector = document.querySelector("[data-foundation-inspector]");
+const foundationInspectorKicker = document.querySelector("[data-foundation-inspector-kicker]");
+const foundationInspectorTitle = document.querySelector("[data-foundation-inspector-title]");
+const foundationInspectorAnchor = document.querySelector("[data-foundation-inspector-anchor]");
+const foundationInspectorMaturity = document.querySelector("[data-foundation-inspector-maturity]");
+const foundationInspectorBody = document.querySelector("[data-foundation-inspector-body]");
+const foundationInspectorSelectors = document.querySelector("[data-foundation-inspector-selectors]");
 const atlasCanvas = document.querySelector("[data-atlas-canvas]");
 const atlasNodeLayer = document.querySelector("[data-atlas-node-layer]");
 const atlasRelationships = document.querySelector("[data-atlas-relationships]");
@@ -125,6 +139,7 @@ const contactDetailEmail = document.querySelector("[data-contact-detail-email]")
 const contactDetailAddress = document.querySelector("[data-contact-detail-address]");
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const atlasMobileMedia = window.matchMedia("(max-width: 760px)");
+const foundationMobileMedia = window.matchMedia("(max-width: 760px)");
 const researchTabletMobileMedia = window.matchMedia(
   "(max-width: 760px), (max-height: 590px) and (orientation: landscape) and (max-width: 960px)",
 );
@@ -180,7 +195,7 @@ const atlasSystems = [
     title: "System & Foundation",
     accent: "#D8C4FF",
     glyph: "foundation",
-    route: null,
+    route: "#architecture/system-foundation",
     position: { x: 50, y: 11.5 },
     compactY: 8,
     mobile: { column: 1, row: 1 },
@@ -337,6 +352,299 @@ const atlasSystems = [
 ];
 
 const atlasSystemsById = new Map(atlasSystems.map((system) => [system.id, system]));
+
+/*
+  SYSTEM 01 / FOUNDATION BLUEPRINT
+  Regions, modules, inspector language, interfaces, and connector semantics
+  share one source so the schematic and accessible inspection surface agree.
+*/
+const foundationDefaultInspector = {
+  id: "foundation",
+  kicker: "FOUNDATION CONTRACTS",
+  title: "Foundation Contracts",
+  anchor: "System 01",
+  maturity: "GOVERNING FRAME",
+  summary: "System 01 establishes the contracts that keep authority, identity, provenance, current state, historical recording, and presentation distinct across Sylara. Select a region to inspect its responsibilities and implementation posture.",
+  legend: true,
+};
+
+const foundationRegionsData = [
+  {
+    id: "admission-provenance",
+    code: "A",
+    title: "ADMISSION & PROVENANCE",
+    maturity: "ACTIVE BOUNDED RUNTIME",
+    anchors: ["ObservationService", "AdapterCoupler", "RuntimeAdmissionGuard"],
+    owns: "Layer 02 owns source-specific collection/normalization, attribution, and observation admission within its declared scope. Layer 04 owns minimum provenance validation and provenance-based quarantine/admission policy.",
+    consumes: "Source-local records/metadata, attributed observation context, and enriched trust metadata with required source-provenance identity where applicable.",
+    produces: "Admitted attributed observations; bounded admission/quarantine/rejection outcomes at the owner that issues each decision; applicable diagnostics/references.",
+    contract: "Preserve source identity, lane/subject attribution, and trust-boundary context through governed handoffs. Do not imply that provenance admission establishes condition truth, memory-write authority, source health, or operator action authority.",
+    modules: [
+      {
+        id: "observation-entry",
+        title: "OBSERVATION ENTRY",
+        maturity: "ACTIVE BOUNDED RUNTIME",
+        anchors: ["ObservationService", "AdapterCoupler"],
+        owns: "Source-specific collection, normalization, attribution, and observation admission within the Layer 02 contract.",
+        consumes: "Source-local records and metadata with the context needed to preserve origin, subject, lane, and scope.",
+        produces: "Attributed observations admitted within its declared boundary.",
+        contract: "Preserve source identity and attribution through the observation-entry handoff without claiming provenance-policy or condition-truth authority.",
+      },
+      {
+        id: "provenance-admission",
+        title: "PROVENANCE ADMISSION",
+        maturity: "ACTIVE BOUNDED RUNTIME",
+        anchors: ["RuntimeAdmissionGuard"],
+        owns: "Minimum provenance validation and provenance-based quarantine or admission policy within the Layer 04 boundary.",
+        consumes: "Attributed observation context and enriched trust metadata with required source-provenance identity where applicable.",
+        produces: "Bounded admission, quarantine, or rejection outcomes with applicable diagnostics and references.",
+        contract: "Apply provenance admission policy without inheriting source-collection, present-condition, memory-write, or operator-action authority.",
+      },
+    ],
+  },
+  {
+    id: "present-state-health",
+    code: "B",
+    title: "PRESENT STATE & HEALTH",
+    maturity: "ACTIVE IMPLEMENTATION",
+    anchors: ["ConditionRegistry", "HealthAuthority"],
+    owns: "ConditionRegistry owns current condition identity, occurrence and episode state, lifecycle truth, and present condition truth. Health Authority owns current Sylara operational-health classification.",
+    consumes: "Governed condition-producing inputs and lifecycle material, then authoritative active condition truth for health classification.",
+    produces: "Current condition records, lifecycle and episode state, current/recent condition projections, lifecycle mutation facts, and one current operational-health class.",
+    contract: "Keep condition identity and lifecycle ownership separate from the health classification derived from authoritative active condition state.",
+    modules: [
+      {
+        id: "condition-registry",
+        title: "CONDITION REGISTRY",
+        maturity: "ACTIVE IMPLEMENTATION",
+        anchors: ["ConditionRegistry"],
+        owns: "Current condition identity, occurrence/episode state, lifecycle truth, and present condition truth.",
+        consumes: "Governed condition-producing inputs and lifecycle-mutation material admitted through appropriate upstream contracts.",
+        produces: "Current condition records, lifecycle state, episode continuity, current/recent condition projections, and lifecycle mutation facts within scope.",
+        contract: "Maintain authoritative current condition and lifecycle state under explicit identity, occurrence, and transition semantics.",
+      },
+      {
+        id: "health-authority",
+        title: "HEALTH AUTHORITY",
+        maturity: "ACTIVE IMPLEMENTATION",
+        anchors: ["HealthAuthority"],
+        owns: "Current Sylara operational-health classification.",
+        consumes: "Governed active condition truth.",
+        produces: "One current health class according to accepted health semantics and precedence.",
+        contract: "Derive current operational health from authoritative active condition state while keeping health classification separate from condition identity and lifecycle ownership.",
+        vocabularyLabel: "OPERATIONAL HEALTH CLASSES",
+        vocabulary: ["STABLE", "RECOVERING", "WATCHFUL", "DEGRADED", "CRITICAL", "FAILED"],
+        note: "These labels apply only to Sylara's operational/system health. They are not general statuses for hypotheses, experiments, simulations, research tasks, claims, or epistemic objects.",
+      },
+    ],
+  },
+  {
+    id: "memory-qualification",
+    code: "C",
+    title: "MEMORY QUALIFICATION",
+    maturity: "ACTIVE CLASSIFICATION · REPORT-ONLY",
+    anchors: ["MemoryEligibilityGate"],
+    owns: "Bounded memory-candidacy classification and assignment of an applicable memory class.",
+    consumes: "Governed evidence diagnostics or lifecycle-finalization eligibility inputs with preserved subject/source references and required decision context.",
+    produces: "Structured Memory Eligibility Decisions containing candidacy status, memory class, decision rationale, qualification basis, subject reference, evaluation context/time, and policy/schema information.",
+    contract: "Evaluate memory candidacy while preserving source identity and provenance. Recording, persistence, and durable publication remain separately governed.",
+    modules: [
+      {
+        id: "memory-eligibility-gate",
+        title: "MEMORY ELIGIBILITY GATE",
+        maturity: "ACTIVE CLASSIFICATION · REPORT-ONLY",
+        anchors: ["MemoryEligibilityGate"],
+        owns: "Bounded memory-candidacy classification and assignment of an applicable memory class.",
+        consumes: "An Evidence Diagnostic with Candidate Identity and a Lifecycle Reference with Lifecycle Bridge Reference as visibly distinct governed inputs.",
+        produces: "A structured Memory Eligibility Decision with rationale, basis, references, evaluation context/time, and policy/schema information.",
+        contract: "Evaluate both governed inputs without merging their identity authorities. Recording, persistence, and durable publication remain separately governed.",
+        vocabularyLabel: "APPLICABLE MEMORY CLASSES",
+        vocabulary: ["WORKING OBSERVATIONAL MEMORY", "SESSION MEMORY", "PERSISTENT EPISODIC MEMORY"],
+        note: "For an ineligible result, no memory class is assigned.",
+      },
+      {
+        id: "memory-eligibility-decision",
+        title: "MEMORY ELIGIBILITY DECISION",
+        maturity: "ACTIVE CLASSIFICATION · REPORT-ONLY",
+        anchors: ["MemoryEligibilityGate"],
+        owns: "The bounded classification outcome issued by Memory Qualification.",
+        consumes: "The gate's preserved qualification basis, subject reference, context, and policy/schema information.",
+        produces: "A reportable candidacy decision and applicable memory class, or an explicit ineligible result with no memory class assigned.",
+        contract: "Carry the qualification outcome into the shared Cycle Report without acting as a recording or persistence authorization.",
+      },
+    ],
+  },
+  {
+    id: "recording-persistence",
+    code: "D",
+    title: "RECORDING & PERSISTENCE",
+    maturity: "MIXED CURRENT, GATED, AND OPEN CONTRACTS",
+    anchors: ["SessionMemoryService", "InsightHistory", "F2 / Schema 2", "RG1"],
+    owns: "Memory-local historical record structures, accepted occurrence-correct recording semantics, version-aware history interpretation, and separately governed durability responsibilities within their declared contracts.",
+    consumes: "Completed cycle/report state for current history, plus coherent Registry-owned census material and authorized occurrence, condition, observation/reference, temporal, completeness, and currentness information for governed recording.",
+    produces: "Session history, derived insight history, attributed occurrence snapshots, session summaries, explicit recording coverage, Memory record identity, and logical finalization state according to the active or accepted contract.",
+    contract: "Keep present truth, logical recording state, compatibility, and durable commit/recovery as distinct responsibilities. Recording does not become the owner of upstream truth.",
+    modules: [
+      {
+        id: "session-memory-v1",
+        group: "CURRENT HISTORY",
+        title: "SESSION MEMORY V1",
+        maturity: "ACTIVE HISTORICAL RECORDING",
+        anchors: ["SessionMemoryService"],
+        owns: "V1 session-scoped historical recording behavior and Memory-local historical record structures.",
+        consumes: "Completed cycle/report state supplied through the current runtime contract.",
+        produces: "Historical condition-episode records and session-summary records.",
+        contract: "Record already-established runtime state after cycle processing without becoming a present-truth owner.",
+      },
+      {
+        id: "insight-history",
+        group: "CURRENT HISTORY",
+        title: "INSIGHT HISTORY",
+        maturity: "ACTIVE DERIVED HISTORY",
+        anchors: ["InsightHistory"],
+        owns: "Persistence of emitted, unsuppressed cognition insights as derived history.",
+        consumes: "Emitted, unsuppressed cognition insights through the current contract.",
+        produces: "Derived insight history distinct from session history and governed long-term epistemic memory.",
+        contract: "Retain derived insight history without presenting it as Session Memory V1 or governed long-term epistemic memory.",
+      },
+      {
+        id: "governed-recording",
+        group: "GOVERNED RECORDING",
+        title: "GOVERNED RECORDING",
+        maturity: "ACCEPTED · ACTIVATION GATED",
+        anchors: ["F2 / Schema 2"],
+        owns: "Accepted occurrence-correct SessionMemory recording semantics and independent Memory record identity.",
+        consumes: "Coherent Registry-owned census material plus authorized occurrence, condition, observation/reference, temporal, completeness, and currentness information from governing producers.",
+        produces: "Attributed condition-occurrence snapshots, session summaries, explicit recording-coverage state, Memory record identity, and logical finalization state.",
+        contract: "Bind historical records to exact recording sessions, authoritative occurrences, and canonical condition identity while preserving producer ownership of the truth being recorded.",
+        note: "Recording session identity + authoritative Registry episode reference + canonical condition identity form the core binding. Memory supplies its own independent memory_record_id.",
+      },
+      {
+        id: "logical-finalization",
+        group: "GOVERNED RECORDING",
+        title: "LOGICAL FINALIZATION",
+        maturity: "ACCEPTED · ACTIVATION GATED",
+        anchors: ["F2 / Schema 2"],
+        owns: "The accepted logical recording state within the governed recording contract.",
+        consumes: "A coherent, contract-complete governed recording decision.",
+        produces: "Explicit logical finalization state, separately from durable commit status.",
+        contract: "Logical finalization establishes the accepted recording state. Durability governs how that state is committed and recovered.",
+      },
+      {
+        id: "version-aware-history",
+        group: "DURABILITY & COMPATIBILITY",
+        title: "VERSION-AWARE HISTORY",
+        maturity: "GATED PREREQUISITE",
+        anchors: ["RG1"],
+        owns: "Version-aware interpretation and coexistence rules for legacy V1 history and future schema-2 history.",
+        consumes: "History carrying its declared version and contract context.",
+        produces: "Version-appropriate interpretation without rewriting older records into newer semantics.",
+        contract: "Preserve coexistence and interpretation boundaries. RG1 does not own durability.",
+      },
+      {
+        id: "durability-contract",
+        group: "DURABILITY & COMPATIBILITY",
+        title: "DURABILITY CONTRACT",
+        maturity: "OPEN CONTRACT · SEPARATELY GOVERNED",
+        anchors: [],
+        owns: "Separately governed durable commit, retry, and recovery semantics when that contract is established.",
+        consumes: "Logically accepted recording state under the future durability contract.",
+        produces: "Durable commit and recovery outcomes without changing upstream source truth or recording semantics.",
+        contract: "Durable-write success does not change logical recording coverage, source truth, or accepted recording semantics.",
+      },
+    ],
+  },
+  {
+    id: "governed-projection",
+    code: "E",
+    title: "GOVERNED PROJECTION",
+    maturity: "ACTIVE PROJECTION SURFACES",
+    anchors: ["build_view_model()", "build_interpreted_summary()", "render_view_model()", "adapt_vm_for_web()"],
+    owns: "Projection assembly, presentation transformation, and operator-facing representation within the Layer-10 projection contract.",
+    consumes: "Shared Cycle Report material plus governed system state, observations, diagnostics, temporal interpretation, cognition/decision material, and trace references from their respective source authorities.",
+    produces: "View-model structures, interpreted summaries, readable display fields, CLI output, web-dashboard projections, trace-linked operator guidance, and other authorized presentation artifacts.",
+    contract: "Transform governed information for inspection and comprehension while preserving upstream semantics and authority. Recommendation text remains advisory presentation, separate from request, approval, authorization, and execution authority.",
+    note: "Readable presentation retains governed references where available while upstream identity, state, and evidence remain authoritative. A latest raw metric may be normal while an authoritative active condition remains degraded or critical. Projection should preserve both meanings rather than force display consistency.",
+    modules: [
+      {
+        id: "projection-assembly",
+        title: "PROJECTION ASSEMBLY",
+        maturity: "ACTIVE PROJECTION",
+        anchors: ["build_view_model()"],
+        owns: "Projection-only assembly of governed runtime and report material.",
+        consumes: "Governed runtime/report state, conditions, activity, observations, cognition insights, decisions/policy results, temporal interpretations, rule metrics, evidence diagnostics, summary material, and trace references.",
+        produces: "A projection-only representation for authorized presentation consumers.",
+        contract: "Combine governed inputs without inheriting or rewriting their source authority.",
+      },
+      {
+        id: "interpreted-summary",
+        title: "INTERPRETED SUMMARY",
+        maturity: "ACTIVE OPERATOR PROJECTION",
+        anchors: ["build_interpreted_summary()"],
+        owns: "Operator-readable interpretation and display prioritization within the projection contract.",
+        consumes: "Governed projection material and available context from source authorities.",
+        produces: "Signal messages, lifecycle/context text, temporal context, display prioritization, and advisory recommendation strings.",
+        contract: "Keep recommendation text advisory and separate from request, approval, authorization, and execution authority.",
+      },
+      {
+        id: "cli",
+        title: "CLI",
+        maturity: "ACTIVE PRESENTATION",
+        anchors: ["render_view_model()"],
+        owns: "CLI presentation of the governed view model.",
+        consumes: "Authorized view-model structures and interpreted display fields.",
+        produces: "Readable CLI output with governed references where available.",
+        contract: "Present governed meaning without becoming an upstream truth or action authority.",
+      },
+      {
+        id: "web-dashboard",
+        title: "WEB DASHBOARD",
+        maturity: "ACTIVE READ-ONLY PRESENTATION",
+        anchors: ["adapt_vm_for_web()", "current FastAPI dashboard surface"],
+        owns: "Read-only web presentation adaptation within the Layer-10 projection contract.",
+        consumes: "Authorized view-model structures and interpreted display fields.",
+        produces: "Web-dashboard projections and trace-linked operator guidance.",
+        contract: "Remain a read-only presentation surface while preserving upstream semantics and authority.",
+      },
+    ],
+  },
+];
+
+const foundationInterfacesData = [
+  { id: "governed-rule-processing", label: "GOVERNED RULE PROCESSING", position: "rule" },
+  { id: "evidence-diagnostic", label: "EVIDENCE DIAGNOSTIC", detail: "Candidate Identity", position: "evidence" },
+  { id: "temporal-interpretation", label: "TEMPORAL INTERPRETATION / L07", position: "temporal" },
+  { id: "cognition-decision-context", label: "COGNITION / DECISION CONTEXT / L08", position: "cognition" },
+  { id: "recent-observations", label: "RECENT OBSERVATIONS / L02", position: "observations" },
+  { id: "observation-references", label: "OBSERVATION REFERENCES", position: "references" },
+];
+
+const foundationConnectionsData = [
+  { from: "admission-provenance", fromSide: "right", to: "governed-rule-processing", toSide: "left", label: "ADMITTED OBSERVATION CONTEXT", state: "active" },
+  { from: "governed-rule-processing", fromSide: "right", to: "present-state-health", toSide: "left", label: "GOVERNED CONDITION INPUT", state: "active" },
+  { from: "condition-registry", fromSide: "right", to: "health-authority", toSide: "left", label: "ACTIVE CONDITION TRUTH", state: "active" },
+  { from: "present-state-health", fromSide: "bottom", to: "memory-qualification", toSide: "top", label: "LIFECYCLE REFERENCE", state: "active" },
+  { from: "evidence-diagnostic", fromSide: "right", to: "memory-eligibility-gate", toSide: "left", label: "EVIDENCE DIAGNOSTIC", state: "active" },
+  { from: "memory-eligibility-decision", fromSide: "top", to: "cycle-report", toSide: "left", label: "MEMORY ELIGIBILITY DECISION", state: "active" },
+  { from: "present-state-health", fromSide: "bottom", to: "cycle-report", toSide: "top", label: "CONDITION / HEALTH REPORT", state: "active" },
+  { from: "temporal-interpretation", fromSide: "left", to: "cycle-report", toSide: "right", label: "TEMPORAL INTERPRETATION", state: "active" },
+  { from: "cycle-report", fromSide: "bottom", to: "session-memory-v1", toSide: "top", label: "COMPLETED CYCLE STATE", state: "active" },
+  { from: "cycle-report", fromSide: "right", to: "projection-assembly", toSide: "bottom", label: "GOVERNED REPORT STATE", state: "active" },
+  { from: "recent-observations", fromSide: "left", to: "governed-projection", toSide: "right", label: "RECENT OBSERVATIONS", state: "active" },
+  { from: "cognition-decision-context", fromSide: "left", to: "governed-projection", toSide: "right", label: "COGNITION / DECISION CONTEXT", state: "active" },
+  { from: "present-state-health", fromSide: "bottom", to: "governed-recording", toSide: "top", label: "REGISTRY CENSUS", state: "gated" },
+  { from: "observation-references", fromSide: "right", to: "governed-recording", toSide: "left", label: "OBSERVATION REFERENCES", state: "gated" },
+];
+
+const foundationItemsById = new Map([[foundationDefaultInspector.id, foundationDefaultInspector]]);
+foundationRegionsData.forEach((region) => {
+  foundationItemsById.set(region.id, { ...region, kicker: `${region.code} / REPRESENTATIVE CONTRACT` });
+  region.modules.forEach((module) => foundationItemsById.set(module.id, {
+    ...module,
+    kicker: `${region.code} / ${region.title}`,
+    regionId: region.id,
+  }));
+});
 
 const atlasGlyphs = {
   foundation: '<rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="7.5" y="7.5" width="9" height="9" rx="1"></rect><path d="M4 9h3.5M16.5 15H20"></path>',
@@ -1178,6 +1486,11 @@ let activeArchitectureSection = "domain-overview";
 let expandedArchitectureIndexDomain = null;
 let architectureIndexReturnFocus = null;
 let activeAtlasSystem = null;
+let activeArchitectureSystem = null;
+let foundationLockedItem = null;
+let foundationPreviewItem = null;
+let foundationDrawFrame = null;
+let isFoundationBlueprintReady = false;
 let atlasNodes = [];
 let atlasDrawFrame = null;
 let atlasPathHideTimer = null;
@@ -1771,7 +2084,13 @@ function createAtlasIndexEntry(system, compact = false) {
   const entry = system.route ? document.createElement("a") : document.createElement("div");
   entry.className = compact ? "atlas-index-entry atlas-index-entry--compact" : "atlas-index-entry";
   entry.style.setProperty("--atlas-accent", system.accent);
-  if (system.route) entry.href = system.route;
+  if (system.route) {
+    entry.href = system.route;
+    entry.addEventListener("click", (event) => {
+      event.preventDefault();
+      showArchitectureSystem(system.id);
+    });
+  }
 
   const number = document.createElement("span");
   const label = document.createElement("span");
@@ -1827,6 +2146,11 @@ function renderSystemAtlas() {
       enter.className = "atlas-node__enter";
       enter.href = system.route;
       enter.textContent = "ENTER";
+      enter.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        showArchitectureSystem(system.id);
+      });
       card.appendChild(enter);
     }
 
@@ -2158,6 +2482,389 @@ function setupSystemAtlas() {
   }
 }
 
+function foundationElement(tag, className, textContent) {
+  const element = document.createElement(tag);
+  if (className) element.className = className;
+  if (textContent !== undefined) element.textContent = textContent;
+  return element;
+}
+
+function foundationAnchorLabel(id) {
+  if (id === "cycle-report") return "Cycle Report";
+  const item = foundationItemsById.get(id);
+  if (item) return item.title;
+  return foundationInterfacesData.find((entry) => entry.id === id)?.label || id;
+}
+
+function renderFoundationBlueprint() {
+  const regionFragment = document.createDocumentFragment();
+
+  foundationRegionsData.forEach((region) => {
+    const article = foundationElement("article", "foundation-region");
+    article.dataset.foundationRegion = region.id;
+    article.dataset.foundationAnchor = region.id;
+
+    const control = foundationElement("button", "foundation-region__control");
+    control.type = "button";
+    control.dataset.foundationSelect = region.id;
+    control.setAttribute("aria-pressed", "false");
+    const code = foundationElement("span", "foundation-region__code", region.code);
+    const title = foundationElement("span", "foundation-region__title", region.title);
+    control.append(code, title);
+
+    const modules = foundationElement("div", "foundation-region__modules");
+    let currentGroup = null;
+    region.modules.forEach((module) => {
+      if (module.group && module.group !== currentGroup) {
+        modules.appendChild(foundationElement("p", "foundation-region__group", module.group));
+        currentGroup = module.group;
+      }
+      const moduleControl = foundationElement("button", "foundation-module", module.title);
+      moduleControl.type = "button";
+      moduleControl.dataset.foundationSelect = module.id;
+      moduleControl.dataset.foundationAnchor = module.id;
+      moduleControl.setAttribute("aria-pressed", "false");
+      modules.appendChild(moduleControl);
+    });
+
+    article.append(control, modules);
+    regionFragment.appendChild(article);
+  });
+
+  const interfaceFragment = document.createDocumentFragment();
+  foundationInterfacesData.forEach((entry) => {
+    const reference = foundationElement("div", "foundation-interface");
+    reference.dataset.foundationInterface = entry.position;
+    reference.dataset.foundationAnchor = entry.id;
+    reference.appendChild(foundationElement("span", "", entry.label));
+    if (entry.detail) reference.appendChild(foundationElement("small", "", entry.detail));
+    interfaceFragment.appendChild(reference);
+  });
+
+  const connectionFragment = document.createDocumentFragment();
+  foundationConnectionsData.forEach((connection) => {
+    const item = foundationElement("li", `foundation-connection-list__item is-${connection.state}`);
+    const state = connection.state === "active" ? "Solid, active" : "Dashed, accepted or gated";
+    item.textContent = `${state}: ${foundationAnchorLabel(connection.from)} to ${foundationAnchorLabel(connection.to)} through ${connection.label}.`;
+    connectionFragment.appendChild(item);
+  });
+
+  foundationRegions.replaceChildren(regionFragment);
+  foundationInterfaces.replaceChildren(interfaceFragment);
+  foundationConnectionList.replaceChildren(connectionFragment);
+}
+
+function renderFoundationInspector(itemId = "foundation") {
+  const item = foundationItemsById.get(itemId) || foundationDefaultInspector;
+  const region = item.regionId
+    ? foundationRegionsData.find((entry) => entry.id === item.regionId)
+    : foundationRegionsData.find((entry) => entry.id === item.id);
+
+  foundationInspectorKicker.textContent = item.kicker || "FOUNDATION CONTRACTS";
+  foundationInspectorTitle.textContent = item.title;
+  foundationInspectorAnchor.textContent = item.anchors?.length ? item.anchors.join(" · ") : item.anchor || "System 01";
+  foundationInspectorMaturity.textContent = item.maturity;
+
+  const bodyFragment = document.createDocumentFragment();
+  if (item.summary) bodyFragment.appendChild(foundationElement("p", "foundation-inspector__summary", item.summary));
+
+  if (item.legend) {
+    const legend = foundationElement("div", "foundation-connector-legend");
+    legend.setAttribute("aria-label", "Connector legend");
+    const active = foundationElement("span");
+    const activeMark = foundationElement("i");
+    activeMark.setAttribute("aria-hidden", "true");
+    active.append(activeMark, document.createTextNode(" SOLID / ACTIVE CURRENT RELATIONSHIP"));
+    const gated = foundationElement("span");
+    const gatedMark = foundationElement("i", "is-dashed");
+    gatedMark.setAttribute("aria-hidden", "true");
+    gated.append(gatedMark, document.createTextNode(" DASHED / ACCEPTED OR GATED RELATIONSHIP"));
+    legend.append(active, gated);
+    bodyFragment.append(legend, foundationElement("p", "", "Connections represent governed handoffs or references, not transfer of authority."));
+  } else {
+    [
+      ["OWNS", item.owns],
+      ["CONSUMES", item.consumes],
+      ["PRODUCES", item.produces],
+      ["CONTRACT", item.contract],
+    ].forEach(([label, value]) => {
+      if (!value) return;
+      const section = foundationElement("section", "foundation-inspector__section");
+      section.append(foundationElement("h5", "", label), foundationElement("p", "", value));
+      bodyFragment.appendChild(section);
+    });
+
+    if (item.vocabulary?.length) {
+      const vocabulary = foundationElement("section", "foundation-inspector__section foundation-inspector__section--vocabulary");
+      vocabulary.appendChild(foundationElement("h5", "", item.vocabularyLabel));
+      const list = foundationElement("ul");
+      item.vocabulary.forEach((entry) => list.appendChild(foundationElement("li", "", entry)));
+      vocabulary.appendChild(list);
+      bodyFragment.appendChild(vocabulary);
+    }
+    if (item.note) bodyFragment.appendChild(foundationElement("p", "foundation-inspector__note", item.note));
+  }
+
+  foundationInspectorBody.replaceChildren(bodyFragment);
+
+  if (!region) {
+    foundationInspectorSelectors.replaceChildren();
+    return;
+  }
+
+  const selectorLabel = foundationElement("p", "foundation-inspector__selector-label", "INSPECT CONTRACT PARTS");
+  const selectorList = foundationElement("div", "foundation-inspector__selector-list");
+  const regionControl = foundationElement("button", "foundation-inspector__selector", "REGION CONTRACT");
+  regionControl.type = "button";
+  regionControl.dataset.foundationSelect = region.id;
+  regionControl.setAttribute("aria-pressed", String(foundationLockedItem === region.id));
+  selectorList.appendChild(regionControl);
+  region.modules.forEach((module) => {
+    const control = foundationElement("button", "foundation-inspector__selector", module.title);
+    control.type = "button";
+    control.dataset.foundationSelect = module.id;
+    control.setAttribute("aria-pressed", String(foundationLockedItem === module.id));
+    selectorList.appendChild(control);
+  });
+  foundationInspectorSelectors.replaceChildren(selectorLabel, selectorList);
+}
+
+function foundationRegionForItem(itemId) {
+  const item = foundationItemsById.get(itemId);
+  return item?.regionId || (foundationRegionsData.some((region) => region.id === itemId) ? itemId : null);
+}
+
+function applyFoundationInspection() {
+  const itemId = foundationLockedItem || foundationPreviewItem || "foundation";
+  const regionId = foundationRegionForItem(itemId);
+  renderFoundationInspector(itemId);
+
+  foundationBlueprint.dataset.foundationInspection = itemId;
+  foundationBlueprint.querySelectorAll("[data-foundation-select]").forEach((control) => {
+    const isLocked = Boolean(foundationLockedItem) && control.dataset.foundationSelect === foundationLockedItem;
+    control.setAttribute("aria-pressed", String(isLocked || (!foundationLockedItem && itemId === "foundation" && control.dataset.foundationSelect === "foundation")));
+    control.classList.toggle("is-inspected", control.dataset.foundationSelect === itemId);
+    control.classList.toggle("is-related", Boolean(regionId) && foundationRegionForItem(control.dataset.foundationSelect) === regionId);
+  });
+
+  foundationRegions.querySelectorAll("[data-foundation-region]").forEach((region) => {
+    region.classList.toggle("is-related", Boolean(regionId) && region.dataset.foundationRegion === regionId);
+  });
+
+  foundationConnectors.querySelectorAll("[data-foundation-connection]").forEach((group) => {
+    const fromRegion = foundationRegionForItem(group.dataset.from);
+    const toRegion = foundationRegionForItem(group.dataset.to);
+    const isRelated = itemId !== "foundation" && (
+      group.dataset.from === itemId
+      || group.dataset.to === itemId
+      || (regionId && (fromRegion === regionId || toRegion === regionId))
+    );
+    group.classList.toggle("is-related", isRelated);
+    group.classList.toggle("is-receded", itemId !== "foundation" && !isRelated);
+  });
+}
+
+function selectFoundationItem(itemId, { lock = false, preview = false, scrollInspector = false } = {}) {
+  if (!foundationItemsById.has(itemId)) return;
+
+  if (itemId === "foundation") {
+    foundationLockedItem = null;
+    foundationPreviewItem = null;
+  } else if (lock) {
+    foundationLockedItem = itemId;
+    foundationPreviewItem = null;
+  } else if (preview && !foundationLockedItem) {
+    foundationPreviewItem = itemId;
+  }
+
+  applyFoundationInspection();
+
+  if (scrollInspector && foundationMobileMedia.matches) {
+    foundationInspector.scrollIntoView({
+      behavior: prefersReducedMotion.matches ? "auto" : "smooth",
+      block: "start",
+    });
+  }
+}
+
+function foundationPointForAnchor(id, side, blueprintBox) {
+  const element = foundationBlueprint.querySelector(`[data-foundation-anchor="${id}"]`);
+  if (!element) return null;
+  const box = element.getBoundingClientRect();
+  const relative = {
+    left: box.left - blueprintBox.left,
+    top: box.top - blueprintBox.top,
+    right: box.right - blueprintBox.left,
+    bottom: box.bottom - blueprintBox.top,
+    width: box.width,
+    height: box.height,
+  };
+  if (side === "left") return { x: relative.left, y: relative.top + relative.height / 2, dx: -1, dy: 0 };
+  if (side === "right") return { x: relative.right, y: relative.top + relative.height / 2, dx: 1, dy: 0 };
+  if (side === "top") return { x: relative.left + relative.width / 2, y: relative.top, dx: 0, dy: -1 };
+  return { x: relative.left + relative.width / 2, y: relative.bottom, dx: 0, dy: 1 };
+}
+
+function foundationOrthogonalPoints(start, end, index) {
+  const lead = 10;
+  const first = { x: start.x + start.dx * lead, y: start.y + start.dy * lead };
+  const last = { x: end.x + end.dx * lead, y: end.y + end.dy * lead };
+  const points = [{ x: start.x, y: start.y }, first];
+  const horizontalEnds = start.dx !== 0 && end.dx !== 0;
+  const verticalEnds = start.dy !== 0 && end.dy !== 0;
+
+  if (horizontalEnds) {
+    const laneX = (first.x + last.x) / 2 + ((index % 3) - 1) * 5;
+    points.push({ x: laneX, y: first.y }, { x: laneX, y: last.y });
+  } else if (verticalEnds) {
+    const laneY = (first.y + last.y) / 2 + ((index % 3) - 1) * 5;
+    points.push({ x: first.x, y: laneY }, { x: last.x, y: laneY });
+  } else {
+    points.push({ x: last.x, y: first.y });
+  }
+
+  points.push(last, { x: end.x, y: end.y });
+  return points.filter((point, pointIndex, all) => pointIndex === 0 || point.x !== all[pointIndex - 1].x || point.y !== all[pointIndex - 1].y);
+}
+
+function foundationLabelPoint(points) {
+  let longest = { length: -1, start: points[0], end: points[1] || points[0] };
+  for (let index = 1; index < points.length; index += 1) {
+    const start = points[index - 1];
+    const end = points[index];
+    const length = Math.abs(end.x - start.x) + Math.abs(end.y - start.y);
+    if (length > longest.length) longest = { length, start, end };
+  }
+  return {
+    x: (longest.start.x + longest.end.x) / 2,
+    y: (longest.start.y + longest.end.y) / 2 - 4,
+  };
+}
+
+function drawFoundationConnectors() {
+  if (!isFoundationBlueprintReady || foundationMobileMedia.matches) {
+    foundationConnectors.replaceChildren();
+    return;
+  }
+
+  const blueprintBox = foundationBlueprint.getBoundingClientRect();
+  if (!blueprintBox.width || !blueprintBox.height) return;
+  foundationConnectors.setAttribute("viewBox", `0 0 ${blueprintBox.width} ${blueprintBox.height}`);
+  const fragment = document.createDocumentFragment();
+
+  foundationConnectionsData.forEach((connection, index) => {
+    const start = foundationPointForAnchor(connection.from, connection.fromSide, blueprintBox);
+    const end = foundationPointForAnchor(connection.to, connection.toSide, blueprintBox);
+    if (!start || !end) return;
+    const points = foundationOrthogonalPoints(start, end, index);
+    const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    const startPort = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    const endPort = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    const labelPoint = foundationLabelPoint(points);
+    group.dataset.foundationConnection = "";
+    group.dataset.from = connection.from;
+    group.dataset.to = connection.to;
+    group.classList.add(`is-${connection.state}`);
+    path.setAttribute("d", roundedAtlasPath(points, 5));
+    startPort.setAttribute("cx", start.x);
+    startPort.setAttribute("cy", start.y);
+    startPort.setAttribute("r", "2.25");
+    endPort.setAttribute("cx", end.x);
+    endPort.setAttribute("cy", end.y);
+    endPort.setAttribute("r", "2.25");
+    label.setAttribute("x", labelPoint.x);
+    label.setAttribute("y", labelPoint.y);
+    label.setAttribute("text-anchor", "middle");
+    label.textContent = connection.label;
+    group.append(path, startPort, endPort, label);
+    fragment.appendChild(group);
+  });
+
+  foundationConnectors.replaceChildren(fragment);
+  applyFoundationInspection();
+}
+
+function scheduleFoundationConnectors() {
+  if (!isFoundationBlueprintReady) return;
+  window.cancelAnimationFrame(foundationDrawFrame);
+  foundationDrawFrame = window.requestAnimationFrame(drawFoundationConnectors);
+}
+
+function setupSystemFoundation() {
+  const requiredElements = [
+    ["page scroll", foundationSystemScroll],
+    ["overview control", foundationOverviewControl],
+    ["blueprint", foundationBlueprint],
+    ["region layer", foundationRegions],
+    ["interface layer", foundationInterfaces],
+    ["connector layer", foundationConnectors],
+    ["relationship list", foundationConnectionList],
+    ["inspector", foundationInspector],
+  ];
+  const missing = requiredElements.filter(([, element]) => !element).map(([name]) => name);
+  if (missing.length) throw new Error(`System Foundation markup is incomplete. Missing: ${missing.join(", ")}.`);
+
+  renderFoundationBlueprint();
+  foundationOverviewControl.addEventListener("click", () => {
+    showArchitectureLanding({ updateHistory: true, scrollTop: 0 });
+  });
+  isFoundationBlueprintReady = true;
+  applyFoundationInspection();
+
+  foundationBlueprint.addEventListener("pointerover", (event) => {
+    if (foundationLockedItem || foundationMobileMedia.matches) return;
+    const control = event.target.closest("[data-foundation-select]");
+    if (control && control.dataset.foundationSelect !== "foundation") selectFoundationItem(control.dataset.foundationSelect, { preview: true });
+  });
+  foundationBlueprint.addEventListener("pointerout", (event) => {
+    if (foundationLockedItem || foundationMobileMedia.matches) return;
+    if (event.relatedTarget?.closest?.("[data-foundation-select]")) return;
+    foundationPreviewItem = null;
+    applyFoundationInspection();
+  });
+  foundationBlueprint.addEventListener("focusin", (event) => {
+    if (foundationLockedItem) return;
+    const control = event.target.closest("[data-foundation-select]");
+    if (control && control.dataset.foundationSelect !== "foundation") selectFoundationItem(control.dataset.foundationSelect, { preview: true });
+  });
+  foundationBlueprint.addEventListener("focusout", () => {
+    window.requestAnimationFrame(() => {
+      if (foundationLockedItem || foundationBlueprint.contains(document.activeElement)) return;
+      foundationPreviewItem = null;
+      applyFoundationInspection();
+    });
+  });
+
+  const activateSelection = (event) => {
+    const control = event.target.closest("[data-foundation-select]");
+    if (!control) return;
+    selectFoundationItem(control.dataset.foundationSelect, { lock: true, scrollInspector: true });
+  };
+  const activateSelectionFromKeyboard = (event) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    const control = event.target.closest("[data-foundation-select]");
+    if (!control) return;
+    event.preventDefault();
+    selectFoundationItem(control.dataset.foundationSelect, { lock: true, scrollInspector: true });
+  };
+  foundationBlueprint.addEventListener("click", activateSelection);
+  foundationBlueprint.addEventListener("keydown", activateSelectionFromKeyboard);
+  foundationInspectorSelectors.addEventListener("click", activateSelection);
+  foundationInspectorSelectors.addEventListener("keydown", activateSelectionFromKeyboard);
+
+  const observer = typeof ResizeObserver === "function" ? new ResizeObserver(scheduleFoundationConnectors) : null;
+  if (observer) {
+    observer.observe(foundationBlueprint);
+    observer.observe(foundationRegions);
+  } else {
+    window.addEventListener("resize", scheduleFoundationConnectors, { passive: true });
+  }
+  foundationMobileMedia.addEventListener("change", scheduleFoundationConnectors);
+  window.requestAnimationFrame(scheduleFoundationConnectors);
+}
+
 /*
   ARCHITECTURE FIGURE SEQUENCING
   Each diagram advances one conceptual stage at a time. Content stays fully
@@ -2317,11 +3024,58 @@ prefersReducedMotion.addEventListener("change", () => {
     architectureFigureObserver?.observe(figure);
   });
   scheduleAtlasRelationships();
+  scheduleFoundationConnectors();
 });
+
+function getArchitectureHashSystem() {
+  return location.hash === "#architecture/system-foundation" ? "system-foundation" : null;
+}
 
 function getArchitectureHashDomain() {
   const match = location.hash.match(/^#architecture\/([^/]+)$/);
   return match && architectureDomainContent[match[1]] ? match[1] : null;
+}
+
+function showArchitectureSystem(systemId, {
+  updateHistory = true,
+  scrollTop = 0,
+  focusPage = true,
+} = {}) {
+  const system = atlasSystemsById.get(systemId);
+  if (!system?.route || systemId !== "system-foundation") return;
+
+  closeAtlasIndex({ restoreFocus: false });
+  closeArchitectureIndexVisual({ restoreFocus: false });
+  setActiveAtlasSystem(null, { announce: false });
+  activeArchitectureDomain = null;
+  activeArchitectureSystem = systemId;
+  activeArchitectureSection = "domain-overview";
+  architectureScene.dataset.architectureView = "system-foundation";
+  architectureScene.setAttribute("aria-labelledby", "foundation-system-title");
+  architectureScroll.setAttribute("aria-hidden", "true");
+  architectureScroll.setAttribute("inert", "");
+  architectureDomainScroll.setAttribute("aria-hidden", "true");
+  architectureDomainScroll.setAttribute("inert", "");
+  foundationSystemScroll.setAttribute("aria-hidden", "false");
+  foundationSystemScroll.removeAttribute("inert");
+  foundationSystemScroll.scrollTop = Math.max(0, Number(scrollTop) || 0);
+  updateArchitectureWordmark();
+
+  if (updateHistory) {
+    history.pushState(
+      {
+        view: "architecture",
+        architecture: { page: "system", system: systemId, scrollTop: 0, indexOpen: false },
+      },
+      "",
+      system.route,
+    );
+  }
+
+  skipLink.href = "#foundation-contracts";
+  skipLink.textContent = "Skip to Foundation Contracts";
+  if (focusPage) foundationSystemScroll.focus({ preventScroll: true });
+  window.requestAnimationFrame(scheduleFoundationConnectors);
 }
 
 function renderArchitectureDomain(domain) {
@@ -2329,6 +3083,7 @@ function renderArchitectureDomain(domain) {
   if (!domainData) return;
 
   activeArchitectureDomain = domain;
+  activeArchitectureSystem = null;
   activeArchitectureSection = "domain-overview";
   architectureDomainScroll.dataset.domain = domain;
   architecturePrimaryFigure.dataset.architectureAnimation = domain === "observation-provenance"
@@ -2605,6 +3360,8 @@ function renderArchitectureDomain(domain) {
   architectureScroll.setAttribute("inert", "");
   architectureDomainScroll.setAttribute("aria-hidden", "false");
   architectureDomainScroll.removeAttribute("inert");
+  foundationSystemScroll.setAttribute("aria-hidden", "true");
+  foundationSystemScroll.setAttribute("inert", "");
   resetArchitectureFigureAnimations();
   renderArchitectureIndex();
 }
@@ -2688,6 +3445,7 @@ function showArchitectureLanding({ updateHistory = true, scrollTop = 0, focusMap
   closeAtlasIndex({ restoreFocus: false });
   setActiveAtlasSystem(null, { announce: false });
   activeArchitectureDomain = null;
+  activeArchitectureSystem = null;
   activeArchitectureSection = "domain-overview";
   architectureScene.dataset.architectureView = "landing";
   architectureScene.setAttribute("aria-labelledby", "architecture-title");
@@ -2695,6 +3453,8 @@ function showArchitectureLanding({ updateHistory = true, scrollTop = 0, focusMap
   architectureScroll.removeAttribute("inert");
   architectureDomainScroll.setAttribute("aria-hidden", "true");
   architectureDomainScroll.setAttribute("inert", "");
+  foundationSystemScroll.setAttribute("aria-hidden", "true");
+  foundationSystemScroll.setAttribute("inert", "");
   architectureScroll.scrollTop = Math.max(0, Number(scrollTop) || 0);
   updateArchitectureWordmark();
 
@@ -2839,15 +3599,19 @@ function syncArchitectureHistoryState() {
   if (body.dataset.view !== "architecture") return;
 
   const isDomain = Boolean(activeArchitectureDomain);
-  const activeScroll = isDomain ? architectureDomainScroll : architectureScroll;
+  const isSystem = Boolean(activeArchitectureSystem);
+  const activeScroll = isDomain
+    ? architectureDomainScroll
+    : isSystem ? foundationSystemScroll : architectureScroll;
 
   history.replaceState(
     {
       ...history.state,
       view: "architecture",
       architecture: {
-        page: isDomain ? "domain" : "landing",
+        page: isDomain ? "domain" : isSystem ? "system" : "landing",
         domain: isDomain ? activeArchitectureDomain : null,
+        system: isSystem ? activeArchitectureSystem : null,
         scrollTop: activeScroll.scrollTop,
         indexOpen: architectureScene.classList.contains("has-architecture-index"),
       },
@@ -2866,7 +3630,17 @@ function scheduleArchitectureHistorySync() {
 }
 
 function restoreArchitectureHistoryState(architectureState) {
+  const system = architectureState?.system || getArchitectureHashSystem();
   const domain = architectureState?.domain || getArchitectureHashDomain();
+
+  if (architectureState?.page === "system" || system) {
+    showArchitectureSystem(system, {
+      updateHistory: false,
+      scrollTop: architectureState?.scrollTop,
+      focusPage: false,
+    });
+    return;
+  }
 
   if (architectureState?.page === "domain" || domain) {
     showArchitectureDomain(domain, {
@@ -2969,7 +3743,9 @@ function setScene(nextView, { updateHistory = true, focusDelay = 760, focusScene
     home: ["#home-map", "Skip to the Sylara map"],
     architecture: activeArchitectureDomain
       ? ["#domain-overview", `Skip to ${architectureDomainContent[activeArchitectureDomain].title}`]
-      : ["#architecture-system-atlas", "Skip to the System Atlas"],
+      : activeArchitectureSystem
+        ? ["#foundation-contracts", "Skip to Foundation Contracts"]
+        : ["#architecture-system-atlas", "Skip to the System Atlas"],
     research: ["#research-title", "Skip to Research"],
     journal: ["#journal-index", "Skip to the Journal archive"],
     about: ["#about-trajectory", "Skip to the About research trajectory"],
@@ -3032,7 +3808,7 @@ function navigateTo(nextView, { mode = "direct", updateHistory = true } = {}) {
 document.querySelectorAll("[data-route]").forEach((control) => {
   control.addEventListener("click", () => {
     if (control.dataset.route === body.dataset.view) {
-      if (control.dataset.route === "architecture" && activeArchitectureDomain) {
+      if (control.dataset.route === "architecture" && (activeArchitectureDomain || activeArchitectureSystem)) {
         showArchitectureLanding({ updateHistory: true, scrollTop: 0 });
       }
       if (control.dataset.route === "journal" && activeJournalArticle) {
@@ -3261,7 +4037,9 @@ tabletScroll.addEventListener("scroll", () => {
 function updateArchitectureWordmark() {
   const activeScroll = architectureScene.dataset.architectureView === "domain"
     ? architectureDomainScroll
-    : architectureScroll;
+    : architectureScene.dataset.architectureView === "system-foundation"
+      ? foundationSystemScroll
+      : architectureScroll;
   architectureScene.classList.toggle("is-wordmark-scrolled", activeScroll.scrollTop > 48);
 }
 
@@ -3273,12 +4051,28 @@ architectureDomainScroll.addEventListener("scroll", () => {
   updateArchitectureWordmark();
   scheduleArchitectureHistorySync();
 }, { passive: true });
+foundationSystemScroll.addEventListener("scroll", () => {
+  updateArchitectureWordmark();
+  scheduleArchitectureHistorySync();
+}, { passive: true });
 window.addEventListener("resize", () => {
   updateTabletScrollCue();
   if (window.innerWidth > 1100) closeAtlasIndex({ restoreFocus: false });
 });
 
 window.addEventListener("keydown", (event) => {
+  if (
+    event.key === "Escape"
+    && body.dataset.view === "architecture"
+    && activeArchitectureSystem === "system-foundation"
+    && (foundationLockedItem || foundationPreviewItem)
+  ) {
+    event.preventDefault();
+    selectFoundationItem("foundation", { lock: true });
+    foundationBlueprint.querySelector('[data-foundation-select="foundation"]')?.focus({ preventScroll: true });
+    return;
+  }
+
   if (event.key === "Escape" && body.dataset.view === "architecture" && architectureScene.classList.contains("has-atlas-index")) {
     closeAtlasIndex();
     return;
@@ -3392,10 +4186,13 @@ try {
       contactScroll.scrollTop = history.state.contact?.scrollTop || 0;
     }
   } else {
+    const initialArchitectureSystem = initialView === "architecture" ? getArchitectureHashSystem() : null;
     const initialArchitectureDomain = initialView === "architecture" ? getArchitectureHashDomain() : null;
-    const initialArchitectureState = initialArchitectureDomain
-      ? { page: "domain", domain: initialArchitectureDomain, scrollTop: 0, indexOpen: false }
-      : { page: "landing", domain: null, scrollTop: 0, indexOpen: false };
+    const initialArchitectureState = initialArchitectureSystem
+      ? { page: "system", system: initialArchitectureSystem, domain: null, scrollTop: 0, indexOpen: false }
+      : initialArchitectureDomain
+        ? { page: "domain", system: null, domain: initialArchitectureDomain, scrollTop: 0, indexOpen: false }
+        : { page: "landing", system: null, domain: null, scrollTop: 0, indexOpen: false };
 
     history.replaceState(
       {
@@ -3430,5 +4227,6 @@ initializeSubsystem("About page", setupAboutReveals);
 initializeSubsystem("Contact page", () => setContactChannel(activeContactChannel));
 initializeSubsystem("Research page", () => setSubjectVisualState(activeSubject ? "active" : "neutral", activeSubject));
 initializeSubsystem("System Atlas", setupSystemAtlas);
+initializeSubsystem("System Foundation", setupSystemFoundation);
 initializeSubsystem("Journal page", renderJournalEntries);
 initializeSubsystem("Architecture figures", setupArchitectureFigureAnimations);

@@ -56,8 +56,8 @@
       })();
     </script>
     <link rel="preload" as="image" href="assets/redesign/home-network.png" />
-    <link rel="stylesheet" href="styles.css?v=a4de2be" />
-    <script src="app.js?v=a4de2be" defer></script>
+    <link rel="stylesheet" href="styles.css?v=system-foundation-v2" />
+    <script src="app.js?v=system-foundation-v2" defer></script>
   </head>
   <body data-view="home">
     <a class="skip-link" href="#home-map">Skip to the Sylara map</a>
@@ -227,6 +227,91 @@
             <div class="atlas-index-overlay__list" data-atlas-index-overlay-list></div>
           </nav>
         </aside>
+
+        <div class="foundation-system-scroll" data-foundation-system-scroll aria-hidden="true" inert tabindex="-1">
+          <section class="foundation-system-opening" id="foundation-system-overview" aria-labelledby="foundation-system-title">
+            <button class="foundation-system-back" type="button" data-foundation-overview>
+              <span aria-hidden="true">←</span>
+              <span>Architecture overview</span>
+            </button>
+            <p class="foundation-system-kicker">01 / SYSTEM &amp; FOUNDATION</p>
+            <h2 id="foundation-system-title">System &amp; Foundation</h2>
+            <div class="foundation-system-opening__copy">
+              <p>System &amp; Foundation defines the invariants that govern how Sylara's architecture composes. It establishes explicit ownership, bounded interfaces, provenance, authority separation, state continuity, and governed transitions across the platform.</p>
+              <p>The blueprint below presents representative contracts through current implementation anchors and accepted architectural boundaries. Each region retains its declared authority. Connections represent governed handoffs or references, not transfer of authority.</p>
+            </div>
+          </section>
+
+          <section class="foundation-contracts" id="foundation-contracts" aria-labelledby="foundation-contracts-title">
+            <header class="foundation-contracts__header">
+              <p class="architecture-section-label">System 01 / Blueprint</p>
+              <h3 id="foundation-contracts-title">FOUNDATION CONTRACTS</h3>
+              <p>Representative authority contracts shown as a layered field. Connections identify governed handoffs or references, not transfer of authority.</p>
+            </header>
+
+            <div class="foundation-workbench">
+              <div class="foundation-blueprint" data-foundation-blueprint>
+                <button class="foundation-frame-control" type="button" data-foundation-select="foundation" aria-pressed="true">
+                  <span>FOUNDATION FRAME</span>
+                  <small>Reset inspection</small>
+                </button>
+                <svg class="foundation-connectors" data-foundation-connectors aria-hidden="true"></svg>
+                <div class="foundation-regions" data-foundation-regions></div>
+                <div class="foundation-interfaces" data-foundation-interfaces aria-label="Referenced external interfaces"></div>
+                <div class="foundation-cycle-report" data-foundation-anchor="cycle-report" aria-label="Shared Cycle Report artifact">
+                  <span>CYCLE REPORT</span>
+                  <small>CognitionCycleReport</small>
+                  <i class="foundation-cycle-report__port foundation-cycle-report__port--left" aria-hidden="true"></i>
+                  <i class="foundation-cycle-report__port foundation-cycle-report__port--right" aria-hidden="true"></i>
+                </div>
+                <ol class="foundation-connection-list" data-foundation-connection-list aria-label="Foundation contract relationships"></ol>
+              </div>
+
+              <aside class="foundation-inspector" data-foundation-inspector aria-labelledby="foundation-inspector-title" aria-live="polite">
+                <header class="foundation-inspector__header">
+                  <p data-foundation-inspector-kicker>FOUNDATION CONTRACTS</p>
+                  <h4 id="foundation-inspector-title" data-foundation-inspector-title>Foundation Contracts</h4>
+                  <p class="foundation-inspector__anchor" data-foundation-inspector-anchor>System 01</p>
+                  <p class="foundation-inspector__maturity" data-foundation-inspector-maturity>GOVERNING FRAME</p>
+                </header>
+                <div class="foundation-inspector__body" data-foundation-inspector-body>
+                  <p>System 01 establishes the contracts that keep authority, identity, provenance, current state, historical recording, and presentation distinct across Sylara. Select a region to inspect its responsibilities and implementation posture.</p>
+                  <div class="foundation-connector-legend" aria-label="Connector legend">
+                    <span><i aria-hidden="true"></i> SOLID / ACTIVE CURRENT RELATIONSHIP</span>
+                    <span><i class="is-dashed" aria-hidden="true"></i> DASHED / ACCEPTED OR GATED RELATIONSHIP</span>
+                  </div>
+                  <p>Connections represent governed handoffs or references, not transfer of authority.</p>
+                </div>
+                <div class="foundation-inspector__selectors" data-foundation-inspector-selectors></div>
+                <p class="foundation-inspector__hint">Hover or focus to preview. Select to lock. Press Escape to reset.</p>
+              </aside>
+            </div>
+          </section>
+
+          <section class="foundation-invariants" id="foundation-governing-invariants" aria-labelledby="foundation-invariants-title">
+            <header>
+              <p class="architecture-section-label">System 01 / Contract discipline</p>
+              <h3 id="foundation-invariants-title">GOVERNING INVARIANTS</h3>
+            </header>
+            <div class="foundation-invariants__grid">
+              <article><h4>EXPLICIT OWNERSHIP</h4><p>Every authoritative state or decision has a declared owner within a bounded scope.</p></article>
+              <article><h4>EXPLICIT PROVENANCE</h4><p>Governed information retains the source and reference context required by its contract.</p></article>
+              <article><h4>BOUNDED INTERFACES</h4><p>Components exchange declared records, references, and decisions through explicit handoffs.</p></article>
+              <article><h4>AUTHORITY &amp; REPRESENTATION</h4><p>Reports, summaries, models, and interfaces may represent governed state without inheriting its authority.</p></article>
+              <article><h4>PRESENT STATE &amp; HISTORICAL CONTEXT</h4><p>Current truth and historical recording remain distinct authority classes.</p></article>
+              <article><h4>ELIGIBILITY &amp; AUTHORIZATION</h4><p>Qualification and permission remain separately governed decisions.</p></article>
+              <article><h4>PLANNING &amp; EXECUTION</h4><p>Evaluation, planning, and recommendations do not by themselves establish execution authority.</p></article>
+              <article><h4>GOVERNED TRANSITIONS</h4><p>State changes and activation gates occur through explicit transition/phase contracts.</p></article>
+              <article><h4>FAIL-CLOSED BOUNDARIES</h4><p>When required authority, provenance, or governed prerequisites are absent, the owning boundary preserves an explicit blocked/unavailable state.</p></article>
+              <article><h4>AUDITABILITY</h4><p>Governed decisions and projections retain traceable basis/references where their contracts provide them.</p></article>
+            </div>
+          </section>
+
+          <footer class="architecture-footer">
+            <span>Sylara Technologies</span>
+            <span>Architecture / 01 System &amp; Foundation</span>
+          </footer>
+        </div>
 
         <!--
           SHARED ARCHITECTURE DOMAIN PAGE
