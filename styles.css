@@ -7444,28 +7444,24 @@ body.is-direct-transition[data-view="contact"] .home-scene {
   z-index: 5;
   display: grid;
   gap: 0.16rem;
-  max-width: 8.8rem;
-  padding: 0.36rem 0.42rem;
-  border: 1px solid rgba(216, 196, 255, 0.2);
-  border-left-color: rgba(216, 196, 255, 0.52);
-  background: rgba(6, 5, 11, 0.9);
-  color: rgba(226, 214, 242, 0.72);
+  max-width: 9rem;
+  padding: 0.38rem 0.46rem;
+  border: 0;
+  border-left: 1px solid rgba(216, 196, 255, 0.58);
+  background: rgba(5, 4, 10, 0.94);
+  color: rgba(232, 222, 245, 0.82);
   font-family: "DM Mono", ui-monospace, monospace;
-  font-size: 0.43rem;
+  font-size: 0.47rem;
   letter-spacing: 0.09em;
   line-height: 1.35;
 }
 
-.foundation-interface small { color: rgba(220, 208, 236, 0.66); font-size: 0.39rem; }
-.foundation-interface.is-related { border-color: rgba(216, 196, 255, 0.64); color: rgba(247, 242, 252, 0.96); }
+.foundation-interface small { color: rgba(224, 213, 239, 0.72); font-size: 0.41rem; }
+.foundation-interface.is-related { border-left-color: rgba(216, 196, 255, 0.82); background: rgba(15, 10, 23, 0.97); color: rgba(247, 242, 252, 0.96); }
 .foundation-interface.is-related small { color: rgba(235, 226, 246, 0.84); }
 .foundation-interface.is-receded { opacity: 0.4; }
-.foundation-interface[data-foundation-interface="rule"] { top: 17.5%; left: 30.3%; width: 5.4%; text-align: center; }
-.foundation-interface[data-foundation-interface="evidence"] { top: 68.5%; left: 0.4%; }
-.foundation-interface[data-foundation-interface="temporal"] { top: 45%; right: 0.4%; }
-.foundation-interface[data-foundation-interface="cognition"] { top: 41.5%; right: 0.4%; }
-.foundation-interface[data-foundation-interface="observations"] { top: 3.4%; right: 0.4%; }
-.foundation-interface[data-foundation-interface="references"] { top: 76%; left: 35.8%; max-width: 6.5rem; }
+.foundation-interface[data-foundation-interface="rule"] { text-align: center; }
+.foundation-interface[data-foundation-interface="references"] { max-width: 7.2rem; }
 
 .foundation-connectors {
   position: absolute;
@@ -7477,27 +7473,29 @@ body.is-direct-transition[data-view="contact"] .home-scene {
   pointer-events: none;
 }
 
-.foundation-connectors g { opacity: 0.56; transition: opacity 180ms ease; }
-.foundation-connectors g.is-gated { opacity: 0.42; }
-.foundation-connectors g.is-related { opacity: 0.96; }
-.foundation-connectors g.is-receded { opacity: 0.2; }
+.foundation-connectors g { opacity: 0.8; transition: opacity 180ms ease; }
+.foundation-connectors g.is-gated { opacity: 0.74; }
+.foundation-connectors g.is-related { opacity: 1; }
+.foundation-connectors g.is-receded { opacity: 0.24; }
 .foundation-connectors path {
   fill: none;
-  stroke: rgba(216, 196, 255, 0.82);
+  stroke: rgba(216, 196, 255, 0.7);
   stroke-width: 1.15;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 .foundation-connectors .is-gated path { stroke-dasharray: 5 5; }
-.foundation-connectors circle { fill: #08060e; stroke: rgba(216, 196, 255, 0.82); stroke-width: 1; }
+.foundation-connectors circle { fill: #08060e; stroke: rgba(216, 196, 255, 0.76); stroke-width: 1; }
+.foundation-connectors .foundation-connector-label-plate {
+  fill: rgba(5, 4, 9, 0.97);
+  stroke: rgba(216, 196, 255, 0.12);
+  stroke-width: 0.6;
+}
 .foundation-connectors text {
-  fill: rgba(228, 216, 243, 0.68);
-  stroke: rgba(5, 4, 9, 0.96);
-  stroke-width: 3px;
-  paint-order: stroke;
+  fill: rgba(235, 226, 247, 0.96);
   font-family: "DM Mono", ui-monospace, monospace;
-  font-size: 6px;
-  letter-spacing: 0.45px;
+  font-size: 7.5px;
+  letter-spacing: 0.48px;
 }
 .foundation-connectors g.is-related text { fill: rgba(247, 242, 252, 0.96); }
 

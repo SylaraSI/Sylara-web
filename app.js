@@ -2850,10 +2850,191 @@ function foundationPointForAnchor(id, side, blueprintBox) {
   return { x: relative.left + relative.width / 2, y: relative.bottom, dx: 0, dy: 1 };
 }
 
-function foundationOrthogonalPoints(start, end, index) {
+function foundationBoxForAnchor(id, blueprintBox) {
+  const element = foundationBlueprint.querySelector(`[data-foundation-anchor="${id}"]`);
+  if (!element) return null;
+  const box = element.getBoundingClientRect();
+  return {
+    left: box.left - blueprintBox.left,
+    top: box.top - blueprintBox.top,
+    right: box.right - blueprintBox.left,
+    bottom: box.bottom - blueprintBox.top,
+    width: box.width,
+    height: box.height,
+  };
+}
+
+function positionFoundationInterfaces(blueprintBox) {
+  const interfaces = new Map(
+    [...foundationInterfaces.querySelectorAll("[data-foundation-interface]")]
+      .map((element) => [element.dataset.foundationInterface, element]),
+  );
+  const admission = foundationBoxForAnchor("admission-provenance", blueprintBox);
+  const state = foundationBoxForAnchor("present-state-health", blueprintBox);
+  const projection = foundationBoxForAnchor("governed-projection", blueprintBox);
+  const qualification = foundationBoxForAnchor("memory-qualification", blueprintBox);
+  const recording = foundationBoxForAnchor("recording-persistence", blueprintBox);
+  const cycle = foundationBoxForAnchor("cycle-report", blueprintBox);
+  if (!admission || !state || !projection || !qualification || !recording || !cycle) return;
+
+  interfaces.forEach((element) => {
+    element.style.removeProperty("left");
+    element.style.removeProperty("right");
+    element.style.removeProperty("top");
+    element.style.removeProperty("width");
+  });
+
+  const place = (position, left, top, width) => {
+    const element = interfaces.get(position);
+    if (!element) return;
+    if (width !== undefined) element.style.width = `${Math.max(1, width)}px`;
+    const measured = element.getBoundingClientRect();
+    const boundedLeft = Math.min(
+      blueprintBox.width - measured.width - 8,
+      Math.max(8, left),
+    );
+    const boundedTop = Math.min(
+      blueprintBox.height - measured.height - 8,
+      Math.max(8, top),
+    );
+    element.style.left = `${boundedLeft}px`;
+    element.style.top = `${boundedTop}px`;
+  };
+
+  const rule = interfaces.get("rule");
+  const ruleWidth = Math.max(38, state.left - admission.right - 8);
+  if (rule) {
+    rule.style.width = `${ruleWidth}px`;
+    const box = rule.getBoundingClientRect();
+    place(
+      "rule",
+      admission.right + (state.left - admission.right - box.width) / 2,
+      Math.max(admission.top, state.top) + 3.3 * 16,
+      ruleWidth,
+    );
+  }
+
+  const evidence = interfaces.get("evidence");
+  if (evidence) {
+    const box = evidence.getBoundingClientRect();
+    place("evidence", qualification.left + 8, qualification.top - box.height - 34);
+  }
+
+  const observations = interfaces.get("observations");
+  if (observations) {
+    const box = observations.getBoundingClientRect();
+    place("observations", projection.right - box.width, projection.top - box.height - 32);
+  }
+
+  const cognition = interfaces.get("cognition");
+  if (cognition) {
+    const box = cognition.getBoundingClientRect();
+    place("cognition", projection.right - box.width, projection.bottom + 14);
+  }
+
+  const temporal = interfaces.get("temporal");
+  if (temporal) {
+    const box = temporal.getBoundingClientRect();
+    place(
+      "temporal",
+      blueprintBox.width - box.width - 8,
+      cycle.top + (cycle.height - box.height) / 2,
+    );
+  }
+
+  const references = interfaces.get("references");
+  if (references) {
+    const box = references.getBoundingClientRect();
+    place("references", recording.left - box.width - 12, recording.bottom + 12);
+  }
+}
+
+function foundationOrthogonalRoute(start, end, index, connection, blueprintBox) {
   const lead = 10;
   const first = { x: start.x + start.dx * lead, y: start.y + start.dy * lead };
   const last = { x: end.x + end.dx * lead, y: end.y + end.dy * lead };
+  const connectionKey = `${connection.from}:${connection.to}`;
+  const projection = foundationBoxForAnchor("governed-projection", blueprintBox);
+  const qualification = foundationBoxForAnchor("memory-qualification", blueprintBox);
+  const recording = foundationBoxForAnchor("recording-persistence", blueprintBox);
+
+  if (connectionKey === "admission-provenance:governed-rule-processing") {
+    const laneY = Math.max(start.y, end.y) + 52;
+    return {
+      points: [
+        { x: start.x, y: start.y },
+        first,
+        { x: first.x, y: laneY },
+        { x: last.x, y: laneY },
+        last,
+        { x: end.x, y: end.y },
+      ],
+      labelPoint: { x: (first.x + last.x) / 2, y: laneY - 7 },
+    };
+  }
+
+  if (connectionKey === "governed-rule-processing:present-state-health") {
+    const laneY = Math.max(start.y, end.y) + 73;
+    return {
+      points: [
+        { x: start.x, y: start.y },
+        first,
+        { x: first.x, y: laneY },
+        { x: last.x, y: laneY },
+        last,
+        { x: end.x, y: end.y },
+      ],
+      labelPoint: { x: (first.x + last.x) / 2, y: laneY - 7 },
+    };
+  }
+
+  if (connectionKey === "condition-registry:health-authority") {
+    return {
+      points: [{ x: start.x, y: start.y }, { x: end.x, y: end.y }],
+      labelPoint: { x: (start.x + end.x) / 2, y: Math.min(start.y, end.y) - 18 },
+    };
+  }
+
+  if (connectionKey === "evidence-diagnostic:memory-eligibility-gate" && qualification) {
+    const railX = Math.max(9, end.x - 13);
+    const labelLaneY = qualification.top - 14;
+    return {
+      points: [
+        { x: start.x, y: start.y },
+        first,
+        { x: first.x, y: labelLaneY },
+        { x: railX, y: labelLaneY },
+        { x: railX, y: last.y },
+        last,
+        { x: end.x, y: end.y },
+      ],
+      labelPoint: { x: (first.x + railX) / 2, y: labelLaneY - 7 },
+    };
+  }
+
+  if (
+    (connectionKey === "recent-observations:governed-projection"
+      || connectionKey === "cognition-decision-context:governed-projection")
+    && projection
+  ) {
+    const railX = Math.min(blueprintBox.width - 9, Math.max(start.x, end.x) + 13);
+    const labelLaneY = connection.from === "recent-observations"
+      ? projection.top - 9
+      : projection.bottom + 64;
+    return {
+      points: [
+        { x: start.x, y: start.y },
+        first,
+        { x: first.x, y: labelLaneY },
+        { x: railX, y: labelLaneY },
+        { x: railX, y: last.y },
+        last,
+        { x: end.x, y: end.y },
+      ],
+      labelPoint: { x: (first.x + railX) / 2, y: labelLaneY - 7 },
+    };
+  }
+
   const points = [{ x: start.x, y: start.y }, first];
   const horizontalEnds = start.dx !== 0 && end.dx !== 0;
   const verticalEnds = start.dy !== 0 && end.dy !== 0;
@@ -2869,7 +3050,18 @@ function foundationOrthogonalPoints(start, end, index) {
   }
 
   points.push(last, { x: end.x, y: end.y });
-  return points.filter((point, pointIndex, all) => pointIndex === 0 || point.x !== all[pointIndex - 1].x || point.y !== all[pointIndex - 1].y);
+  const filteredPoints = points.filter((point, pointIndex, all) => pointIndex === 0 || point.x !== all[pointIndex - 1].x || point.y !== all[pointIndex - 1].y);
+  let labelPoint = null;
+  if (connectionKey === "temporal-interpretation:cycle-report") {
+    labelPoint = { x: end.x + 64, y: end.y - 7 };
+  } else if (connectionKey === "cycle-report:projection-assembly") {
+    labelPoint = { x: end.x - 23, y: projection ? projection.bottom + 35 : end.y + 35 };
+  } else if (connectionKey === "present-state-health:governed-recording") {
+    labelPoint = { x: end.x + 58, y: recording ? recording.top - 14 : end.y - 14 };
+  } else if (connectionKey === "observation-references:governed-recording") {
+    labelPoint = { x: (start.x + end.x) / 2, y: recording ? recording.bottom - 12 : start.y - 12 };
+  }
+  return { points: filteredPoints, labelPoint };
 }
 
 function foundationLabelPoint(points) {
@@ -2886,6 +3078,15 @@ function foundationLabelPoint(points) {
   };
 }
 
+function sizeFoundationConnectorPlate(label, plate) {
+  const bounds = label.getBBox();
+  plate.setAttribute("x", bounds.x - 3);
+  plate.setAttribute("y", bounds.y - 2.5);
+  plate.setAttribute("width", bounds.width + 6);
+  plate.setAttribute("height", bounds.height + 5);
+  plate.setAttribute("rx", "2");
+}
+
 function drawFoundationConnectors() {
   if (!isFoundationBlueprintReady || foundationMobileMedia.matches) {
     foundationConnectors.replaceChildren();
@@ -2894,20 +3095,24 @@ function drawFoundationConnectors() {
 
   const blueprintBox = foundationBlueprint.getBoundingClientRect();
   if (!blueprintBox.width || !blueprintBox.height) return;
+  positionFoundationInterfaces(blueprintBox);
   foundationConnectors.setAttribute("viewBox", `0 0 ${blueprintBox.width} ${blueprintBox.height}`);
   const fragment = document.createDocumentFragment();
+  const labels = [];
 
   foundationConnectionsData.forEach((connection, index) => {
     const start = foundationPointForAnchor(connection.from, connection.fromSide, blueprintBox);
     const end = foundationPointForAnchor(connection.to, connection.toSide, blueprintBox);
     if (!start || !end) return;
-    const points = foundationOrthogonalPoints(start, end, index);
+    const route = foundationOrthogonalRoute(start, end, index, connection, blueprintBox);
+    const points = route.points;
     const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
     const startPort = document.createElementNS("http://www.w3.org/2000/svg", "circle");
     const endPort = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    const plate = document.createElementNS("http://www.w3.org/2000/svg", "rect");
     const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    const labelPoint = foundationLabelPoint(points);
+    const labelPoint = route.labelPoint || foundationLabelPoint(points);
     group.dataset.foundationConnection = "";
     group.dataset.from = connection.from;
     group.dataset.to = connection.to;
@@ -2919,15 +3124,18 @@ function drawFoundationConnectors() {
     endPort.setAttribute("cx", end.x);
     endPort.setAttribute("cy", end.y);
     endPort.setAttribute("r", "2.25");
+    plate.classList.add("foundation-connector-label-plate");
     label.setAttribute("x", labelPoint.x);
     label.setAttribute("y", labelPoint.y);
     label.setAttribute("text-anchor", "middle");
     label.textContent = connection.label;
-    group.append(path, startPort, endPort, label);
+    group.append(path, startPort, endPort, plate, label);
     fragment.appendChild(group);
+    labels.push({ label, plate });
   });
 
   foundationConnectors.replaceChildren(fragment);
+  labels.forEach(({ label, plate }) => sizeFoundationConnectorPlate(label, plate));
   applyFoundationInspection();
 }
 
