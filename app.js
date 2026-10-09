@@ -2589,6 +2589,7 @@ function foundationMobileModuleControl(module, inspectedId) {
   const control = foundationElement("button", "foundation-mobile-module", module.title);
   control.type = "button";
   control.dataset.foundationSelect = module.id;
+  control.setAttribute("aria-controls", "foundation-inspector");
   control.setAttribute("aria-pressed", String(foundationLockedItem === module.id));
   control.classList.toggle("is-inspected", inspectedId === module.id);
   return control;
@@ -3200,14 +3201,16 @@ function setupSystemFoundation() {
   const activateSelection = (event) => {
     const control = event.target.closest("[data-foundation-select]");
     if (!control) return;
-    selectFoundationItem(control.dataset.foundationSelect, { lock: true, scrollInspector: true });
+    const entersMobileRegion = control.classList.contains("foundation-region__control");
+    selectFoundationItem(control.dataset.foundationSelect, { lock: true, scrollInspector: entersMobileRegion });
   };
   const activateSelectionFromKeyboard = (event) => {
     if (event.key !== "Enter" && event.key !== " ") return;
     const control = event.target.closest("[data-foundation-select]");
     if (!control) return;
     event.preventDefault();
-    selectFoundationItem(control.dataset.foundationSelect, { lock: true, scrollInspector: true });
+    const entersMobileRegion = control.classList.contains("foundation-region__control");
+    selectFoundationItem(control.dataset.foundationSelect, { lock: true, scrollInspector: entersMobileRegion });
   };
   foundationBlueprint.addEventListener("click", activateSelection);
   foundationBlueprint.addEventListener("keydown", activateSelectionFromKeyboard);

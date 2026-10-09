@@ -7744,6 +7744,7 @@ body.is-direct-transition[data-view="contact"] .home-scene {
   .foundation-mobile-relationship header span { color: rgba(218, 201, 239, 0.72); }
   .foundation-mobile-relationship p { margin: 0; color: rgba(234, 227, 243, 0.86); font-family: Inter, system-ui, sans-serif; font-size: 0.76rem; line-height: 1.55; }
   .foundation-inspector__body { display: block; }
+  .foundation-inspector__selectors { display: none; }
 }
 
 @media (max-width: 760px) {
